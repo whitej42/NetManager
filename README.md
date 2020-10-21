@@ -3,5 +3,5 @@
 * Project Owner: James White 
 * Project Supervisor: Lingfen Sun
 
-## Network Configuration & Management Tool with Enhanced Security
+## NetManager: Network Configuration & Management Tool with Enhanced Security
 Network Management Application for automated management of a network topology with enhanced security features
