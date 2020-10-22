@@ -7,7 +7,7 @@
 Network Management Application for automated configuration, management and monitoring of a network topology with additional security automation for implementing network security features (e.g. access lists, port security etc.)
 
 ### System Functionality
-* Dislay current network topology to the user
+* Display current network topology to the user
 * Automatically configure IP addressing on the network
 * Automatically configure basic network hardware settings
 * Actively monitor network performance and security
