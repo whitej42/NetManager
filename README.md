@@ -4,7 +4,7 @@
 * Project Supervisor: Lingfen Sun
 
 ## NetManager: Network Configuration & Management Tool
-Network Management Application for automated configuration, management and monitoring of a network topology with additional security automation for implementing network security features (e.g. access lists, port security etc.)
+Network Configuration & Management Application for automated configuration, management and monitoring of a network topology with additional security automation for implementing network security features (e.g. access lists, port security etc.)
 
 ### System Functionality
 * Display current network topology to the user
