@@ -1,4 +1,4 @@
-## Basic python script for configuring a loopback interface and adding a message of the day banner
+## Basic python script for configuring a loopback interface and OSPF
 
 import getpass
 import telnetlib
