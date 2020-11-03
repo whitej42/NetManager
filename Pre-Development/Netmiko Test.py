@@ -22,17 +22,25 @@ R2 = {
     'port': '22',
 }
 
+def user_input()
+    device = input('Choose Device [R1 or R2]: ')
+    interface = input('Select Interface: ')
+    ip = input('Enter IP Address: ')
+
 def device_connect(host):
-    if host == 'R1':
+    if host == 'R1' or host == 'r1':
         net_connect = ConnectHandler(**R1)
-    else:
+    elif host == 'R2' or host == 'r2':
         net_connect = ConnectHandler(**R2)
+    else:
+        print('INVALID DEVICE NAME')
+        user_input()
 
     net_connect.enable()
     return net_connect
 
 def configureInterface():
-    commands = ['int ' + interface,
+    commands = ['interface ' + interface,
             'ip address ' + ip + ' 255.255.255.0',
             'no shut', 'end',
             'show ip int brief']
@@ -42,12 +50,9 @@ def configureInterface():
     output = net_connect.send_config_set(commands)
     print(output)
     
-device = input('Choose Device [R1 or R2]: ')
-interface = input('Select Interface: ')
-ip = input('Enter IP Address: ')
-
 start = datetime.now()
 
+user_input()
 net_connect = device_connect(device)
 configureInterface()
 net_connect.disconnect()
