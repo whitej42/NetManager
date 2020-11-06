@@ -3,6 +3,8 @@
 * Project Owner: James White 
 * Project Supervisor: Lingfen Sun
 
+![Logo](https://github.com/jwhite96/COMP3000/blob/main/Documentation/Misc/Logo.png)
+
 ## NetManager: Network Configuration & Management Tool
 Network Configuration & Management Application for automated configuration, management and monitoring of a network topology with additional security automation for implementing network security features (e.g. access lists, port security etc.)
 
