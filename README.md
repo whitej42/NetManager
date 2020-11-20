@@ -2,7 +2,7 @@
 
 * Project Owner: James White 
 * Project Supervisor: Lingfen Sun
-
+<br>
 ![Logo](https://github.com/jwhite96/COMP3000/blob/main/NetManager/static/images/logo.png)
 
 ## NetManager: Network Configuration & Management Tool
