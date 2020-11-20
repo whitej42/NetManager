@@ -1,0 +1,48 @@
+{% include "header.html" %}
+
+<body class="bg-dark text-center">
+
+{% load static %}
+
+<form class="form-group form-login">
+    <img src="{% static 'images/logo-dark.png' %}" alt="NetManager" style="width:260px;height:60px;">
+    <h3 class="font-weight-norma text-light login-content">Please sign in</h3>
+    <label for="inputUser" class="sr-only">Username</label>
+    <input type="text" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+    <div class="login-content">
+        <a class="text-light login-content" data-toggle="modal" data-target="#password">Forget Password?</a>
+    </div>
+
+    <div class="modal fade" id="password" tabindex="-1" role="dialog" aria-labelledby="label"
+                 aria-hidden="true">
+                <div class="modal-dialog model-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="label">Forgotten Password</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-left">
+                            Please enter your email address to reset your password <br>
+                            <label for="inputUser" class="sr-only">Username</label> <br>
+                            <input type="text" id="email" class="form-control" placeholder="Email Address"> <br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+     <a class="btn btn-lg btn-primary btn-block btn-info" href="{% url 'index' %}" type="submit">Sign in</a>
+
+</form>
+
+{% include "footer.html" %}
+</body>
+</html>

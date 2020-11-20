@@ -1,24 +1,21 @@
 {% include "header.html" %}
 
-<html>
+<body class="bg-secondary">
+{% load static %}
+{% include "navbar.html" %}
+<main class="container-fluid">
+    <div class="row grid shadow text-secondary bg-dark">
+        <div class="col-4 border border-secondary top">Device List</div>
+        <div class="col-8 border border-secondary top">Topology Display</div>
+    </div>
 
-    <body class="bg-secondary">
+    <div class="row grid shadow text-secondary bg-dark">
+        <div class="col border border-secondary bottom">col</div>
+        <div class="col border border-secondary bottom">col</div>
+        <div class="col border border-secondary bottom">col</div>
+    </div>
+</main>
 
-    {% include "navbar.html" %}
-
-        <main>
-            <div class="row main shadow text-secondary bg-dark">
-              <div class="col-4 border border-secondary top">col</div>
-              <div class="col-8 border border-secondary top">Topology Display</div>
-            </div>
-
-            <div class="row main shadow text-secondary bg-dark">
-              <div class="col border border-secondary bottom">col</div>
-              <div class="col border border-secondary bottom">col</div>
-              <div class="col border border-secondary bottom">col</div>
-            </div>
-        </main>
-
-        {% include "footer.html" %}
-    </body>
+{% include "footer.html" %}
+</body>
 </html>

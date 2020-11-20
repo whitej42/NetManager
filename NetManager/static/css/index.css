@@ -1,0 +1,54 @@
+.html {
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+/* navbar */
+.nav-padding {
+    margin: 10px;
+}
+
+.icon-nav {
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-bottom: 2px;
+}
+
+.icon-btn {
+    margin-left: 2px;
+    margin-bottom: 2px;
+}
+
+/* dashboard */
+.grid {
+    margin: 10px;
+}
+
+.top {
+    height: 750px;
+}
+
+.bottom {
+    height: 500px;
+}
+
+/* login */
+.form-login {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: 100px auto 0;
+}
+
+.login-user {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.login-content {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
