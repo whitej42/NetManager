@@ -1,37 +1,36 @@
 .html {
-  position: relative;
-  min-height: 100%;
-  width: 100%;
-  margin: 0;
+    position: relative;
+    min-height: 100%;
+    width: 100%;
+    margin: 0;
 }
 
 /* navbar */
-.nav-padding {
-    margin: 10px;
+.nav-info {
+    padding: 6px;
+    cursor: pointer;
 }
 
-.icon-nav {
+.info {
+    padding: 6px 10px;
+}
+
+.nav-btn {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.nav-icon {
     margin-left: 8px;
     margin-right: 8px;
     margin-bottom: 2px;
 }
 
-.icon-btn {
+/* buttons */
+.btn-icon {
     margin-left: 2px;
-    margin-bottom: 2px;
-}
-
-/* dashboard */
-.grid {
-    margin: 10px;
-}
-
-.top {
-    height: 750px;
-}
-
-.bottom {
-    height: 500px;
+    margin-right: 2px;
+    margin-bottom: 3px;
 }
 
 /* login */
@@ -42,13 +41,94 @@
     margin: 100px auto 0;
 }
 
-.login-user {
+.form-login .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-login .form-control:focus {
+    z-index: 2;
+}
+
+.form-login input[type="text"] {
     margin-bottom: -1px;
+    padding: 10px;
+    width: 100%;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
 
-.login-content {
+.form-login input[type="password"] {
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-content {
     padding-top: 20px;
     padding-bottom: 20px;
+    cursor: pointer;
 }
+
+/* dashboard */
+.dashboard-top {
+    padding: 10px;
+}
+
+.dashboard-bottom {
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+.no-gutter {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.no-gutter > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.top {
+    height: 650px;
+    border-style: hidden;
+    border-width: 5px;
+}
+
+.bottom {
+    height: 400px;
+    border-style: hidden;
+    border-width: 5px;
+}
+
+.grid-border {
+    border-right-style: solid;
+    border-width: 10px;
+}
+
+.title {
+    font-size: 20px;
+}
+
+.device-list {
+    padding: 10px;
+    font-size: 14px;
+    cursor: default;
+}
+
+/* information panel */
+.info-panel {
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: white;
+    color: black;
+}
+
