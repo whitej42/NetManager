@@ -1,8 +1,10 @@
-from django.template import loader
-from django.http import HttpResponse
+from django.shortcuts import render
+from .models import *
 
 
 # Create your views here.
 def index(request):
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render({}, request))
+    devices = Device.objects.all()
+    interfaces = Interface.objects.all()
+    args = {'devices': devices, 'interfaces': interfaces}
+    return render(request, 'index.html', args)

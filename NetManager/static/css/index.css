@@ -86,11 +86,12 @@
     padding-bottom: 10px;
 }
 
+/* removes padding from grids - remove if not used */
 .no-gutter {
     margin-right: 0;
     margin-left: 0;
 }
-
+/* removes padding from grids - remove if not used */
 .no-gutter > [class*="col-"] {
     padding-right: 0;
     padding-left: 0;
