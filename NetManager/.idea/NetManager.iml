@@ -25,6 +25,7 @@
     <orderEntry type="library" name="popper.js" level="application" />
     <orderEntry type="module" module-name="Betting Bot" />
     <orderEntry type="module" module-name="Betting Bot" />
+    <orderEntry type="module" module-name="RotaApplication" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

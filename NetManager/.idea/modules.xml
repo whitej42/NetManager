@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../../../../Discord-Bots/Battle Bets/.idea/Betting Bot.iml" filepath="$PROJECT_DIR$/../../../../Discord-Bots/Battle Bets/.idea/Betting Bot.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/NetManager.iml" filepath="$PROJECT_DIR$/.idea/NetManager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../jwhite96/RotaApplication/.idea/RotaApplication.iml" filepath="$PROJECT_DIR$/../../../jwhite96/RotaApplication/.idea/RotaApplication.iml" />
     </modules>
   </component>
 </project>

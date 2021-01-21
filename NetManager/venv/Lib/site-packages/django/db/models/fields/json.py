@@ -75,6 +75,10 @@ class JSONField(CheckFieldDefaultMixin, Field):
     def from_db_value(self, value, expression, connection):
         if value is None:
             return value
+        # Some backends (SQLite at least) extract non-string values in their
+        # SQL datatypes.
+        if isinstance(expression, KeyTransform) and not isinstance(value, str):
+            return value
         try:
             return json.loads(value, cls=self.decoder)
         except json.JSONDecodeError:
@@ -302,7 +306,8 @@ class KeyTransform(Transform):
     def as_postgresql(self, compiler, connection):
         lhs, params, key_transforms = self.preprocess_lhs(compiler, connection)
         if len(key_transforms) > 1:
-            return '(%s %s %%s)' % (lhs, self.postgres_nested_operator), params + [key_transforms]
+            sql = '(%s %s %%s)' % (lhs, self.postgres_nested_operator)
+            return sql, tuple(params) + (key_transforms,)
         try:
             lookup = int(self.key_name)
         except ValueError:
@@ -363,14 +368,25 @@ class CaseInsensitiveMixin:
 class KeyTransformIsNull(lookups.IsNull):
     # key__isnull=False is the same as has_key='key'
     def as_oracle(self, compiler, connection):
+        sql, params = HasKey(
+            self.lhs.lhs,
+            self.lhs.key_name,
+        ).as_oracle(compiler, connection)
         if not self.rhs:
-            return HasKey(self.lhs.lhs, self.lhs.key_name).as_oracle(compiler, connection)
-        return super().as_sql(compiler, connection)
+            return sql, params
+        # Column doesn't have a key or IS NULL.
+        lhs, lhs_params, _ = self.lhs.preprocess_lhs(compiler, connection)
+        return '(NOT %s OR %s IS NULL)' % (sql, lhs), tuple(params) + tuple(lhs_params)
 
     def as_sqlite(self, compiler, connection):
+        template = 'JSON_TYPE(%s, %%s) IS NULL'
         if not self.rhs:
-            return HasKey(self.lhs.lhs, self.lhs.key_name).as_sqlite(compiler, connection)
-        return super().as_sql(compiler, connection)
+            template = 'JSON_TYPE(%s, %%s) IS NOT NULL'
+        return HasKey(self.lhs.lhs, self.lhs.key_name).as_sql(
+            compiler,
+            connection,
+            template=template,
+        )
 
 
 class KeyTransformIn(lookups.In):

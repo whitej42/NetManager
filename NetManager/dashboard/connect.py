@@ -1,3 +1,5 @@
+# DELETE LATER - ONLY FOR REF ATM
+
 import sys
 from netmiko import ConnectHandler
 from datetime import datetime
