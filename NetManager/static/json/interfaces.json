@@ -1,7 +1,7 @@
 [
   {
     "intf": "FastEthernet0/0",
-    "ipaddr": "192.168.68.10",
+    "ipaddr": "192.168.68.20",
     "status": "up",
     "proto": "up"
   },

@@ -14,7 +14,7 @@ secret = os.environ.get('secret')
 # network device
 router = {
     'device_type': 'cisco_ios',
-    'ip': '192.168.68.10',
+    'ip': '192.168.68.20',
     'username': 'admin',
     'password': password,
     'secret': secret,
