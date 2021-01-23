@@ -26,6 +26,8 @@
     <orderEntry type="module" module-name="Betting Bot" />
     <orderEntry type="module" module-name="Betting Bot" />
     <orderEntry type="module" module-name="RotaApplication" />
+    <orderEntry type="library" name="bootstrap-table" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

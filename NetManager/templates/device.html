@@ -43,8 +43,18 @@
             </div>
 
             <!-- Interface Brief -->
-            <div class="col-7 top border-secondary">
-                <span class="title">Device Interfaces</span>
+            <div class="col-7 top border-secondary text-light">
+                <span class="title text-secondary">Device Interfaces</span>
+                <table id="table" class="table table-dark">
+                    <thead>
+                    <tr class="text-center">
+                        <th data-field="intf">Interface</th>
+                        <th data-field="ipaddr">IP Address</th>
+                        <th data-field="status">Status</th>
+                        <th data-field="proto">Protocol</th>
+                    </tr>
+                    </thead>
+                </table>
                 <p>{{ interfaces }}</p>
             </div>
         </div>
