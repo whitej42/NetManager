@@ -27,7 +27,7 @@ try:
     c.enable()
     # store output in python dictionary using TextFSM
     interfaces = c.send_command('show ip int brief', use_textfsm=True)
-    with open('interfaces.json', 'w') as f:
+    with open('../static/json/interfaces.json', 'w') as f:
         json.dump(interfaces, f, indent=2)
     '''
     # extract set information from command - KEEP FOR REF

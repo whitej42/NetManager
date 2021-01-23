@@ -2,6 +2,8 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
+    # /dashboard/
     path('', views.index, name='index'),
-    path('', views.connect, name='script'),
+    # /dashboard/deviceID/
+    path('<str:device_ID>/', views.device, name='device')
 ]

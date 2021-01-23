@@ -75,7 +75,7 @@
     cursor: pointer;
 }
 
-/* dashboard */
+/* dashboard page */
 .dashboard-top {
     padding: 10px;
 }
@@ -127,9 +127,11 @@
 /* information panel */
 .info-panel {
     padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    background-color: white;
-    color: black;
+    width: 100%;
+    margin-top: 10px;
 }
 
+/* device page */
+.ip-brief {
+
+}

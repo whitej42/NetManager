@@ -1,0 +1,65 @@
+{% include "header.html" %}
+
+<body class="bg-secondary">
+{% load static %}
+{% include "navbar.html" %}
+
+<div class="info-panel bg-dark text-light shadow-lg d-flex justify-content-center">
+    <div class="row">
+        <div class="form-inline col-md-auto">
+            <div class="info bg-light text-secondary border border-secondary border-right-0 rounded-left"><b>Device
+                Name</b></div>
+            <div class="info text-light border border-secondary rounded-right">{{ device.device }}</div>
+        </div>
+        <div class="form-inline col-md-auto">
+            <div class="info bg-light text-secondary border border-secondary border-right-0 rounded-left"><b>Device
+                Type</b></div>
+            <div class="info text-light border border-secondary rounded-right">{{ device.deviceType }}</div>
+        </div>
+        <div class="form-inline col-md-auto">
+            <div class="info bg-light text-secondary border border-secondary border-right-0 rounded-left"><b>Device
+                Vendor</b></div>
+            <div class="info text-light border border-secondary rounded-right">{{ device.vendor }}</div>
+        </div>
+        <div class="form-inline col-md-auto">
+            <div class="info bg-light text-secondary border border-secondary border-right-0 rounded-left"><b>Management
+                IP
+                Address</b>
+            </div>
+            <div class="info text-light border border-secondary rounded-right">{{ device.host }}</div>
+        </div>
+    </div>
+</div>
+
+<main class="main container-fluid">
+
+    <!-- Main -->
+    <div class="dashboard-top">
+        <div class="row text-secondary bg-dark">
+
+            <!-- Device Statistics -->
+            <div class="col-4 top border-secondary grid-border">
+                <span class="title">Device Statistics</span>
+            </div>
+
+            <!-- Interface Brief -->
+            <div class="col-7 top border-secondary">
+                <span class="title">Device Interfaces</span>
+                <p>{{ interfaces }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- no idea what these are yet -->
+    <div class="dashboard-bottom">
+        <div class="row text-secondary bg-dark">
+            <div class="col-4 bottom border-secondary grid-border"><span class="title">col</span></div>
+            <div class="col-4 bottom border-secondary grid-border"><span class="title">col</span></div>
+            <div class="col-4 bottom border-secondary"><span class="title">col</span></div>
+        </div>
+    </div>
+</main>
+
+{% include "footer.html" %}
+</body>
+</html>
