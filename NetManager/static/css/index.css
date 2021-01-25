@@ -124,6 +124,7 @@
     cursor: default;
 }
 
+/* device page */
 /* information panel */
 .info-panel {
     padding: 10px;
@@ -131,7 +132,7 @@
     margin-top: 10px;
 }
 
-/* device page */
-.ip-brief {
-
+/* error page */
+.error-msg {
+    padding: 500px;
 }

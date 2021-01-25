@@ -4,7 +4,7 @@ import sys
 from netmiko import ConnectHandler
 from datetime import datetime
 
-# pass in device details
+# pass in device-manager-manager details
 host = sys.argv[1]
 username = sys.argv[2]
 password = sys.argv[3]
