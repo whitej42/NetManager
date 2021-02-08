@@ -104,7 +104,7 @@
 }
 
 .bottom {
-    height: 400px;
+    height: 500px;
     border-style: hidden;
     border-width: 5px;
 }
@@ -116,6 +116,8 @@
 
 .title {
     font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .device-list {
@@ -124,7 +126,6 @@
     cursor: default;
 }
 
-/* device page */
 /* information panel */
 .info-panel {
     padding: 10px;
@@ -132,7 +133,12 @@
     margin-top: 10px;
 }
 
-/* error page */
-.error-msg {
-    padding: 500px;
+/* help page */
+.help {
+    padding: 25px;
+    min-width: 100%;
+}
+
+.help-title {
+    padding: 50px;
 }

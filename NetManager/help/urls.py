@@ -2,6 +2,6 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    # /login/
-    path('', views.login, name='login'),
+    # /help/
+    path('', views.help_page, name='help'),
 ]
