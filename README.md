@@ -10,7 +10,6 @@ Network Configuration & Management Application for automated configuration, mana
 
 ### System Functionality
 * Display current network topology to the user
-* Automatically configure IP addressing on the network
 * Automatically configure basic network hardware settings
 * Actively monitor network performance and security
 * Allow for individual device management without requiring direct access to the hardware
