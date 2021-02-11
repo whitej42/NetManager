@@ -2,7 +2,7 @@ from django.shortcuts import render
 from device.models import Device
 
 
-def index(request):
+def index(PageRequest):
     all_devices = Device.objects.all()
     args = {'devices': all_devices}
-    return render(request, 'index.html', args)
+    return render(PageRequest, 'index.html', args)
