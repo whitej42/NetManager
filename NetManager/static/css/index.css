@@ -140,5 +140,12 @@
 }
 
 .help-title {
-    padding: 50px;
+    padding: 10px;
+}
+
+.accordion {
+    align-content: center;
+    padding-left: 250px;
+    padding-right: 250px;
+    padding-bottom: 25px;
 }

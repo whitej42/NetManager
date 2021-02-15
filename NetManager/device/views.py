@@ -1,7 +1,4 @@
-import json
-
 from django.contrib import messages
-from dotenv import load_dotenv
 from .models import Device
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
