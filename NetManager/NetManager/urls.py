@@ -8,5 +8,5 @@ urlpatterns = [
     path('login/', include('accounts.urls')),
     path('device/', include('device.urls')),
     path('help/', include('help.urls')),
-    path('device_manager/', include('devicemanager.urls')),
+    path('device-manager/', include('devicemanager.urls')),
 ]

@@ -13,35 +13,26 @@ def get_device(PageRequest, device_ID):
         # get devices IP address
         host = selected_device.host
         # pass device information to html
-        args = {'device': selected_device, 'interfaces': get_interfaces(host), 'version': get_version(host)}
+        args = {'device': selected_device, 'interfaces': get_interfaces(host), 'version': get_version(host), 'acl': get_acl(host)}
     except Device.DoesNotExist:
         raise Http404()
     return render(PageRequest, 'device.html', args)
 
 
-# function to connect to host device
+# connect to host device
 def connect(host):
-    import os
-    from dotenv import load_dotenv
-
-    load_dotenv()
-
-    # user = os.environ.get('username')
-    password = os.environ.get('password')
-    secret = os.environ.get('secret')
-
     device = {
         'device_type': 'cisco_ios',
         'ip': host,
         'username': 'admin',
-        'password': password,
-        'secret': secret,
+        'password': 'cisco',
+        'secret': 'cisco',
         'port': 22
     }
     return device
 
 
-# function to get device interfaces
+# get device interfaces
 def get_interfaces(host):
     # establish connection to device
     device = connect(host)
@@ -58,7 +49,7 @@ def get_interfaces(host):
     return output
 
 
-# function to get device version
+# get device version
 def get_version(host):
     # establish connection to device
     device = connect(host)
@@ -67,8 +58,23 @@ def get_version(host):
     try:
         c = ConnectHandler(**device)
         # store output in python dictionary using TextFSM
-        version = c.send_command('show version', use_textfsm=True)
-        output = version
+        output = c.send_command('show version', use_textfsm=True)
+        c.disconnect()
+    except Exception as e:
+        output = e
+    return output
+
+
+# get devices access-lists
+def get_acl(host):
+    # establish connection to device
+    device = connect(host)
+
+    # open connection & run command
+    try:
+        c = ConnectHandler(**device)
+        # store output in python dictionary using TextFSM
+        output = c.send_command('show ip access-lists', use_textfsm=True)
         c.disconnect()
     except Exception as e:
         output = e
@@ -92,16 +98,16 @@ def save_config(PageRequest, device_ID):
         return e
 
 
-# function to configure an interfaces IP Address
-def config_interface(request, device_ID):
+# configure an interfaces IP Address
+def config_interface(PageRequest, device_ID):
     # get device from db
     host = Device.objects.get(pk=device_ID).host
 
     # get form data from POST request
-    interface = request.POST.get('configInterface')
-    address = request.POST.get('ip')
-    mask = request.POST.get('mask')
-    enable = request.POST.get('enable')
+    interface = PageRequest.POST.get('configInterface')
+    address = PageRequest.POST.get('ip')
+    mask = PageRequest.POST.get('mask')
+    enable = PageRequest.POST.get('enable')
 
     # establish connection to device
     device = connect(host)
@@ -115,18 +121,18 @@ def config_interface(request, device_ID):
             commands = ['interface ' + interface, 'ip address ' + address + ' ' + mask, 'shutdown']
         c.send_config_set(commands)
         c.disconnect()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
         return e
 
 
-# function to reset an interface
-def reset_interface(request, device_ID):
+# reset an interface
+def reset_interface(PageRequest, device_ID):
     # get devices IP address
     host = Device.objects.get(pk=device_ID).host
 
     # get form data from POST request
-    interface = request.POST.get('resetInterface')
+    interface = PageRequest.POST.get('resetInterface')
 
     device = connect(host)
 
@@ -136,6 +142,6 @@ def reset_interface(request, device_ID):
         commands = ['interface ' + interface, 'no ip address', 'shutdown']
         c.send_config_set(commands)
         c.disconnect()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
         return e

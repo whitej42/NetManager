@@ -4,14 +4,15 @@
 {% load static %}
 {% include "navbar.html" %}
 
+<!-- Main -->
 <main class="main container-fluid">
 
-    <!-- Main -->
+    <!-- Top Widgets -->
     <div class="dashboard-top">
-        <div class="row text-secondary bg-dark">
+        <div class="row top text-secondary bg-dark">
 
             <!-- Device Details -->
-            <div class="col-3 top border-secondary grid-border table-responsive">
+            <div class="col-3 border-secondary grid-border table-responsive">
                 <h3 class="title text-center text-secondary">Device Details</h3>
                 <table id="table" class="table table-striped table-dark">
                     <tbody>
@@ -56,14 +57,22 @@
                     </tbody>
                 </table>
                 <div class="text-center">
-                    <a href="{% url 'save_config' device_ID=device.pk %}" type="button" class="btn btn-warning"
+                    <a href="{% url 'save_config' device_ID=device.pk %}" type="button" class="btn btn-warning pad-btn"
                        title="Save Configuration">Save Device
                         Configuration
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-save btn-icon" viewBox="0 0 16 16">
                             <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"></path>
                         </svg>
-                    </a>
+                    </a><br>
+                    <button type="submit" class="btn btn-info pad-btn"
+                            title="Send Command">Send Manual Command
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-terminal btn-icon" viewBox="0 0 16 16">
+                            <path d="M6 9a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3A.5.5 0 0 1 6 9zM3.854 4.146a.5.5 0 1 0-.708.708L4.793 6.5 3.146 8.146a.5.5 0 1 0 .708.708l2-2a.5.5 0 0 0 0-.708l-2-2z"></path>
+                            <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h12z"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
 
@@ -73,12 +82,12 @@
                 <table id="table" class="table table-striped table-dark">
                     <thead>
                     <tr class="text-center">
-                        <th data-field="intf">Interface</th>
-                        <th data-field="ipaddr">IP Address</th>
-                        <th data-field="status">Status</th>
-                        <th data-field="proto">Protocol</th>
-                        <th data-field="proto">Configure</th>
-                        <th data-field="proto">Reset</th>
+                        <th>Interface</th>
+                        <th>IP Address</th>
+                        <th>Status</th>
+                        <th>Protocol</th>
+                        <th>Configure</th>
+                        <th>Reset</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -128,7 +137,7 @@
             </div>
 
             <!-- Active Interfaces -->
-            <div class="col-3 top border-secondary table-responsive">
+            <div class="col-3 border-secondary table-responsive">
                 <h3 class="title text-center text-secondary">Active IP Addresses</h3>
                 <table id="table" class="table table-striped table-dark">
                     <thead>
@@ -156,17 +165,155 @@
         </div>
     </div>
 
-    <!-- no idea what these are yet -->
+    <!-- Bottom Widgets -->
     <div class="dashboard-bottom">
-        <div class="row text-secondary bg-dark">
-            <!-- Security Policies -->
-            <div class="col-4 bottom border-secondary grid-border"><h3 class="title text-center"></h3></div>
-            <div class="col-4 bottom border-secondary grid-border"><h3 class="title text-center">Device Alerts</h3>
+        <div class="row text-secondary bg-dark d-flex">
+            <!-- Device Security -->
+            <div class="col border-secondary grid-border">
+                <h3 class="title">Device Security Features</h3>
+                <div id="accordion" class="accordion accordion-device">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                        data-target="#collapseOne"
+                                        aria-expanded="false" aria-controls="collapseOne">
+                                    Active Access Lists
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="card-body">
+                                <label class="font-weight-bold">Manage and Configure Device Access Lists</label><br>
+                                {% for list in acl %}
+                                    <label>{{ list.acl_type }} {{ list.acl_name }}</label>
+                                    <p>{{ list.line_num }} {{ list.action }} {{ list.protocol }}
+                                        {% if list.src_any == 'any' %}
+                                            {{ list.src_any }}
+                                        {% else %}
+                                            {{ list.src_network }}
+                                        {% endif %}
+                                        {% if list.dst_any == 'any' %}
+                                            {{ list.dst_any }}
+                                        {% else %}
+                                            {{ list.dst_network }}
+                                        {% endif %}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h5 class="mb-0">
+                                <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                        data-target="#collapseTwo"
+                                        aria-expanded="false" aria-controls="collapseTwo">
+                                    Create New Access List
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body">
+                                <form class="text-left">
+                                    <div class="form-group row">
+                                        <div class="form-group col">
+                                            <label>Access List Type</label>
+                                            <select class="form-control">
+                                                <option selected>---Select ACL Type---</option>
+                                                <option value="standard">Standard</option>
+                                                <option value="extended">Extended</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col">
+                                            <label>Access List Name</label>
+                                            <input type="text" class="form-control"
+                                                   placeholder="Access List Name"
+                                                   name="acl_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="form-group col">
+                                            <label>Access List Command</label>
+                                            <input type="text" class="form-control"
+                                                   placeholder="e.g. permit tcp any any" name="acl">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success" id="button">Create Access List
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor"
+                                             class="bi bi-arrow-right-square btn-icon" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                  d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingThree">
+                            <h5 class="mb-0">
+                                <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                        data-target="#collapseThree"
+                                        aria-expanded="false" aria-controls="collapseThree">
+                                    Configure Banners
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                             data-parent="#accordion">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Banner Type</label>
+                                    <select class="form-control">
+                                        <option selected>---Select Banner Type---</option>
+                                        <option value="login">Login</option>
+                                        <option value="motd">MOTD</option>
+                                        <option value="exec">EXEC</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Enter Banner</label>
+                                    <input type="text" class="form-control"
+                                           placeholder="Enter Banner Text" name="acl">
+                                </div>
+                                <button type="submit" class="btn btn-success" id="button">Configure Banner
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="currentColor"
+                                         class="bi bi-arrow-right-square btn-icon" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                              d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingFour">
+                                <h5 class="mb-0">
+                                    <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                            data-target="#collapseFour"
+                                            aria-expanded="false" aria-controls="collapseFour">
+                                        User Accounts
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
+                                 data-parent="#accordion">
+                                <div class="card-body">
+                                    <label>Select Allowed Users</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-4 bottom border-secondary"><h3 class="title text-center">CPU/Power Statistics</h3></div>
+
+            <div class="col border-secondary"><h3 class="title text-center">CPU/Power Statistics</h3></div>
         </div>
     </div>
 
+    <!-- MODALS -->
     <!-- Interface Model -->
     <div class="modal fade" id="interfaceModal" tabindex="-1" role="dialog" aria-labelledby="label"
          aria-hidden="true">
@@ -198,7 +345,6 @@
                             <label class="form-check-label text-danger font-weight-bold" for="flexCheckChecked">Warning!
                                 Interface will be enabled by default</label>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success" id="button">Confirm Changes
@@ -223,7 +369,7 @@
                 {% csrf_token %}
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="title">Warning!</h5>
+                        <h5 class="modal-title">Warning!</h5>
                         <input type="hidden" id="reset" name="resetInterface">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -263,7 +409,7 @@
     function getID(id) {
         document.getElementById("title").innerText = id;
         document.getElementById('config').value = id;
-        document.getElementById('reset').value = id
+        document.getElementById('reset').value = id;
     }
 </script>
 

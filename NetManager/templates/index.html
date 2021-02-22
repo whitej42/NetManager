@@ -26,7 +26,7 @@
                     </thead>
                     <tbody>
                     <!-- Device -->
-                    {% for device in devices %}
+                    {% for device in all_devices %}
                         <tr class="device-list text-center">
 
                             <td id="name">{{ device.device }}</td>
@@ -74,7 +74,7 @@
             </div>
 
             <!-- Topology Diagram -->
-            <div class="col-7 top border-secondary grid-border">
+            <div class="col-7 top">
                 <h3 class="title text-center">Topology Display</h3>
             </div>
         </div>

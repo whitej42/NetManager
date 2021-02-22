@@ -1,14 +1,170 @@
 {% include "header.html" %}
 
 <body class="bg-dark text-center">
+{% load static %}
 {% include "navbar.html" %}
 
-{% load static %}
+<div class="info-bar bg-secondary">
+    <h6 class="text-warning">The device manager will only make changes to devices on the database. Any changes made will
+        <u>NOT</u> affect the configuration on the physical device</h6>
+</div>
 
-<main class="main container-fluid">
+<main class="main container-fluid bg-dark">
 
+    <div class="container-fluid main-div">
+        <button type="button" class="btn btn-success btn-add"
+                title="Add Device" data-toggle="modal"
+                data-target="#AddModal">Add New Device
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 class="bi bi-plus-circle-fill btn-icon" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
+            </svg>
+        </button>
 
+        <div class="row bg-dark device-row text-center col-sm-12 justify-content-center">
+            {% for device in all_devices %}
+                <div class="bg-light border border-light rounded device col-sm-3">
+                    <h3 class="title text-center">{{ device.device }}</h3>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><b>Device Type</b></td>
+                            <td>{{ device.deviceType }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Device Vendor</b></td>
+                            <td>{{ device.vendor }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>SSH IP Address</b></td>
+                            <td>{{ device.host }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Location</b></td>
+                            <td>{{ device.location }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Contact</b></td>
+                            <td>{{ device.contact }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-danger btn-delete"
+                            title="Delete Device" data-toggle="modal"
+                            data-target="#DeleteModal" id={{ device.device }} onclick="getID(this.id)">Delete Device
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                             fill="currentColor"
+                             class="bi bi-x-circle btn-icon" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                        </svg>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Add Device Model -->
+        <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="label"
+             aria-hidden="true">
+            <div class="modal-dialog model-sm" role="document">
+                <form action="{% url 'add_device' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-content text-left">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add New Device</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Device Name</label>
+                                <input type="text" class="form-control" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label>Device Type</label>
+                                <input type="text" class="form-control" name="type">
+                            </div>
+                            <div class="form-group">
+                                <label>Management IP Address</label>
+                                <input type="text" class="form-control" name="ssh">
+                                <label class="text-danger">This is the IP address used to establish SSH connections to
+                                    the device. Ensure this is correct before proceeding</label>
+                            </div>
+                            <div class="form-group">
+                                <label>Vendor</label>
+                                <input type="text" class="form-control" name="vendor">
+                            </div>
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" class="form-control" name="location">
+                            </div>
+                            <div class="form-group">
+                                <label>Contact</label>
+                                <input type="text" class="form-control" name="contact">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success" id="button">Add Device
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-plus-circle-fill btn-icon" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Delete Device Model -->
+        <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="label"
+             aria-hidden="true">
+            <div class="modal-dialog model-sm" role="document">
+                <form action="{% url 'delete_device' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"></h5>
+                            <input type="hidden" id="delete" name="deleteDevice">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-left">
+                            <h6 class="text-danger">Deleting this device will remove it from the devices database. This
+                                will not affect the network but will prevent connections to and from this device.</h6>
+                            <h6>Are you sure you wish to proceed?</h6>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">No
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle-fill btn-icon"
+                                     fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                                </svg>
+                            </button>
+                            <button type="submit" class="btn btn-success">Yes
+                                <svg width="1em" height="1em" viewBox="0 0 16 16"
+                                     class="bi bi-check-circle-fill btn-icon"
+                                     fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </main>
+
+<script>
+    function getID(id) {
+        document.getElementById("delete").value = id;
+    }
+</script>
 
 {% include "footer.html" %}
 </body>
