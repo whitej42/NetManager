@@ -6,4 +6,7 @@ urlpatterns = [
     path('<str:device_ID>/config-interface', views.config_interface, name='config_interface'),
     path('<str:device_ID>/reset-interface', views.reset_interface, name='reset_interface'),
     path('<str:device_ID>/save-config', views.save_config, name='save_config'),
+    path('<str:device_ID>/create-acl', views.create_acl, name='create_acl'),
+    path('<str:device_ID>/delete-acl', views.delete_acl, name='delete_acl'),
+    path('<str:device_ID>/apply-acl', views.apply_acl, name='apply_acl')
 ]

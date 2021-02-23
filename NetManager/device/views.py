@@ -13,7 +13,8 @@ def get_device(PageRequest, device_ID):
         # get devices IP address
         host = selected_device.host
         # pass device information to html
-        args = {'device': selected_device, 'interfaces': get_interfaces(host), 'version': get_version(host), 'acl': get_acl(host)}
+        args = {'device': selected_device, 'interfaces': get_interfaces(host), 'version': get_version(host),
+                'acl': get_acl(host)}
     except Device.DoesNotExist:
         raise Http404()
     return render(PageRequest, 'device.html', args)
@@ -140,6 +141,68 @@ def reset_interface(PageRequest, device_ID):
         c = ConnectHandler(**device)
         c.enable()
         commands = ['interface ' + interface, 'no ip address', 'shutdown']
+        c.send_config_set(commands)
+        c.disconnect()
+        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
+    except Exception as e:
+        return e
+
+
+# create access list
+def create_acl(PageRequest, device_ID):
+    # get devices IP address
+    host = Device.objects.get(pk=device_ID).host
+
+    acl_type = PageRequest.POST.get('acl_type')
+    acl_name = PageRequest.POST.get('acl_name')
+    acl = PageRequest.POST.get('acl')
+
+    device = connect(host)
+
+    try:
+        c = ConnectHandler(**device)
+        c.enable()
+        commands = ['ip access-list ' + acl_type + " " + acl_name, acl]
+        c.send_config_set(commands)
+        c.disconnect()
+        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
+    except Exception as e:
+        return e
+
+
+# delete access list
+def delete_acl(PageRequest, device_ID):
+    host = Device.objects.get(pk=device_ID).host
+
+    acl = PageRequest.POST.get('del_acl')
+
+    device = connect(host)
+
+    try:
+        c = ConnectHandler(**device)
+        c.enable()
+        commands = ['no ip access-list ' + acl]
+        c.send_config_set(commands)
+        c.disconnect()
+        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
+    except Exception as e:
+        return e
+
+
+# apply access list
+def apply_acl(PageRequest, device_ID):
+    host = Device.objects.get(pk=device_ID).host
+
+    interface = PageRequest.POST.get('ACLInterface')
+    acl = PageRequest.POST.get('app_acl')
+    direction = PageRequest.POST.get('dir_acl')
+
+    device = connect(host)
+
+    try:
+        c = ConnectHandler(**device)
+        c.enable()
+        commands = ['interface ' + interface, 'ip access-group ' + acl + ' ' + direction]
         c.send_config_set(commands)
         c.disconnect()
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
