@@ -1,11 +1,13 @@
-from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .models import Device
+from .models import Log
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from netmiko import ConnectHandler
 
 
 # device HTML view
+@login_required
 def get_device(PageRequest, device_ID):
     try:
         # get selected device from db
@@ -94,6 +96,9 @@ def save_config(PageRequest, device_ID):
         c = ConnectHandler(**device)
         c.save_config()
         c.disconnect()
+        log = Log(device=device_ID, user='jwhite', type='Configuration',
+                  description='Device configuration saved')
+        log.save()
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
         return e
@@ -122,6 +127,9 @@ def config_interface(PageRequest, device_ID):
             commands = ['interface ' + interface, 'ip address ' + address + ' ' + mask, 'shutdown']
         c.send_config_set(commands)
         c.disconnect()
+        log = Log(device=device_ID, user='jwhite', type='Configuration',
+                  description='IP Address ' + address + ' configured on interface ' + interface)
+        log.save()
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
         return e
@@ -143,6 +151,9 @@ def reset_interface(PageRequest, device_ID):
         commands = ['interface ' + interface, 'no ip address', 'shutdown']
         c.send_config_set(commands)
         c.disconnect()
+        log = Log(device=device_ID, user='jwhite', type='Configuration',
+                  description='Interface ' + interface + ' reset')
+        log.save()
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
         return e
@@ -165,6 +176,9 @@ def create_acl(PageRequest, device_ID):
         commands = ['ip access-list ' + acl_type + " " + acl_name, acl]
         c.send_config_set(commands)
         c.disconnect()
+        log = Log(device=device_ID, user='jwhite', type='Security',
+                  description='Access List ' + acl_name + ' configured')
+        log.save()
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
         return e
@@ -184,6 +198,9 @@ def delete_acl(PageRequest, device_ID):
         commands = ['no ip access-list ' + acl]
         c.send_config_set(commands)
         c.disconnect()
+        log = Log(device=device_ID, user='jwhite', type='Security',
+                  description='Access List ' + acl + ' removed')
+        log.save()
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
         return e
@@ -205,6 +222,56 @@ def apply_acl(PageRequest, device_ID):
         commands = ['interface ' + interface, 'ip access-group ' + acl + ' ' + direction]
         c.send_config_set(commands)
         c.disconnect()
+        log = Log(device=device_ID, user='jwhite', type='Security',
+                  description='Access List ' + acl + ' applied to ' + interface)
+        log.save()
+        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
+    except Exception as e:
+        return e
+
+
+# configure banners - NOT WORKING!
+def config_banner(PageRequest, device_ID):
+    host = Device.objects.get(pk=device_ID).host
+
+    banner_type = PageRequest.POST.get('banner_type')
+    banner_txt = PageRequest.POST.get('banner_txt')
+    n = len(banner_txt) + 2
+    border = '*' * n
+
+    device = connect(host)
+
+    try:
+        c = ConnectHandler(**device)
+        c.enable()
+        c.send_command('banner ' + banner_type + ' ^')
+        c.send_command(border)
+        c.send_command(' ' + banner_txt)
+        c.send_command(border + '^')
+        c.disconnect()
+        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
+    except Exception as e:
+        return e
+
+
+# disable unused interfaces
+def disable_interfaces(PageRequest, device_ID):
+    host = Device.objects.get(pk=device_ID).host
+
+    device = connect(host)
+
+    try:
+        c = ConnectHandler(**device)
+        c.enable()
+        interfaces = c.send_command('show ip int brief', use_textfsm=True)
+        for interface in interfaces:
+            if interface['ipaddr'] == 'unassigned' and interface['status'] != 'administratively down':
+                commands = ['interface ' + interface['intf'], 'shutdown']
+                c.send_config_set(commands)
+        c.disconnect()
+        log = Log(device=device_ID, user='jwhite', type='Security',
+                  description='All unused interfaces shutdown')
+        log.save()
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
         return e

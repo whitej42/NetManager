@@ -86,6 +86,11 @@
     cursor: pointer;
 }
 
+/* logout page */
+.logout {
+    padding: 100px;
+}
+
 /* dashboard page */
 .dashboard-top {
     padding: 10px;
