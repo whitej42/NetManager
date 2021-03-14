@@ -21,16 +21,12 @@ def add_device(PageRequest):
     location = PageRequest.POST.get('location')
     contact = PageRequest.POST.get('contact')
 
-    # TEMP FIX - CHANGE THIS!!!
-    if device == "":
-        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
-    else:
-        d = Device(device=device, deviceType=deviceType, host=ssh, vendor=vendor, location=location, contact=contact)
-        d.save()
-        log = Log(device=device, user='jwhite', type='Device',
-                  description='Device ' + device + ' added to database')
-        log.save()
-        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
+    d = Device(device=device, deviceType=deviceType, host=ssh, vendor=vendor, location=location, contact=contact)
+    d.save()
+    log = Log(device=device, user='jwhite', type='Device',
+              description='Device ' + device + ' added to database')
+    log.save()
+    return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
 
 
 def delete_device(PageRequest):

@@ -1,3 +1,5 @@
+/* Custom CSS Stylesheet */
+
 .html {
     position: relative;
     min-height: 100%;
@@ -10,6 +12,9 @@
     border-style: hidden;
     border-width: 5px;
 }
+
+/* Loading Spinner */
+
 
 /* navbar */
 .nav-info {
@@ -97,9 +102,7 @@
 }
 
 .dashboard-bottom {
-    padding-right: 10px;
-    padding-left: 10px;
-    padding-bottom: 10px;
+    padding: 0 10px 10px;
 }
 
 .top {
@@ -169,6 +172,11 @@
     padding-bottom: 25px;
 }
 
+.question {
+    width: 650px;
+    margin: auto;
+}
+
 /* Device Manager */
 .device-row {
     min-width: 250px;
@@ -193,4 +201,13 @@
     height: 25px;
     width: 100%;
     padding: 2px;
+}
+
+.status {
+    margin-left: 5px;
+    padding-top: 10px;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: inline-block;
 }

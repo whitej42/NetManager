@@ -6,6 +6,10 @@
 
 <main class="main container-fluid dashboard">
 
+    <div class="text-center mt-3">
+        <div id="spinner" class="spinner-border text-info loading" role="status"></div>
+    </div>
+
     <!-- Main Dashboard -->
     <div class="dashboard-top">
         <div class="row text-secondary bg-dark">
@@ -29,10 +33,10 @@
                     {% for device in all_devices %}
                         <tr class="device-list text-center">
 
-                            <td id="name">{{ device.device }}</td>
-                            <td id="type">{{ device.deviceType }}</td>
-                            <td id="vendor">{{ device.vendor }}</td>
-                            <td id="ip-address">{{ device.host }}</td>
+                            <td>{{ device.device }}</td>
+                            <td>{{ device.deviceType }}</td>
+                            <td>{{ device.vendor }}</td>
+                            <td>{{ device.host }}</td>
 
                             <!-- Connection Status-->
                             <td id="status">
@@ -47,7 +51,7 @@
                             <td id="details">
                                 {% if device.status %}
                                     <a href="{% url 'device' device_ID=device.pk %}" type="button"
-                                       class="btn btn-info btn-sm btn-icon"
+                                       class="btn btn-info btn-sm"
                                        title="Device Details">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                              fill="currentColor" class="bi bi-list btn-icon" viewBox="0 0 16 16">
@@ -57,7 +61,7 @@
                                     </a>
                                 {% else %}
                                     <button type="button" disabled
-                                            class="btn btn-info btn-sm btn-icon"
+                                            class="btn btn-info btn-sm"
                                             title="Device Details">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                              fill="currentColor" class="bi bi-list btn-icon" viewBox="0 0 16 16">
@@ -85,7 +89,7 @@
         <div class="row text-secondary bg-dark d-flex">
             <div class="col border-secondary grid-border table-responsive">
                 <h3 class="title text-center">Recent Configuration Changes</h3>
-                 <table class="table table-striped table-dark">
+                <table class="table table-striped table-dark">
                     <thead>
                     <tr class="text-center">
                         <th>ID</th>
@@ -97,19 +101,22 @@
                     </tr>
                     </thead>
                     <tbody>
-                        {% for log in all_logs %}
+                    {% for log in all_logs %}
                         <tr class="device-list text-center">
-                            <td id="id">{{ log.id }}</td>
-                            <td id="device">{{ log.device }}</td>
-                            <td id="user">{{ log.user }}</td>
-                            <td id="type">{{ log.type }}</td>
-                            <td id="description">{{ log.description }}</td>
-                            <td id="dateTime">{{ log.dateTime }}</td>
+                        <td id="id">{{ log.id }}</td>
+                        <td id="device">{{ log.device }}</td>
+                        <td id="user">{{ log.user }}</td>
+                        <td id="type">{{ log.type }}</td>
+                        <td id="description">{{ log.description }}</td>
+                        <td id="dateTime">{{ log.dateTime }}</td>
                     {% endfor %}
                     </tbody>
-                 </table>
+                </table>
             </div>
-            <div class="col border-secondary"><h3 class="title text-center">Security Policies</h3>
+            <div class="col border-secondary">
+                <h3 class="title text-center">Security Policies</h3>
+            </div>
+        </div>
     </div>
 </main>
 

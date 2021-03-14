@@ -7,7 +7,7 @@
 <main class="main container-fluid bg-dark">
 
     <div class="container-fluid main-div">
-        <div class="row text-center align-content-center help">
+        <div class="row text-center help">
             <div class="col">
                 <h2 class="text-light help-title">Hello, How can we help you?</h2>
                 <h5 class="text-light">Select from an option below</h5>
@@ -177,15 +177,23 @@
                 </div>
             </div>
 
-
             <!-- NEW HELP TABS HERE!-->
 
         </div>
 
-        <div class="row text-center align-content-center help">
-            <div class="col">
+        <div class="row text-center">
+            <div class="col text-light">
                 <h2 class="text-light help-title">Can't Find What You're Looking For?</h2>
                 <h5 class="text-light">Send Us a Question</h5>
+                <div class="question">
+                    <form>
+                        <label>Email Address</label>
+                        <input type="email" class="form-control text-left" required>
+                        <label>Question</label>
+                        <textarea type="text" class="form-control text-left" required></textarea>
+                        <button class="btn btn-success pad-btn btn-block">Submit Question</button>
+                    </form>
+                </div>
             </div>
         </div>
 

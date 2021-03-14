@@ -22,6 +22,24 @@ def get_device(PageRequest, device_ID):
     return render(PageRequest, 'device.html', args)
 
 
+# interface details HTML view
+@login_required
+def get_interface(PageRequest, device_ID):
+    try:
+        # get selected device from db
+        selected_device = Device.objects.get(pk=device_ID)
+        # get devices IP address
+        host = selected_device.host
+        # get selected interface
+        selected_interface = PageRequest.POST.get('interface')
+        # pass interface information to html
+        args = {'device': selected_device, 'interface': interface_details(host, selected_interface),
+                'acl': get_acl(host), 'int_acl': interface_acl(host, selected_interface)}
+    except Device.DoesNotExist:
+        raise Http404()
+    return render(PageRequest, 'interface.html', args)
+
+
 # connect to host device
 def connect(host):
     device = {
@@ -33,6 +51,9 @@ def connect(host):
         'port': 22
     }
     return device
+
+
+'''*** Functions for the device management page ***'''
 
 
 # get device interfaces
@@ -94,6 +115,7 @@ def save_config(PageRequest, device_ID):
 
     try:
         c = ConnectHandler(**device)
+        # save config using NetMiko save_config() function
         c.save_config()
         c.disconnect()
         log = Log(device=device_ID, user='jwhite', type='Configuration',
@@ -206,30 +228,6 @@ def delete_acl(PageRequest, device_ID):
         return e
 
 
-# apply access list
-def apply_acl(PageRequest, device_ID):
-    host = Device.objects.get(pk=device_ID).host
-
-    interface = PageRequest.POST.get('ACLInterface')
-    acl = PageRequest.POST.get('app_acl')
-    direction = PageRequest.POST.get('dir_acl')
-
-    device = connect(host)
-
-    try:
-        c = ConnectHandler(**device)
-        c.enable()
-        commands = ['interface ' + interface, 'ip access-group ' + acl + ' ' + direction]
-        c.send_config_set(commands)
-        c.disconnect()
-        log = Log(device=device_ID, user='jwhite', type='Security',
-                  description='Access List ' + acl + ' applied to ' + interface)
-        log.save()
-        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
-    except Exception as e:
-        return e
-
-
 # configure banners - NOT WORKING!
 def config_banner(PageRequest, device_ID):
     host = Device.objects.get(pk=device_ID).host
@@ -271,6 +269,65 @@ def disable_interfaces(PageRequest, device_ID):
         c.disconnect()
         log = Log(device=device_ID, user='jwhite', type='Security',
                   description='All unused interfaces shutdown')
+        log.save()
+        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
+    except Exception as e:
+        return e
+
+
+'''*** Functions for the interface details page ***'''
+
+
+# get interface details
+def interface_details(host, interface):
+    # establish connection to device
+    device = connect(host)
+
+    # open connection & run command
+    try:
+        c = ConnectHandler(**device)
+        # store output in python dictionary using TextFSM
+        output = c.send_command('show interface ' + interface, use_textfsm=True)
+        c.disconnect()
+    except Exception as e:
+        output = e
+    return output
+
+
+# get acls applied to interface
+def interface_acl(host, interface):
+    # establish connection to device
+    device = connect(host)
+
+    # open connection & run command
+    try:
+        c = ConnectHandler(**device)
+        # store output in python dictionary using TextFSM
+        output = c.send_command('show ip interface ' + interface, use_textfsm=True)
+        c.disconnect()
+    except Exception as e:
+        output = e
+    return output
+
+
+# apply access list
+def apply_acl(PageRequest, device_ID):
+    host = Device.objects.get(pk=device_ID).host
+
+    interface = PageRequest.POST.get('int_acl')
+    acl = PageRequest.POST.get('app_acl')
+    direction = PageRequest.POST.get('dir_acl')
+
+    device = connect(host)
+
+    try:
+        c = ConnectHandler(**device)
+        c.enable()
+        commands = ['interface ' + interface, 'ip access-group ' + acl + ' ' + direction]
+        c.send_config_set(commands)
+        c.disconnect()
+        log = Log(device=device_ID, user='jwhite', type='Security',
+                  description='Access List ' + acl + ' applied to ' + interface)
         log.save()
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
