@@ -14,7 +14,7 @@ def index(PageRequest):
     return render(PageRequest, 'index.html', args)
 
 
-# check connection to all devices
+# test connection to all devices
 def check_devices():
     all_devices = Device.objects.all()
     for i in all_devices:

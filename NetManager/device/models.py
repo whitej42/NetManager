@@ -21,7 +21,7 @@ class Device(models.Model):
 
 # config log object
 class Log(models.Model):
-    id = models.AutoField(primary_key=True, max_length=6, null=False)
+    id = models.AutoField(primary_key=True, null=False)
     device = models.CharField(max_length=250, null=False)
     user = models.CharField(max_length=250, null=False)
     type = models.CharField(max_length=250, null=False)

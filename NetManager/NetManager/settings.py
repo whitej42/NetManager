@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'dashboard.apps.DashboardConfig',
     'device.apps.DeviceConfig',
     'accounts.apps.AccountsConfig',
-    'devicemanager.apps.DevicemanagerConfig',
+    'manager.apps.DevicemanagerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

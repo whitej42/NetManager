@@ -14,7 +14,7 @@ def get_device(PageRequest, device_ID):
         selected_device = Device.objects.get(pk=device_ID)
         # get devices IP address
         host = selected_device.host
-        # pass device information to html
+        # pass device information to template
         args = {'device': selected_device, 'interfaces': get_interfaces(host), 'version': get_version(host),
                 'acl': get_acl(host)}
     except Device.DoesNotExist:
@@ -24,7 +24,8 @@ def get_device(PageRequest, device_ID):
 
 # interface details HTML view
 @login_required
-def get_interface(PageRequest, device_ID):
+def get_interface_details(PageRequest, device_ID):
+    # check item exists in db
     try:
         # get selected device from db
         selected_device = Device.objects.get(pk=device_ID)
@@ -32,10 +33,11 @@ def get_interface(PageRequest, device_ID):
         host = selected_device.host
         # get selected interface
         selected_interface = PageRequest.POST.get('interface')
-        # pass interface information to html
+        # pass interface information to template
         args = {'device': selected_device, 'interface': interface_details(host, selected_interface),
                 'acl': get_acl(host), 'int_acl': interface_acl(host, selected_interface)}
     except Device.DoesNotExist:
+        # if not - raise http404
         raise Http404()
     return render(PageRequest, 'interface.html', args)
 
@@ -105,7 +107,7 @@ def get_acl(host):
     return output
 
 
-# function to save current configuration
+# save current configuration
 def save_config(PageRequest, device_ID):
     # get devices IP address
     host = Device.objects.get(pk=device_ID).host
@@ -136,6 +138,8 @@ def config_interface(PageRequest, device_ID):
     address = PageRequest.POST.get('ip')
     mask = PageRequest.POST.get('mask')
     enable = PageRequest.POST.get('enable')
+
+    print(interface + address + mask + enable)
 
     # establish connection to device
     device = connect(host)
@@ -228,7 +232,7 @@ def delete_acl(PageRequest, device_ID):
         return e
 
 
-# configure banners - NOT WORKING!
+# configure banners - NOT WORKING!!!
 def config_banner(PageRequest, device_ID):
     host = Device.objects.get(pk=device_ID).host
 
@@ -314,9 +318,9 @@ def interface_acl(host, interface):
 def apply_acl(PageRequest, device_ID):
     host = Device.objects.get(pk=device_ID).host
 
-    interface = PageRequest.POST.get('int_acl')
-    acl = PageRequest.POST.get('app_acl')
-    direction = PageRequest.POST.get('dir_acl')
+    interface = PageRequest.POST.get('int')
+    acl = PageRequest.POST.get('acl')
+    direction = PageRequest.POST.get('dir')
 
     device = connect(host)
 
@@ -326,9 +330,30 @@ def apply_acl(PageRequest, device_ID):
         commands = ['interface ' + interface, 'ip access-group ' + acl + ' ' + direction]
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(device=device_ID, user='jwhite', type='Security',
-                  description='Access List ' + acl + ' applied to ' + interface)
-        log.save()
-        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
+        # log = Log(device=device_ID, user='jwhite', type='Security', description='Access List ' + acl + ' applied to ' + interface)
+        # log.save()
+        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))  # crashes on reload - no form submission!!
+    except Exception as e:
+        return e
+
+
+def remove_acl(PageRequest, device_ID):
+    host = Device.objects.get(pk=device_ID).host
+
+    interface = PageRequest.POST.get('int')
+    acl = PageRequest.POST.get('acl')
+    direction = PageRequest.POST.get('dir')
+
+    device = connect(host)
+
+    try:
+        c = ConnectHandler(**device)
+        c.enable()
+        commands = ['interface ' + interface, 'no ip access-group ' + acl + ' ' + direction]
+        c.send_config_set(commands)
+        c.disconnect()
+        # log = Log(device=device_ID, user='jwhite', type='Security', description='Access List ' + acl + ' removed from ' + interface)
+        # log.save()
+        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))  # crashes on reload - no form submission!!
     except Exception as e:
         return e

@@ -8,7 +8,7 @@
     <div class="dashboard-top">
         <div class="row text-secondary bg-dark">
             <!-- Interface Details -->
-            <div class="col-4 border-secondary grid-border table-responsive">
+            <div class="col-4 grid-border table-responsive">
                 <h3 class="title text-center text-secondary">Interface Details</h3>
                 <table id="table" class="table table-striped table-dark">
                     <tbody>
@@ -49,7 +49,7 @@
                         <tr>
                             <td><b>IP Address</b></td>
                             <td>{% if i.ip_address == '' %}
-                                No IP Address Assigned
+                                No IP Address Configured
                             {% else %}
                                 {{ i.ip_address }}
                             {% endif %}</td>
@@ -67,12 +67,8 @@
                             <td>{{ i.bandwidth }}</td>
                         </tr>
                         <tr>
-                            <td><b>Current Traffic In</b></td>
-                            <td>{{ i.input_rate }} bps</td>
-                        </tr>
-                        <tr>
-                            <td><b>Current Traffic Out</b></td>
-                            <td>{{ i.output_rate }} bps</td>
+                            <td><b>Current Traffic In/Out</b></td>
+                            <td>{{ i.input_rate }} bps/{{ i.output_rate }} bps</td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -80,13 +76,14 @@
             </div>
 
             <!-- Unknown -->
-            <div class="col-5 border-secondary grid-border">
+            <div class="col-5 grid-border">
                 <h3 class="title text-center text-secondary">WORKING ON IT</h3>
             </div>
 
             <!-- Access Lists -->
-            <div class="col border-secondary text-left">
+            <div class="col text-left">
                 <h3 class="title text-center text-secondary">Access Lists</h3>
+                <!-- Display Active ACLs -->
                 <table id="table" class="table table-striped table-dark text-center">
                     <thead>
                     <tr class="text-center">
@@ -100,43 +97,83 @@
                             {% if j.inbound_acl == '' %}
                                 <td>No Inbound ACL Applied</td>
                             {% else %}
-                                <td>{{ j.inbound_acl }}</td>
+                                <td>
+                                    <form action="{% url 'remove_acl' device_ID=device.pk %}" method="post">
+                                        {% csrf_token %}
+                                        {{ j.inbound_acl }}
+                                        <button type="submit" class="btn btn-danger btn-sm btn-acl"
+                                                title="Remove from Interface" style="margin-left: 10px">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 fill="currentColor"
+                                                 class="bi bi-x-circle btn-icon" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                                            </svg>
+                                        </button>
+                                        <input type="hidden" name="int" value="{{ j.intf }}">
+                                        <input type="hidden" name="acl" value="{{ j.inbound_acl }}">
+                                        <input type="hidden" name="dir" value="in">
+                                    </form>
+                                </td>
                             {% endif %}
                             {% if j.outgoing_acl == '' %}
                                 <td>No Outgoing ACL Applied</td>
                             {% else %}
-                                <td>{{ j.outgoing_acl }}</td>
+                                <td>
+                                    <form action="{% url 'remove_acl' device_ID=device.pk %}" method="post">
+                                        {% csrf_token %}
+                                        {{ j.outgoing_acl }}
+                                        <button type="submit" class="btn btn-danger btn-circle btn-sm btn-acl"
+                                                title="Remove from Interface" style="margin-left: 10px">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 fill="currentColor"
+                                                 class="bi bi-x-circle btn-icon" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                                            </svg>
+                                        </button>
+                                        <input type="hidden" name="int" value="{{ j.intf }}">
+                                        <input type="hidden" name="acl" value="{{ j.outgoing_acl }}">
+                                        <input type="hidden" name="dir" value="out">
+                                    </form>
+                                </td>
                             {% endif %}
                         {% endfor %}
                     </tr>
                     </tbody>
                 </table>
-                <form action="{% url 'apply_acl' device_ID=device.pk %}" method="post">
-                    {% csrf_token %}
-                    {% for i in interface %}
-                        <input type="hidden" id="Apply" name="int_acl" value="{{ i.interface }}">
-                    {% endfor %}
-                    <label class="text-light">Select Access List</label><br>
-                    <select class="form-control" name="app_acl">
-                        <option selected>---Select ACL---</option>
-                        {% for list in acl %}
-                            <option>{{ list.acl_name }}</option>
-                        {% endfor %}
-                    </select><br>
-                    <label class="text-left text-light">Select Direction</label>
-                    <select class="form-control" name="dir_acl">
-                        <option selected>---Select In/Out---</option>
-                        <option>In</option>
-                        <option>Out</option>
-                    </select><br>
-                    <button type="submit" class="btn btn-warning btn-block">Apply Access List
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-shield-lock btn-icon" viewBox="0 0 16 16">
-                            <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"></path>
-                            <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415z"></path>
-                        </svg>
-                    </button>
-                </form>
+                <!-- Apply ACL to Interface -->
+                <div class="border border-secondary rounded">
+                <h5 class="title text-center text-secondary">Apply Access List</h5>
+                    <div class="acl_div" style="padding: 10px">
+                        <form action="{% url 'apply_acl' device_ID=device.pk %}" method="post">
+                            {% csrf_token %}
+                            {% for i in interface %}
+                                <input type="hidden" id="Apply" name="int" value="{{ i.interface }}">
+                            {% endfor %}
+                            <label class="text-light">Select Access List</label><br>
+                            <select class="form-control" name="acl">
+                                <option selected>--- Select ACL ---</option>
+                                {% for list in acl %}
+                                    <option>{{ list.acl_name }}</option>
+                                {% endfor %}
+                            </select><br>
+                            <label class="text-left text-light">Select Direction</label>
+                            <select class="form-control" name="dir">
+                                <option selected>--- Select In/Out ---</option>
+                                <option>In</option>
+                                <option>Out</option>
+                            </select><br>
+                            <button type="submit" class="btn btn-warning btn-block">Apply Access List
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-shield-lock btn-icon" viewBox="0 0 16 16">
+                                    <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"></path>
+                                    <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

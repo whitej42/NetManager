@@ -6,16 +6,12 @@
 
 <main class="main container-fluid dashboard">
 
-    <div class="text-center mt-3">
-        <div id="spinner" class="spinner-border text-info loading" role="status"></div>
-    </div>
-
     <!-- Main Dashboard -->
     <div class="dashboard-top">
         <div class="row text-secondary bg-dark">
 
             <!-- Device List -->
-            <div class="col-5 top border-secondary grid-border device-list table-responsive">
+            <div class="col-5 top grid-border device-list table-responsive">
                 <h3 class="title text-center">Device List</h3>
                 <table class="table table-striped table-dark">
                     <thead>
@@ -52,7 +48,7 @@
                                 {% if device.status %}
                                     <a href="{% url 'device' device_ID=device.pk %}" type="button"
                                        class="btn btn-info btn-sm"
-                                       title="Device Details">
+                                       title="Device Details" onclick="show_loader()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                              fill="currentColor" class="bi bi-list btn-icon" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
@@ -87,7 +83,7 @@
     <!-- Bottom Widgets -->
     <div class="dashboard-bottom">
         <div class="row text-secondary bg-dark d-flex">
-            <div class="col border-secondary grid-border table-responsive">
+            <div class="col grid-border table-responsive">
                 <h3 class="title text-center">Recent Configuration Changes</h3>
                 <table class="table table-striped table-dark">
                     <thead>
@@ -113,12 +109,18 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col border-secondary">
+            <div class="col">
                 <h3 class="title text-center">Security Policies</h3>
             </div>
         </div>
     </div>
 </main>
+
+<script>
+    function show_loader() {
+
+    }
+</script>
 
 {% include "footer.html" %}
 </body>
