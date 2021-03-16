@@ -1,18 +1,5 @@
 /* Custom CSS Stylesheet */
 
-.html {
-    position: relative;
-    min-height: 100%;
-    width: 100%;
-    margin: 0;
-}
-
-.main-div {
-    min-height: 800px;
-    border-style: hidden;
-    border-width: 5px;
-}
-
 /* navbar */
 .nav-info {
     padding: 6px;
@@ -183,8 +170,7 @@
 
 
 .btn-add {
-    margin-top: 20px;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
 }
 
 .info-bar {

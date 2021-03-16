@@ -12,6 +12,7 @@ def device_manager(PageRequest):
     args = {'all_devices': all_devices, 'range': range(5)}
     return render(PageRequest, 'manager.html', args)
 
+
 # add device to db
 def add_device(PageRequest):
     device = PageRequest.POST.get('name')
@@ -30,7 +31,16 @@ def add_device(PageRequest):
 
 
 # edit existing device in db
+def edit_device(PageRequest):
+    deviceType = PageRequest.POST.get('type')
+    ssh = PageRequest.POST.get('ssh')
+    vendor = PageRequest.POST.get('vendor')
+    location = PageRequest.POST.get('location')
+    contact = PageRequest.POST.get('contact')
 
+    # log = Log(device=device, user='jwhite', type='Device', description='Device ' + device + ' added to database')
+    # log.save()
+    return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
 
 
 # delete device from db

@@ -1,16 +1,19 @@
 {% include "header.html" %}
 
-<body class="bg-dark text-center" xmlns="http://www.w3.org/1999/html">
+<body class="bg-secondary">
 {% load static %}
 {% include "navbar.html" %}
 
-<main class="main container-fluid bg-secondary">
+<!-- Main -->
+<main class="main container-fluid">
+
+    <!-- Top Widgets -->
     <div class="dashboard-top">
         <div class="row text-secondary bg-dark">
             <!-- Interface Details -->
             <div class="col-4 grid-border table-responsive">
                 <h3 class="title text-center text-secondary">Interface Details</h3>
-                <table id="table" class="table table-striped table-dark">
+                <table id="table" class="table table-striped table-dark text-center">
                     <tbody>
                     {% for i in interface %}
                         <tr>
@@ -81,7 +84,7 @@
             </div>
 
             <!-- Access Lists -->
-            <div class="col text-left">
+            <div class="col text-left" style="padding: 10px">
                 <h3 class="title text-center text-secondary">Access Lists</h3>
                 <!-- Display Active ACLs -->
                 <table id="table" class="table table-striped table-dark text-center">
