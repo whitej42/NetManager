@@ -50,8 +50,8 @@ def edit_device(PageRequest):
     except Device.DoesNotExist:
         raise Http404('Device Does Not Exist')
 
-    # log = Log(device=device, user='jwhite', type='Device', description='Device ' + device + ' added to database')
-    # log.save()
+    log = Log(device=device, user='jwhite', type='Device', description='Device ' + device + ' databases changes made')
+    log.save()
     return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
 
 

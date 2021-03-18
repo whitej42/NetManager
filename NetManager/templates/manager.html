@@ -1,6 +1,6 @@
 {% include "header.html" %}
 
-<body class="bg-secondary text-center">
+<body>
 {% load static %}
 {% include "navbar.html" %}
 
@@ -204,16 +204,15 @@
 </main>
 
 <script>
-
     function getID(id) {
         document.getElementById('delete').value = id;
         document.getElementById('title').innerText = 'Delete Device: ' + id;
     }
 
     function edit(id) {
-        // id = clicked button i
+        // id = clicked button id
 
-        // enable textboxes
+        // enable text boxes - not optimized
         document.getElementById('row' + id).classList.add('bg-secondary');
         document.getElementById('type' + id).disabled = false;
         document.getElementById('vendor' + id).disabled = false;

@@ -1,5 +1,71 @@
 /* Custom CSS Stylesheet */
 
+body {
+    background-color: #6c757d !important;
+    text-align: center !important;
+    color: #f8f9fa !important;
+}
+
+/* light mode */
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+.nav-light {
+    background-color: white !important;
+    color: black !important;
+    box-shadow: 0 0 5px 5px lightgrey !important;
+}
+
+.link-light {
+    color: #6c757d !important;
+}
+
+.link-light:hover {
+    color: #17a2b8 !important;
+}
+
+.widget-light {
+    background-color: #f8f9fa !important;
+    color: #6c757d !important;
+    box-shadow: 0 0 5px 5px lightgrey !important;
+}
+
+.table-light {
+    background-color: #f8f9fa !important;
+    color: #6c757d !important;
+}
+
+.footer-light {
+    background-color: white !important;
+    color: #6c757d !important;
+    box-shadow: 0 0 5px 5px lightgrey !important;
+}
+
+/* dark Mode */
+.nav-dark {
+    background-color: #343a40;
+    color: black;
+}
+
+.link-dark {
+    color: white;
+}
+
+.link-dark:hover {
+    color: #17a2b8;
+}
+
+.widget {
+    background-color: #343a40;
+    border-radius: 5px;
+}
+
+.footer-dark {
+    background-color: #343a40;
+    color: white;
+}
+
 /* navbar */
 .nav-info {
     padding: 6px;
@@ -8,6 +74,7 @@
 
 .info {
     padding: 6px 10px;
+    color: #6c757d;
 }
 
 .nav-btn {
@@ -21,13 +88,14 @@
     margin-bottom: 2px;
 }
 
-/* buttons */
+/* button icons */
 .btn-icon {
     margin-left: 2px;
     margin-right: 2px;
     margin-bottom: 3px;
 }
 
+/* button padding */
 .pad-btn {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -80,54 +148,17 @@
     padding: 100px;
 }
 
-/* dashboard page */
-.dashboard-top {
+/* widgets */
+.widgets-grid {
     padding: 10px;
-}
-
-.dashboard-bottom {
-    padding: 0 10px 10px;
-}
-
-.top {
-    height: 600px;
-    border-style: hidden;
-    border-width: 5px;
-}
-
-.bottom {
-    height: 600px;
-    border-style: hidden;
-    border-width: 5px;
-}
-
-.grid-border {
-    border-right-style: solid;
-    border-width: 10px;
 }
 
 .title {
     font-size: 20px;
     margin-top: 10px;
     margin-bottom: 10px;
-}
-
-.device-list {
-    padding: 10px;
-    font-size: 14px;
-    cursor: default;
-}
-
-/* removes padding from grids */
-.no-gutter {
-    margin-right: 0;
-    margin-left: 0;
-}
-
-/* removes padding from grids */
-.no-gutter > [class*="col-"] {
-    padding-right: 0;
-    padding-left: 0;
+    text-align: center;
+    color: #6c757d;
 }
 
 /* device page */
@@ -158,21 +189,6 @@
 }
 
 /* Device Manager */
-.device-row {
-    min-width: 250px;
-    padding-top: 10px;
-}
-
-.device {
-    margin: 10px;
-    width: 425px;
-}
-
-
-.btn-add {
-    margin-bottom: 20px;
-}
-
 .info-bar {
     height: 25px;
     width: 100%;

@@ -8,10 +8,10 @@
 <main class="main container-fluid">
 
     <!-- Top Widgets -->
-    <div class="dashboard-top">
-        <div class="row text-secondary bg-dark">
+    <div class="widgets-grid">
+        <div class="row"> <!-- NO MARGIN BOTTOM!!! -->
             <!-- Interface Details -->
-            <div class="col-4 grid-border table-responsive">
+            <div class="col-4 widget table-responsive">
                 <h3 class="title text-center text-secondary">Interface Details</h3>
                 <table id="table" class="table table-striped table-dark text-center">
                     <tbody>
@@ -79,15 +79,14 @@
             </div>
 
             <!-- Unknown -->
-            <div class="col-5 grid-border">
-                <h3 class="title text-center text-secondary">WORKING ON IT</h3>
+            <div class="col-5 ml-2 widget">
+                <h3 class="title">WORKING ON IT</h3>
             </div>
 
-            <!-- Access Lists -->
-            <div class="col text-left" style="padding: 10px">
-                <h3 class="title text-center text-secondary">Access Lists</h3>
+            <div class="col text-left ml-2 widget" style="padding-bottom: 10px">
+                <h3 class="title">Access Lists</h3>
                 <!-- Display Active ACLs -->
-                <table id="table" class="table table-striped table-dark text-center">
+                <table class="table table-striped table-dark text-center">
                     <thead>
                     <tr class="text-center">
                         <th>Inbound ACL</th>
@@ -148,7 +147,7 @@
                 <!-- Apply ACL to Interface -->
                 <div class="border border-secondary rounded">
                 <h5 class="title text-center text-secondary">Apply Access List</h5>
-                    <div class="acl_div" style="padding: 10px">
+                    <div style="padding: 10px">
                         <form action="{% url 'apply_acl' device_ID=device.pk %}" method="post">
                             {% csrf_token %}
                             {% for i in interface %}
