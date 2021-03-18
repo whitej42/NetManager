@@ -18,7 +18,7 @@ def get_device(PageRequest, device_ID):
         args = {'device': selected_device, 'interfaces': get_interfaces(host), 'version': get_version(host),
                 'acl': get_acl(host)}
     except Device.DoesNotExist:
-        raise Http404()
+        raise Http404('Device Does Not Exist')
     return render(PageRequest, 'device.html', args)
 
 

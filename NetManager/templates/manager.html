@@ -15,133 +15,80 @@
 
     <!-- Device Table -->
     <div class="row bg-dark">
-        <div class="col table-responsive">
-            <table class="table table-dark">
-                <thead>
-                <tr class="text-center">
-                    <th>Device Name</th>
-                    <th>Device Type</th>
-                    <th>Vendor</th>
-                    <th>Management Address</th>
-                    <th>Location</th>
-                    <th>Contact
-                    <th>Delete</th>
+        <table class="table table-dark">
+            <thead>
+            <tr class="text-center">
+                <th>Device Name</th>
+                <th>Device Type</th>
+                <th>Vendor</th>
+                <th>Management Address</th>
+                <th>Location</th>
+                <th>Contact</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in all_devices %}
+                <tr id="row{{ forloop.counter }}">
+                    <td>
+                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                               value="{{ i.device }}" form="form{{ forloop.counter }}" name="device" readonly>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                               value="{{ i.deviceType }}" form="form{{ forloop.counter }}"
+                               id="type{{ forloop.counter }}" name="type" disabled>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                               value="{{ i.vendor }}" form="form{{ forloop.counter }}" id="vendor{{ forloop.counter }}"
+                               name="vendor" disabled>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                               value="{{ i.host }}" form="form{{ forloop.counter }}" id="host{{ forloop.counter }}"
+                               name="host" disabled>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                               value="{{ i.location }}" form="form{{ forloop.counter }}" id="loc{{ forloop.counter }}"
+                               name="loc" disabled>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                               value="{{ i.contact }}" form="form{{ forloop.counter }}" id="cont{{ forloop.counter }}"
+                               name="cont" disabled>
+                    </td>
+                    <td>
+                        <form id="form{{ forloop.counter }}" action="{% url 'edit_device' %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-warning" type="button" title="Edit Device" id="{{ forloop.counter }}"
+                                    onclick="edit(this.id)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-pencil btn-icon" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" type="button" title="Delete Device" data-toggle="modal"
+                                data-target="#DeleteModal" id="{{ i.device }}" onclick="getID(this.id)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-trash btn-icon" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                <path fill-rule="evenodd"
+                                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                            </svg>
+                        </button>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                {% for i in all_devices %}
-                    <tr>
-                        <td>
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-dark text-light border-secondary"
-                                       value="{{ i.device }}" disabled>
-                            </div>
-                        </td>
-                        <td>
-                            <form action="" method="post">
-                                {% csrf_token %}
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-dark text-light border-secondary"
-                                           value="{{ i.deviceType }}" name="type">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary text-light" type="button" title="Edit">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                 fill="currentColor" class="bi bi-pencil btn-icon" viewBox="0 0 16 16">
-                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="" method="post">
-                                {% csrf_token %}
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-dark text-light border-secondary"
-                                           value="{{ i.vendor }}" name="vendor">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary text-light" type="button" title="Edit">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                 fill="currentColor" class="bi bi-pencil btn-icon" viewBox="0 0 16 16">
-                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="" method="post">
-                                {% csrf_token %}
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-dark text-light border-secondary"
-                                           value="{{ i.host }}" name="host">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary text-light" type="button" title="Edit">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                 fill="currentColor" class="bi bi-pencil btn-icon" viewBox="0 0 16 16">
-                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="" method="post">
-                                {% csrf_token %}
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-dark text-light border-secondary"
-                                           value="{{ i.location }}" name="loc">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary text-light" type="button" title="Edit">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                 fill="currentColor" class="bi bi-pencil btn-icon" viewBox="0 0 16 16">
-                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="" method="post">
-                                {% csrf_token %}
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-dark text-light border-secondary"
-                                           value="{{ i.contact }}" name="cont">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary text-light" type="button">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                 fill="currentColor" class="bi bi-pencil btn-icon" viewBox="0 0 16 16">
-                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="" method="post">
-                                {% csrf_token %}
-                                <button class="btn btn-danger" type="button" title="Delete Device" data-toggle="modal"
-                                        data-target="#DeleteModal" id="{{ i.device }}" onclick="getID(this.id)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         class="bi bi-trash btn-icon" viewBox="0 0 16 16">
-                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
-                                        <path fill-rule="evenodd"
-                                              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
-                                    </svg>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
+
     <!-- Add Button -->
     <div class="row bg-dark justify-content-center">
         <div class="col-4">
@@ -200,7 +147,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success" id="button">Add Device
+                        <button type="submit" class="btn btn-success">Add Device
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                  fill="currentColor"
                                  class="bi bi-arrow-right-square btn-icon" viewBox="0 0 16 16">
@@ -223,7 +170,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="title"></h5>
-                        <input type="hidden" id="delete" name="deleteDevice">
+                        <input type="hidden" id="delete" name="device">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -254,7 +201,6 @@
             </form>
         </div>
     </div>
-    </div>
 </main>
 
 <script>
@@ -265,48 +211,26 @@
     }
 
     function edit(id) {
-        const label = document.querySelectorAll('#label' + id);
-        const form = ['type', 'vendor', 'ssh', 'loc', 'cont'];
+        // id = clicked button i
 
-        for (let i = 0; i < label.length && form.length; i++) {
-            const txtbox = document.createElement('input');
-            txtbox.name = form[i];
-            txtbox.id = 'input' + id;
-            txtbox.required = true;
-            txtbox.classList.add('form-control');
-            txtbox.classList.add('text-center');
-            txtbox.value = label[i].innerHTML;
-            label[i].parentNode.replaceChild(txtbox, label[i]);
-        }
-        const edit_grp = document.createElement('div');
-        var btn = document.getElementById('btn-grp' + id);
-        edit_grp.id = 'edit-grp' + id;
-        edit_grp.innerHTML = '<button type="button" class="btn btn-danger" id="' + id + '" style="margin-bottom: 10px" onclick="cancel(this.id)">Cancel  ' +
-            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill btn-icon" viewBox="0 0 16 16">\n' +
-            '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>\n' +
-            '</svg></button><button type="submit" class="btn btn-success" style="margin-bottom: 10px; margin-left: 5px">Push Changes  ' +
-            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square btn-icon" viewBox="0 0 16 16">\n' +
-            '<path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>\n' +
-            '</svg></button>';
-        btn.parentNode.replaceChild(edit_grp, btn);
+        // enable textboxes
+        document.getElementById('row' + id).classList.add('bg-secondary');
+        document.getElementById('type' + id).disabled = false;
+        document.getElementById('vendor' + id).disabled = false;
+        document.getElementById('host' + id).disabled = false;
+        document.getElementById('loc' + id).disabled = false;
+        document.getElementById('cont' + id).disabled = false;
+
+        // change button to submit
+        const btn = document.getElementById(id)
+        const submit = document.createElement('button');
+        submit.classList.add('btn', 'btn-success');
+        submit.setAttribute('type', 'submit');
+        submit.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square btn-icon" viewBox="0 0 16 16">\n' +
+            '  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>\n' +
+            '</svg>';
+        btn.parentNode.replaceChild(submit, btn);
     }
-
-    function cancel(id) {
-        const txt = document.querySelectorAll('#input' + id);
-
-        for (let i = 0; i < txt.length; i++) {
-            const label = document.createElement('label');
-            label.innerText = txt[i].value;
-            label.id = 'label' + id
-            txt[i].parentNode.replaceChild(label, txt[i]);
-        }
-        const btn_grp = document.createElement('div');
-        var btn = document.getElementById('edit-grp' + id);
-        btn_grp.id = 'btn-grp' + id;
-        btn_grp.innerHTML = '';
-        btn.parentNode.replaceChild(btn_grp, btn);
-    }
-
 </script>
 
 {% include "footer.html" %}
