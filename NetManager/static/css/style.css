@@ -36,6 +36,11 @@ body {
     color: #6c757d !important;
 }
 
+.textbox-light {
+    background-color: #f8f9fa !important;
+    color: #6c757d !important;
+}
+
 .footer-light {
     background-color: white !important;
     color: #6c757d !important;
@@ -59,6 +64,11 @@ body {
 .widget {
     background-color: #343a40;
     border-radius: 5px;
+}
+
+.textbox-dark {
+    background-color: #343a40;
+    color: white;
 }
 
 .footer-dark {

@@ -1,6 +1,6 @@
 {% include "header.html" %}
 
-<body>
+<body class="bg-dark" onload="onLoad()">
 {% load static %}
 {% include "navbar.html" %}
 
@@ -14,7 +14,7 @@
 <main class="main container-fluid">
 
     <!-- Device Table -->
-    <div class="row bg-dark">
+    <div class="row mb-3">
         <table class="table table-dark">
             <thead>
             <tr class="text-center">
@@ -32,31 +32,31 @@
             {% for i in all_devices %}
                 <tr id="row{{ forloop.counter }}">
                     <td>
-                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                        <input type="text" class="form-control border-secondary"
                                value="{{ i.device }}" form="form{{ forloop.counter }}" name="device" readonly>
                     </td>
                     <td>
-                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                        <input type="text" class="form-control border-secondary"
                                value="{{ i.deviceType }}" form="form{{ forloop.counter }}"
                                id="type{{ forloop.counter }}" name="type" disabled>
                     </td>
                     <td>
-                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                        <input type="text" class="form-control border-secondary"
                                value="{{ i.vendor }}" form="form{{ forloop.counter }}" id="vendor{{ forloop.counter }}"
                                name="vendor" disabled>
                     </td>
                     <td>
-                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                        <input type="text" class="form-control border-secondary"
                                value="{{ i.host }}" form="form{{ forloop.counter }}" id="host{{ forloop.counter }}"
                                name="host" disabled>
                     </td>
                     <td>
-                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                        <input type="text" class="form-control border-secondary"
                                value="{{ i.location }}" form="form{{ forloop.counter }}" id="loc{{ forloop.counter }}"
                                name="loc" disabled>
                     </td>
                     <td>
-                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                        <input type="text" class="form-control border-secondary"
                                value="{{ i.contact }}" form="form{{ forloop.counter }}" id="cont{{ forloop.counter }}"
                                name="cont" disabled>
                     </td>
@@ -87,12 +87,9 @@
             {% endfor %}
             </tbody>
         </table>
-    </div>
-
-    <!-- Add Button -->
-    <div class="row bg-dark justify-content-center">
-        <div class="col-4">
-            <button type="button" class="btn btn-success btn-block btn-add"
+        <!-- Add Device Button-->
+        <div class="col-5 mx-auto justify-content-center">
+            <button type="button" class="btn btn-success btn-block"
                     title="Add Device" data-toggle="modal"
                     data-target="#AddModal">Add New Device
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -204,6 +201,11 @@
 </main>
 
 <script>
+
+    function onLoad() {
+        document.getElementById('footer').classList.add('fixed-bottom');
+    }
+
     function getID(id) {
         document.getElementById('delete').value = id;
         document.getElementById('title').innerText = 'Delete Device: ' + id;

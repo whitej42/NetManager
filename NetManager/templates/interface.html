@@ -1,6 +1,6 @@
 {% include "header.html" %}
 
-<body class="bg-secondary">
+<body onload="onLoad()">
 {% load static %}
 {% include "navbar.html" %}
 
@@ -13,7 +13,7 @@
             <!-- Interface Details -->
             <div class="col-4 widget table-responsive">
                 <h3 class="title text-center text-secondary">Interface Details</h3>
-                <table id="table" class="table table-striped table-dark text-center">
+                <table id="table" class="table table-striped table-dark text-left">
                     <tbody>
                     {% for i in interface %}
                         <tr>
@@ -184,3 +184,9 @@
 {% include "footer.html" %}
 </body>
 </html>
+
+<script>
+    function onLoad() {
+        document.getElementById('footer').classList.add('fixed-bottom');
+    }
+</script>
