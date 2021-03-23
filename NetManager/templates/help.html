@@ -1,12 +1,12 @@
 {% include "header.html" %}
 
-<body class="bg-secondary">
+<body class="bg-dark">
 {% load static %}
 {% include "navbar.html" %}
 
-<main class="main container-fluid bg-dark">
+<main class="main">
 
-    <div class="container-fluid main-div">
+    <div class="container-fluid">
         <div class="row text-center help">
             <div class="col">
                 <h2 class="text-light help-title">Hello, How can we help you?</h2>
@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div id="accordion" class="accordion accordion-help">
+        <div id="accordion" class="accordion accordion-help text-left text-secondary">
             <div class="card ">
                 <div class="card-header" id="headingOne">
                     <h5 class="mb-0">
@@ -181,7 +181,7 @@
 
         </div>
 
-        <div class="row text-center">
+        <div class="row text-center mb-3">
             <div class="col text-light">
                 <h2 class="text-light help-title">Can't Find What You're Looking For?</h2>
                 <h5 class="text-light">Send Us a Question</h5>

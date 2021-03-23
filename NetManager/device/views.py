@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from .models import Device
+from manager.models import Device
 from .models import Log
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from netmiko import ConnectHandler
+from django.contrib import messages
 
 
 # device HTML view
@@ -123,6 +124,7 @@ def save_config(PageRequest, device_ID):
         log = Log(device=device_ID, user='jwhite', type='Configuration',
                   description='Device configuration saved')
         log.save()
+        messages.success(PageRequest, log.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
         return e
@@ -139,8 +141,6 @@ def config_interface(PageRequest, device_ID):
     mask = PageRequest.POST.get('mask')
     enable = PageRequest.POST.get('enable')
 
-    print(interface + address + mask + enable)
-
     # establish connection to device
     device = connect(host)
 
@@ -156,8 +156,10 @@ def config_interface(PageRequest, device_ID):
         log = Log(device=device_ID, user='jwhite', type='Configuration',
                   description='IP Address ' + address + ' configured on interface ' + interface)
         log.save()
+        messages.success(PageRequest, log.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
+        messages.error(PageRequest, 'Command Failed: ' + str(e))
         return e
 
 
@@ -180,8 +182,10 @@ def reset_interface(PageRequest, device_ID):
         log = Log(device=device_ID, user='jwhite', type='Configuration',
                   description='Interface ' + interface + ' reset')
         log.save()
+        messages.success(PageRequest, log.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
+        messages.success(PageRequest, 'Command Failed: ' + str(e))
         return e
 
 
@@ -205,6 +209,7 @@ def create_acl(PageRequest, device_ID):
         log = Log(device=device_ID, user='jwhite', type='Security',
                   description='Access List ' + acl_name + ' configured')
         log.save()
+        messages.success(PageRequest, log.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
         return e
@@ -227,30 +232,7 @@ def delete_acl(PageRequest, device_ID):
         log = Log(device=device_ID, user='jwhite', type='Security',
                   description='Access List ' + acl + ' removed')
         log.save()
-        return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
-    except Exception as e:
-        return e
-
-
-# configure banners - NOT WORKING!!!
-def config_banner(PageRequest, device_ID):
-    host = Device.objects.get(pk=device_ID).host
-
-    banner_type = PageRequest.POST.get('banner_type')
-    banner_txt = PageRequest.POST.get('banner_txt')
-    n = len(banner_txt) + 2
-    border = '*' * n
-
-    device = connect(host)
-
-    try:
-        c = ConnectHandler(**device)
-        c.enable()
-        c.send_command('banner ' + banner_type + ' ^')
-        c.send_command(border)
-        c.send_command(' ' + banner_txt)
-        c.send_command(border + '^')
-        c.disconnect()
+        messages.success(PageRequest, log.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
         return e
@@ -274,6 +256,7 @@ def disable_interfaces(PageRequest, device_ID):
         log = Log(device=device_ID, user='jwhite', type='Security',
                   description='All unused interfaces shutdown')
         log.save()
+        messages.success(PageRequest, log.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
         return e
@@ -330,8 +313,9 @@ def apply_acl(PageRequest, device_ID):
         commands = ['interface ' + interface, 'ip access-group ' + acl + ' ' + direction]
         c.send_config_set(commands)
         c.disconnect()
-        # log = Log(device=device_ID, user='jwhite', type='Security', description='Access List ' + acl + ' applied to ' + interface)
-        # log.save()
+        log = Log(device=device_ID, user='jwhite', type='Security', description='Access List ' + acl + ' applied to ' + interface)
+        log.save()
+        messages.success(PageRequest, log.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))  # crashes on reload - no form submission!!
     except Exception as e:
         return e
@@ -352,8 +336,9 @@ def remove_acl(PageRequest, device_ID):
         commands = ['interface ' + interface, 'no ip access-group ' + acl + ' ' + direction]
         c.send_config_set(commands)
         c.disconnect()
-        # log = Log(device=device_ID, user='jwhite', type='Security', description='Access List ' + acl + ' removed from ' + interface)
-        # log.save()
+        log = Log(device=device_ID, user='jwhite', type='Security', description='Access List ' + acl + ' removed from ' + interface)
+        log.save()
+        messages.success(PageRequest, log.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))  # crashes on reload - no form submission!!
     except Exception as e:
         return e

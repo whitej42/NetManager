@@ -11,6 +11,5 @@ urlpatterns = [
     path('<str:device_ID>/delete-acl', views.delete_acl, name='delete_acl'),
     path('<str:device_ID>/interface-details/apply-acl', views.apply_acl, name='apply_acl'),
     path('<str:device_ID>/interface-details/remove-acl', views.remove_acl, name='remove_acl'),
-    path('<str:device_ID>/config-banner', views.config_banner, name='config_banner'),
     path('<str:device_ID>/disable-interfaces', views.disable_interfaces, name='disable_interfaces')
 ]

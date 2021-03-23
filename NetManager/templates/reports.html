@@ -1,0 +1,69 @@
+{% include "header.html" %}
+
+<body>
+{% load static %}
+{% include "navbar.html" %}
+
+<!-- Main -->
+<main class="main container-fluid">
+
+    <div class="widgets-grid">
+        <!-- Left Widget -->
+        <div class="row">
+            <!-- Audit Logs -->
+            <div class="col widget">
+                <div class="well">
+                    <h3 class="title-dark">Audit Logs</h3>
+                    <div id="accordion" class="accordion accordion-device text-left">
+                        {% for log in all_logs %}
+                            <!-- Active Access Lists -->
+                            <div class="card">
+                                <div class="card-header" id="heading{{ forloop.counter0 }}">
+                                    <h5 class="mb-0">
+                                        <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                                data-target="#collapse{{ forloop.counter0 }}"
+                                                aria-expanded="false" aria-controls="collapse{{ forloop.counter0 }}">
+                                            {{ log.dateTime.date }}
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapse{{ forloop.counter0 }}" class="collapse"
+                                     aria-labelledby="heading{{ forloop.counter0 }}"
+                                     data-parent="#accordion">
+                                    <div class="card-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!-- Right Widgets -->
+            <div class="col ml-2">
+                <div class="row">
+                    <div class="col mb-2 widget" style="height: 300px">
+                        <div class="well">
+                            <h3 class="title-dark">Configuration Files</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col widget" style="height: 300px">
+                        <div class="well">
+                            <h3 class="title-dark">NO IDEA</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script>
+</script>
+
+{% include "footer.html" %}
+</body>
+</html>

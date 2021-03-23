@@ -1,5 +1,10 @@
 /* Custom CSS Stylesheet */
 
+/* jump to section  */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
     background-color: #6c757d !important;
     text-align: center !important;
@@ -13,12 +18,12 @@ body {
 
 .nav-light {
     background-color: white !important;
-    color: black !important;
+    color: #343a40 !important;
     box-shadow: 0 0 5px 5px lightgrey !important;
 }
 
 .link-light {
-    color: #6c757d !important;
+    color: #343a40 !important;
 }
 
 .link-light:hover {
@@ -27,23 +32,27 @@ body {
 
 .widget-light {
     background-color: #f8f9fa !important;
-    color: #6c757d !important;
+    color: #343a40 !important;
     box-shadow: 0 0 5px 5px lightgrey !important;
+}
+
+.title-light {
+    color: #343a40 !important;
 }
 
 .table-light {
     background-color: #f8f9fa !important;
-    color: #6c757d !important;
+    color: #343a40 !important;
 }
 
 .textbox-light {
     background-color: #f8f9fa !important;
-    color: #6c757d !important;
+    color: #343a40 !important;
 }
 
 .footer-light {
-    background-color: white !important;
-    color: #6c757d !important;
+    background-color: #f8f9fa !important;
+    color: #343a40 !important;
     box-shadow: 0 0 5px 5px lightgrey !important;
 }
 
@@ -64,6 +73,14 @@ body {
 .widget {
     background-color: #343a40;
     border-radius: 5px;
+}
+
+.title-dark {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #6c757d;
 }
 
 .textbox-dark {
@@ -158,22 +175,33 @@ body {
     padding: 100px;
 }
 
+/* home page */
+.jumbo {
+    margin-right: 100px;
+    margin-left: 100px;
+    margin-bottom: -25px;
+}
+
+.signup {
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
 /* widgets */
 .widgets-grid {
     padding: 10px;
 }
 
-.title {
-    font-size: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    text-align: center;
-    color: #6c757d;
+.modal {
+    color: #343a40;
+    text-align: left;
 }
+
 
 /* device page */
 .accordion-device {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 /* help page */

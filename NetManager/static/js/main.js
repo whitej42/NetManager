@@ -42,6 +42,11 @@ function darkMode() {
     // change text boxes to light/dark - Interface Page Only
     const textbox = document.getElementsByClassName('textbox-dark');
     for (let i = 0; i < textbox.length; i++) {
-        links[i].classList.toggle("textbox-light");
+        textbox[i].classList.toggle("textbox-light");
+    }
+
+    const title = document.getElementsByClassName('title-dark');
+    for (let i = 0; i < title.length; i++) {
+        title[i].classList.toggle("title-light");
     }
 }

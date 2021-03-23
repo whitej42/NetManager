@@ -1,17 +1,23 @@
 {% include "header.html" %}
 
-<body class="bg-dark" onload="onLoad()">
+<body onload="onLoad()">
 {% load static %}
 {% include "navbar.html" %}
 
-<!-- Info Bar -->
-<div class="info-bar bg-secondary">
-    <h6 class="text-warning">The device manager will only make changes to devices on the database. Any changes made will
-        <u>NOT</u> affect the configuration on the physical device</h6>
-</div>
-
 <!-- Main -->
 <main class="main container-fluid">
+
+    <!-- Alert Response Message -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="mt-3 alert-dismissible fade show alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+                 role="alert">{{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
 
     <!-- Device Table -->
     <div class="row mb-3">
@@ -115,33 +121,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Device Name</label>
-                            <input type="text" class="form-control is-invalid" name="name" required>
-                            <label class="text-danger">This cannot be changed later</label>
-                        </div>
-                        <div class="form-group">
-                            <label>Device Type</label>
-                            <input type="text" class="form-control is-invalid" name="type" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Management IP Address</label>
-                            <input type="text" class="form-control is-invalid" name="ssh" required>
-                            <label class="text-danger">This is the IP address used to establish SSH connections to
-                                the device. Ensure this is correct before proceeding</label>
-                        </div>
-                        <div class="form-group">
-                            <label>Vendor</label>
-                            <input type="text" class="form-control is-invalid" name="vendor" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Location</label>
-                            <input type="text" class="form-control is-valid" name="location" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Contact</label>
-                            <input type="text" class="form-control is-valid" name="contact" required>
-                        </div>
+                        {% load crispy_forms_tags %}
+                        {{ form|crispy }}
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">Add Device

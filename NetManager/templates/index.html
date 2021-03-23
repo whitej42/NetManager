@@ -5,117 +5,106 @@
 {% include "navbar.html" %}
 
 <!-- Main -->
-<main class="main container-fluid">
+<main class="main">
 
-    <div class="widgets-grid">
-        <!-- Top Widgets -->
-        <div class="row mb-2" style="height: 600px">
-            <!-- Device List -->
-            <div class="col-5 widget table-responsive">
-                <h3 class="title">Device List</h3>
-                <table class="table table-striped table-dark">
-                    <thead>
-                    <tr>
-                        <th>Device Name</th>
-                        <th>Device Type</th>
-                        <th>Vendor</th>
-                        <th>IP Address</th>
-                        <th>Status</th>
-                        <th>Details</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!-- Device -->
-                    {% for device in all_devices %}
-                        <tr>
-                            <td>{{ device.device }}</td>
-                            <td>{{ device.deviceType }}</td>
-                            <td>{{ device.vendor }}</td>
-                            <td>{{ device.host }}</td>
-                            <!-- Connection Status-->
-                            <td id="status">
-                                {% if device.status %}
-                                    <h6><span class="badge-pill badge-success">Active</span></h6>
-                                {% else %}
-                                    <h6><span class="badge-pill badge-danger">Inactive</span></h6>
-                                {% endif %}
-                            </td>
-                            <!-- Details Button -->
-                            <td>
-                                {% if device.status %}
-                                    <a href="{% url 'device' device_ID=device.pk %}" type="button"
-                                       class="btn btn-info btn-sm"
-                                       title="Device Details">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                             fill="currentColor" class="bi bi-list btn-icon" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd"
-                                                  d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
-                                        </svg>
-                                    </a>
-                                {% else %}
-                                    <button type="button" disabled
-                                            class="btn btn-info btn-sm"
-                                            title="Device Details">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                             fill="currentColor" class="bi bi-list btn-icon" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd"
-                                                  d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
-                                        </svg>
-                                    </button>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+    {% load crispy_forms_tags %}
+
+    <div class="jumbotron jumbotron-fluid mb-0 card" style="background-color: #1c1f22">
+        <div class="container" style="min-width: 100%">
+            <div class="row mb-5">
+                <div class="col">
+                    <h1>Network Configuration & Management Tool</h1>
+                    <h4 class="text-info">Manage & configure your network devices with ease</h4>
+                </div>
             </div>
-
-            <!-- Topology Diagram -->
-            <div class="col ml-2 widget">
-                <h3 class="title">Topology Display</h3>
+            <div class="row align-content-center">
+                <div class="col jumbo" style="height: 100%;">
+                    <p style="display:inline; font-size: 24px" class="text-info">NetManager </p>
+                    <p style="display:inline; font-size: 24px">simplifies the process of configuring and managing<br>
+                        your network devices. The easy to use interface allows for faster<br>
+                        network configuration and improved network monitoring.<br>
+                    </p>
+                    <label class="m-4 text-info" style="font-size: 20px">Don't have an account?</label><br>
+                    <a class="btn-lg btn-success nav-btn" href="#signup" title="Sign Up">Sign Up Today!</a>
+                </div>
             </div>
         </div>
-
-        <!-- Bottom Widgets -->
-        <div class="row d-flex">
-            <div class="col table-responsive widget">
-                <h3 class="title">Recent Configuration Changes</h3>
-                <table class="table table-striped table-dark" style="font-size: 14px">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Device</th>
-                        <th>User</th>
-                        <th>Type</th>
-                        <th style="width: 250px;">Description</th>
-                        <th>Date/Time</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for log in all_logs %}
-                        <tr>
-                        <td id="id">{{ log.id }}</td>
-                        <td id="device">{{ log.device }}</td>
-                        <td id="user">{{ log.user }}</td>
-                        <td id="type">{{ log.type }}</td>
-                        <td id="description">{{ log.description }}</td>
-                        <td id="dateTime">{{ log.dateTime }}</td>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="col ml-2 widget">
-                <h3 class="title">Security Policies</h3>
-            </div>
-        </div>
-
     </div>
 
+    <div class="jumbotron jumbotron-fluid mb-0 card text-dark">
+        <div class="container" style="min-width: 100%">
+            <div class="row">
+                <div class="col">
+                    <h1>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                             class="bi bi-server" viewBox="0 0 16 16">
+                            <path d="M1.333 2.667C1.333 1.194 4.318 0 8 0s6.667 1.194 6.667 2.667V4c0 1.473-2.985 2.667-6.667 2.667S1.333 5.473 1.333 4V2.667z"></path>
+                            <path d="M1.333 6.334v3C1.333 10.805 4.318 12 8 12s6.667-1.194 6.667-2.667V6.334c-.43.32-.931.58-1.458.79C11.81 7.684 9.967 8 8 8c-1.967 0-3.81-.317-5.21-.876a6.508 6.508 0 0 1-1.457-.79z"></path>
+                            <path d="M14.667 11.668c-.43.319-.931.578-1.458.789-1.4.56-3.242.876-5.209.876-1.967 0-3.81-.316-5.21-.876a6.51 6.51 0 0 1-1.457-.79v1.666C1.333 14.806 4.318 16 8 16s6.667-1.194 6.667-2.667v-1.665z"></path>
+                        </svg>
+                    </h1>
+                    <h4>Device Management</h4>
+                    <p>waffle<br><br><br><br><br><br>F
+                    </p>
+                </div>
+                <div class="col">
+                    <h1>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                             class="bi bi-key-fill" viewBox="0 0 16 16">
+                            <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
+                        </svg>
+                    </h1>
+                    <h4>Secure Connections</h4>
+                    <p>waffle</p>
+                </div>
+                <div class="col">
+                    <h1>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                             class="bi bi-shield-lock-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zm0 5a1.5 1.5 0 0 1 .5 2.915l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99A1.5 1.5 0 0 1 8 5z"></path>
+                        </svg>
+                    </h1>
+                    <h4>Security Policies</h4>
+                    <p>waffle</p>
+                </div>
+                <div class="col">
+                    <h1>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                             class="bi bi-file-earmark-text-fill" viewBox="0 0 16 16">
+                            <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1h-4z"></path>
+                        </svg>
+                    </h1>
+                    <h4>Audit Trail</h4>
+                    <p>waffle</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="jumbotron jumbotron-fluid mb-0 card" id="signup" style="background-color: #1c1f22">
+        <div class="container" style="min-width: 100%">
+            <h3>Create an account for free</h3>
+            <div class="row justify-content-center mt-4">
+                <div class="col" style="height: 100%; max-width: 750px">
+                    <div class="card signup">
+                        <form class="form-group text-left text-secondary" method="post">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button type="submit"
+                                    class="btn btn-success btn-block"
+                                    title="Signup">Sign Up!
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
-<script>
-</script>
 
 {% include "footer.html" %}
 </body>
 </html>
+
