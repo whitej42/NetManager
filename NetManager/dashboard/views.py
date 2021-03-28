@@ -68,8 +68,8 @@ def add_device(PageRequest):
 
 # delete device from db
 def delete_device(PageRequest):
-    id = PageRequest.POST.get('id')
-    d = Device.objects.get(pk=id)
+    device_id = PageRequest.POST.get('id')
+    d = Device.objects.get(pk=device_id)
     d.delete()
     log = Log(user=PageRequest.user, device=d.deviceName, type='Device', description='Device: ' + d.deviceName + ' - Removed From Database')
     log.save()
@@ -79,7 +79,7 @@ def delete_device(PageRequest):
 
 # edit existing device in db
 def edit_device(PageRequest):
-    id = PageRequest.POST.get('id')
+    device_id = PageRequest.POST.get('id')
     device = PageRequest.POST.get('device')
     deviceType = PageRequest.POST.get('type')
     vendor = PageRequest.POST.get('vendor')
@@ -88,7 +88,7 @@ def edit_device(PageRequest):
     contact = PageRequest.POST.get('cont')
 
     try:
-        d = Device.objects.get(pk=id)
+        d = Device.objects.get(pk=device_id)
         d.deviceName = device
         d.deviceType = deviceType
         d.vendor = vendor
@@ -107,8 +107,8 @@ def edit_device(PageRequest):
 
 # update device log in information
 def update_security(PageRequest):
-    id = PageRequest.POST.get('id')
-    device = Device.objects.get(pk=id)
+    device_id = PageRequest.POST.get('id')
+    device = Device.objects.get(pk=device_id)
     form = SecurityForm(PageRequest.POST or None)
 
     if PageRequest.user.is_authenticated:
