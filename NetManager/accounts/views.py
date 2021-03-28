@@ -1,6 +1,7 @@
 from .forms import LoginForm, RegisterForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, get_user_model, login, logout
+from django.contrib import messages
 
 
 def index(request):
@@ -12,13 +13,14 @@ def index(request):
         password = form.cleaned_data.get('password')
         user.set_password(password)
         user.save()
-        new_user = authenticate(username=user.username, password=password)
+        authenticate(username=user.username, password=password)
         login(request, user)
         if next:
             return redirect(next)
-        return redirect('dashboard', username=user.username)
+        return redirect('dashboard')
 
     args = {'form': form}
+    messages.warning(request, 'Version 0.9 :- The current release of NetManager only supports Cisco devices. Multi-vendor support will be developed in the near future')
     return render(request, 'index.html', args)
 
 
@@ -33,6 +35,6 @@ def signin(request):
         login(request, user)
         if next:
             return redirect(next)
-        return redirect('dashboard', username=username)
+        return redirect('dashboard')
     args = {'form': form}
     return render(request, 'registration/login.html', args)

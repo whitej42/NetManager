@@ -24,14 +24,14 @@
         <!-- Top Widgets -->
         <div class="row mb-2">
             <!-- Device Details -->
-            <div class="col-3 widget">
+            <div class="col-3 widget-dark">
                 <h3 class="title-dark">Device Details</h3>
                 <table class="table table-striped table-dark">
                     <tbody class="text-left">
                     {% for j in version %}
                         <tr>
                             <td><b>Device Name</b></td>
-                            <td>{{ device.device }}</td>
+                            <td>{{ device.deviceName }}</td>
                         </tr>
                         <tr>
                             <td><b>Device Type</b></td>
@@ -82,7 +82,7 @@
             </div>
 
             <!-- Interface Brief -->
-            <div class="col-6 ml-2 table-responsive widget" style="height: 550px">
+            <div class="col-6 ml-2 table-responsive widget-dark" style="height: 550px">
                 <h3 class="title-dark">Device Interfaces</h3>
                 <table class="table table-striped table-dark">
                     <thead>
@@ -161,7 +161,7 @@
             </div>
 
             <!-- Active Interfaces -->
-            <div class="col ml-2 widget table-responsive">
+            <div class="col ml-2 widget-dark table-responsive">
                 <h3 class="title-dark">Active IP Addresses</h3>
                 <table class="table table-striped table-dark">
                     <thead>
@@ -191,7 +191,7 @@
         <!-- Bottom Widgets -->
         <div class="row d-flex">
             <!-- Device Security -->
-            <div class="col widget text-left text-secondary">
+            <div class="col widget-dark text-left text-secondary">
                 <h3 class="title-dark">Device Security Features</h3>
                 <div id="accordion" class="accordion accordion-device text-left">
                     <!-- Active Access Lists -->
@@ -349,7 +349,7 @@
                     <!-- NEW TABS HERE -->
                 </div>
             </div>
-            <div class="col ml-2 widget">
+            <div class="col ml-2 widget-dark">
                 <h3 class="title-dark">CPU/Power Statistics</h3>
             </div>
         </div>

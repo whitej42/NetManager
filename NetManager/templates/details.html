@@ -1,0 +1,217 @@
+{% include "header.html" %}
+
+<body>
+{% load static %}
+{% include "navbar.html" %}
+
+<!-- Main -->
+<main class="main ">
+
+    <div class="jumbotron jumbotron-fluid" style="background-color: #1c1f22">
+        <div class="container" style="min-width: 100%">
+            <h2 class="text-info font-weight-bold">Device Manager
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                     class="bi bi-display nav-icon"
+                     viewBox="0 0 16 16">
+                    <path d="M0 4s0-2 2-2h12s2 0 2 2v6s0 2-2 2h-4c0 .667.083 1.167.25 1.5H11a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1h.75c.167-.333.25-.833.25-1.5H2s-2 0-2-2V4zm1.398-.855a.758.758 0 0 0-.254.302A1.46 1.46 0 0 0 1 4.01V10c0 .325.078.502.145.602.07.105.17.188.302.254a1.464 1.464 0 0 0 .538.143L2.01 11H14c.325 0 .502-.078.602-.145a.758.758 0 0 0 .254-.302 1.464 1.464 0 0 0 .143-.538L15 9.99V4c0-.325-.078-.502-.145-.602a.757.757 0 0 0-.302-.254A1.46 1.46 0 0 0 13.99 3H2c-.325 0-.502.078-.602.145z"/>
+                </svg>
+            </h2>
+        </div>
+    </div>
+
+    <div class="widgets-grid">
+
+        <!-- Alert Response Message -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mt-1 alert-dismissible fade show alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+                     role="alert">{{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row mb-3 container-fluid justify-content-center">
+            <div class="col-5 widget-dark table-responsive">
+                <h3 class="title-dark">Device Details</h3>
+                {% for i in device %}
+                    <div class="card bg-dark text-light p-2 mb-3">
+                        <form action="{% url 'edit_device' %}">
+                            <table class="table table-striped table-dark">
+                                <tbody class="text-left">
+                                <tr>
+                                    <td><b>Device Name</b></td>
+                                    <td><label class="label">{{ i.deviceName }}</label></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Device Type</b></td>
+                                    <td><label class="label">{{ i.deviceType }}</label></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Vendor</b></td>
+                                    <td><label class="label">{{ i.vendor }}</label></td>
+                                </tr>
+                                <tr>
+                                    <td><b>SSH IP Address</b></td>
+                                    <td><label class="label">{{ i.host }}</label></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Location</b></td>
+                                    <td><label class="label">{{ i.location }}</label></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Contact</b></td>
+                                    <td><label class="label">{{ i.contact }}</label></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-info btn-block mb-2" type="button" id="Edit">
+                                Edit Device
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-pencil btn-icon" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                        <button class="btn btn-danger btn-block mb-2 delete" type="button" title="Delete Device"
+                                data-toggle="modal" data-target="#DeleteModal" id="{{ i.id }}"
+                                onclick="getID(this.id)">
+                            Delete Device
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor"
+                                 class="bi bi-trash btn-icon" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                <path fill-rule="evenodd"
+                                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    </div>
+
+                    <div class="col-5 widget-dark table-responsive ml-3">
+                        <h3 class="title-dark">Device Security Settings</h3>
+                        <h6 class="text-center">Update this devices user login credentials here</h6>
+                        <h6>NetManager will use to establish SSH connections to this device</h6>
+                        <h6>Visit our <a href="{% url 'help' %}" target="_blank">help page</a> for details on setting up
+                            SSH on your device</h6>
+                        <div class="card text-dark p-2 mt-3 mb-3 text-left">
+                            <form action="{% url 'update_security' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ i.id }}">
+                                {% load crispy_forms_tags %}
+                                {{ form|crispy }}
+                                <button class="btn btn-warning btn-block mb-2" type="submit">
+                                    Update Security Settings
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="currentColor"
+                                         class="bi bi-shield-lock btn-icon" viewBox="0 0 16 16">
+                                        <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"></path>
+                                        <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415z"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+        </div>
+    </div>
+
+    <!-- Delete Device Model -->
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="label"
+         aria-hidden="true">
+        <div class="modal-dialog model-sm" role="document">
+            <form action="{% url 'delete_device' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="title">Delete Device</h5>
+                        <input type="hidden" id="delete" name="id">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-left">
+                        <h6 class="text-danger">Deleting this device will remove it from the device
+                            database. This
+                            will not affect the network but will prevent connections to and from
+                            this
+                            device.</h6>
+                        <h6>Are you sure you wish to proceed?</h6>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">No
+                            <svg width="1em" height="1em" viewBox="0 0 16 16"
+                                 class="bi bi-x-circle-fill btn-icon"
+                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                            </svg>
+                        </button>
+                        <button type="submit" class="btn btn-success">Yes
+                            <svg width="1em" height="1em" viewBox="0 0 16 16"
+                                 class="bi bi-check-circle-fill btn-icon"
+                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<script type="text/javascript">
+
+    // jquery to for edit device function
+    $("#Edit").click(function () {
+        $("label.label").replaceWith(function () {
+            return "<input class=\"form-control\" type=\"text\" value=\"" + $("label.label").text() + "\" />";
+        });
+
+        $("#Edit").replaceWith(function () {
+            return "<button class=\"btn btn-success btn-block\" type=\"submit\">Submit Changes " +
+                "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-right-square btn-icon\" viewBox=\"0 0 16 16\">\\n' +\n" +
+                "'  <path fill-rule=\"evenodd\" d=\"M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z\"/>\\n' +\n" +
+                "'</svg></button>"
+        });
+
+        $("button.delete").replaceWith(function () {
+            return ""
+        });
+    });
+
+    // get device for id for deletion
+    function getID(id) {
+        document.getElementById('delete').value = id;
+    }
+
+    function edit(id) {
+        // enable text boxes - not optimized
+        document.getElementById('type' + id).disabled = false;
+        document.getElementById('vendor' + id).disabled = false;
+        document.getElementById('host' + id).disabled = false;
+        document.getElementById('loc' + id).disabled = false;
+        document.getElementById('cont' + id).disabled = false;
+
+        // change button to submit
+        const btn = document.getElementById(id)
+        const submit = document.createElement('button');
+        submit.classList.add('btn', 'btn-success', 'btn-block', 'mb-2');
+        submit.setAttribute('type', 'submit');
+        submit.innerHTML = 'Push Changes <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square btn-icon" viewBox="0 0 16 16">\n' +
+            '  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>\n' +
+            '</svg>';
+        btn.parentNode.replaceChild(submit, btn);
+    }
+</script>
+
+{% include "footer.html" %}
+</body>
+</html>

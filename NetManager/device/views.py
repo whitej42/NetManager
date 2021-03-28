@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from manager.models import Device
+from device.models import Device
 from .models import Log
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
@@ -14,10 +14,9 @@ def get_device(PageRequest, device_ID):
         # get selected device from db
         selected_device = Device.objects.get(pk=device_ID)
         # get devices IP address
-        host = selected_device.host
         # pass device information to template
-        args = {'device': selected_device, 'interfaces': get_interfaces(host), 'version': get_version(host),
-                'acl': get_acl(host)}
+        args = {'device': selected_device, 'interfaces': get_interfaces(selected_device), 'version': get_version(selected_device),
+                'acl': get_acl(selected_device)}
     except Device.DoesNotExist:
         raise Http404('Device Does Not Exist')
     return render(PageRequest, 'device.html', args)
@@ -31,12 +30,11 @@ def get_interface_details(PageRequest, device_ID):
         # get selected device from db
         selected_device = Device.objects.get(pk=device_ID)
         # get devices IP address
-        host = selected_device.host
         # get selected interface
         selected_interface = PageRequest.POST.get('interface')
         # pass interface information to template
-        args = {'device': selected_device, 'interface': interface_details(host, selected_interface),
-                'acl': get_acl(host), 'int_acl': interface_acl(host, selected_interface)}
+        args = {'device': selected_device, 'interface': interface_details(selected_device, selected_interface),
+                'acl': get_acl(selected_device), 'int_acl': interface_acl(selected_device, selected_interface)}
     except Device.DoesNotExist:
         # if not - raise http404
         raise Http404()
@@ -44,13 +42,13 @@ def get_interface_details(PageRequest, device_ID):
 
 
 # connect to host device
-def connect(host):
+def connect(selected_device):
     device = {
         'device_type': 'cisco_ios',
-        'ip': host,
-        'username': 'admin',
-        'password': 'cisco',
-        'secret': 'cisco',
+        'ip': selected_device.host,
+        'username': selected_device.username,
+        'password': selected_device.password,
+        'secret': selected_device.secret,
         'port': 22
     }
     return device
@@ -60,9 +58,9 @@ def connect(host):
 
 
 # get device interfaces
-def get_interfaces(host):
+def get_interfaces(selected_device):
     # establish connection to device
-    device = connect(host)
+    device = connect(selected_device)
 
     # open connection & run command
     try:
@@ -77,9 +75,9 @@ def get_interfaces(host):
 
 
 # get device version
-def get_version(host):
+def get_version(selected_device):
     # establish connection to device
-    device = connect(host)
+    device = connect(selected_device)
 
     # open connection & run command
     try:
@@ -93,9 +91,9 @@ def get_version(host):
 
 
 # get devices access-lists
-def get_acl(host):
+def get_acl(selected_device):
     # establish connection to device
-    device = connect(host)
+    device = connect(selected_device)
 
     # open connection & run command
     try:
@@ -111,7 +109,7 @@ def get_acl(host):
 # save current configuration
 def save_config(PageRequest, device_ID):
     # get devices IP address
-    host = Device.objects.get(pk=device_ID).host
+    host = Device.objects.get(pk=device_ID)
 
     # establish connection to device
     device = connect(host)
@@ -121,7 +119,7 @@ def save_config(PageRequest, device_ID):
         # save config using NetMiko save_config() function
         c.save_config()
         c.disconnect()
-        log = Log(device=device_ID, user='jwhite', type='Configuration',
+        log = Log(user=PageRequest.user, device=host.deviceName, type='Configuration',
                   description='Device configuration saved')
         log.save()
         messages.success(PageRequest, log.description)
@@ -133,7 +131,7 @@ def save_config(PageRequest, device_ID):
 # configure an interfaces IP Address
 def config_interface(PageRequest, device_ID):
     # get device from db
-    host = Device.objects.get(pk=device_ID).host
+    host = Device.objects.get(pk=device_ID)
 
     # get form data from POST request
     interface = PageRequest.POST.get('configInterface')
@@ -153,20 +151,19 @@ def config_interface(PageRequest, device_ID):
             commands = ['interface ' + interface, 'ip address ' + address + ' ' + mask, 'shutdown']
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(device=device_ID, user='jwhite', type='Configuration',
+        log = Log(user=PageRequest.user, device=host.deviceName, type='Configuration',
                   description='IP Address ' + address + ' configured on interface ' + interface)
         log.save()
         messages.success(PageRequest, log.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
-        messages.error(PageRequest, 'Command Failed: ' + str(e))
         return e
 
 
 # reset an interface
 def reset_interface(PageRequest, device_ID):
     # get devices IP address
-    host = Device.objects.get(pk=device_ID).host
+    host = Device.objects.get(pk=device_ID)
 
     # get form data from POST request
     interface = PageRequest.POST.get('resetInterface')
@@ -179,20 +176,19 @@ def reset_interface(PageRequest, device_ID):
         commands = ['interface ' + interface, 'no ip address', 'shutdown']
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(device=device_ID, user='jwhite', type='Configuration',
+        log = Log(user=PageRequest.user, device=host.deviceName, type='Configuration',
                   description='Interface ' + interface + ' reset')
         log.save()
         messages.success(PageRequest, log.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
-        messages.success(PageRequest, 'Command Failed: ' + str(e))
         return e
 
 
 # create access list
 def create_acl(PageRequest, device_ID):
     # get devices IP address
-    host = Device.objects.get(pk=device_ID).host
+    host = Device.objects.get(pk=device_ID)
 
     acl_type = PageRequest.POST.get('acl_type')
     acl_name = PageRequest.POST.get('acl_name')
@@ -206,7 +202,7 @@ def create_acl(PageRequest, device_ID):
         commands = ['ip access-list ' + acl_type + " " + acl_name, acl]
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(device=device_ID, user='jwhite', type='Security',
+        log = Log(user=PageRequest.user, device=host.deviceName, type='Security',
                   description='Access List ' + acl_name + ' configured')
         log.save()
         messages.success(PageRequest, log.description)
@@ -217,7 +213,7 @@ def create_acl(PageRequest, device_ID):
 
 # delete access list
 def delete_acl(PageRequest, device_ID):
-    host = Device.objects.get(pk=device_ID).host
+    host = Device.objects.get(pk=device_ID)
 
     acl = PageRequest.POST.get('del_acl')
 
@@ -229,7 +225,7 @@ def delete_acl(PageRequest, device_ID):
         commands = ['no ip access-list ' + acl]
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(device=device_ID, user='jwhite', type='Security',
+        log = Log(user=PageRequest.user, device=host.deviceName, type='Security',
                   description='Access List ' + acl + ' removed')
         log.save()
         messages.success(PageRequest, log.description)
@@ -240,7 +236,7 @@ def delete_acl(PageRequest, device_ID):
 
 # disable unused interfaces
 def disable_interfaces(PageRequest, device_ID):
-    host = Device.objects.get(pk=device_ID).host
+    host = Device.objects.get(pk=device_ID)
 
     device = connect(host)
 
@@ -253,7 +249,7 @@ def disable_interfaces(PageRequest, device_ID):
                 commands = ['interface ' + interface['intf'], 'shutdown']
                 c.send_config_set(commands)
         c.disconnect()
-        log = Log(device=device_ID, user='jwhite', type='Security',
+        log = Log(user=PageRequest.user, device=host.deviceName, type='Security',
                   description='All unused interfaces shutdown')
         log.save()
         messages.success(PageRequest, log.description)
@@ -299,7 +295,7 @@ def interface_acl(host, interface):
 
 # apply access list
 def apply_acl(PageRequest, device_ID):
-    host = Device.objects.get(pk=device_ID).host
+    host = Device.objects.get(pk=device_ID)
 
     interface = PageRequest.POST.get('int')
     acl = PageRequest.POST.get('acl')
@@ -313,7 +309,8 @@ def apply_acl(PageRequest, device_ID):
         commands = ['interface ' + interface, 'ip access-group ' + acl + ' ' + direction]
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(device=device_ID, user='jwhite', type='Security', description='Access List ' + acl + ' applied to ' + interface)
+        log = Log(user=PageRequest.user, device=host.deviceName, type='Security',
+                  description='Access List ' + acl + ' applied to ' + interface)
         log.save()
         messages.success(PageRequest, log.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))  # crashes on reload - no form submission!!
@@ -322,7 +319,7 @@ def apply_acl(PageRequest, device_ID):
 
 
 def remove_acl(PageRequest, device_ID):
-    host = Device.objects.get(pk=device_ID).host
+    host = Device.objects.get(pk=device_ID)
 
     interface = PageRequest.POST.get('int')
     acl = PageRequest.POST.get('acl')
@@ -336,7 +333,8 @@ def remove_acl(PageRequest, device_ID):
         commands = ['interface ' + interface, 'no ip access-group ' + acl + ' ' + direction]
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(device=device_ID, user='jwhite', type='Security', description='Access List ' + acl + ' removed from ' + interface)
+        log = Log(user=PageRequest.user, device=host.deviceName, type='Security',
+                  description='Access List ' + acl + ' removed from ' + interface)
         log.save()
         messages.success(PageRequest, log.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))  # crashes on reload - no form submission!!

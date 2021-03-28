@@ -4,7 +4,7 @@ function darkMode() {
     body.classList.toggle("bg-light");
 
     // change widgets to light/dark
-    const widget = document.getElementsByClassName('widget');
+    const widget = document.getElementsByClassName('widget-dark');
     for (let i = 0; i < widget.length; i++) {
         widget[i].classList.toggle("widget-light");
     }
@@ -49,4 +49,10 @@ function darkMode() {
     for (let i = 0; i < title.length; i++) {
         title[i].classList.toggle("title-light");
     }
+
+    const add_device = document.getElementsByClassName('add-dark');
+    for (let i = 0; i < add_device.length; i++) {
+        add_device[i].classList.toggle("add-light");
+    }
+
 }

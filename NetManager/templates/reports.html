@@ -11,10 +11,10 @@
         <!-- Left Widget -->
         <div class="row">
             <!-- Audit Logs -->
-            <div class="col widget">
+            <div class="col widget-dark">
                 <div class="well">
                     <h3 class="title-dark">Audit Logs</h3>
-                    <div id="accordion" class="accordion accordion-device text-left">
+                    <div id="accordion" class="accordion accordion-device text-left text-dark">
                         {% for log in all_logs %}
                             <!-- Active Access Lists -->
                             <div class="card">
@@ -23,7 +23,7 @@
                                         <button class="btn collapsed font-weight-bold" data-toggle="collapse"
                                                 data-target="#collapse{{ forloop.counter0 }}"
                                                 aria-expanded="false" aria-controls="collapse{{ forloop.counter0 }}">
-                                            {{ log.dateTime.date }}
+                                            {{ log.date }}
                                         </button>
                                     </h5>
                                 </div>
@@ -31,7 +31,9 @@
                                      aria-labelledby="heading{{ forloop.counter0 }}"
                                      data-parent="#accordion">
                                     <div class="card-body">
-
+                                        {% if log.date == log.date %}
+                                                {{ log.description }}
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -42,14 +44,14 @@
             <!-- Right Widgets -->
             <div class="col ml-2">
                 <div class="row">
-                    <div class="col mb-2 widget" style="height: 300px">
+                    <div class="col mb-2 widget-dark" style="height: 300px">
                         <div class="well">
                             <h3 class="title-dark">Configuration Files</h3>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col widget" style="height: 300px">
+                    <div class="col widget-dark" style="height: 300px">
                         <div class="well">
                             <h3 class="title-dark">NO IDEA</h3>
                         </div>

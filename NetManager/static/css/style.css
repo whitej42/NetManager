@@ -2,13 +2,16 @@
 
 /* jump to section  */
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
     background-color: #6c757d !important;
     text-align: center !important;
     color: #f8f9fa !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* light mode */
@@ -50,6 +53,12 @@ body {
     color: #343a40 !important;
 }
 
+.add-light {
+    background-color: #f8f9fa !important;
+    box-shadow: 0 0 5px 5px lightgrey !important;
+
+}
+
 .footer-light {
     background-color: #f8f9fa !important;
     color: #343a40 !important;
@@ -70,9 +79,17 @@ body {
     color: #17a2b8;
 }
 
-.widget {
+.widget-dark {
     background-color: #343a40;
     border-radius: 5px;
+    min-height: 250px;
+}
+
+.widget-add-dark {
+    background-color: #343a40;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .title-dark {
@@ -91,6 +108,7 @@ body {
 .footer-dark {
     background-color: #343a40;
     color: white;
+    margin-top: auto;
 }
 
 /* navbar */
@@ -188,16 +206,23 @@ body {
     padding-right: 20px;
 }
 
+.feature {
+    max-width: 300px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
 /* widgets */
 .widgets-grid {
     padding: 10px;
+    min-height: 100%;
 }
 
+/* modals */
 .modal {
     color: #343a40;
     text-align: left;
 }
-
 
 /* device page */
 .accordion-device {
@@ -224,13 +249,6 @@ body {
 .question {
     width: 650px;
     margin: auto;
-}
-
-/* Device Manager */
-.info-bar {
-    height: 25px;
-    width: 100%;
-    padding: 2px;
 }
 
 /* interface details page */

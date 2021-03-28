@@ -20,25 +20,40 @@
                     <h5 class="mb-0">
                         <button class="btn collapsed font-weight-bold" data-toggle="collapse" data-target="#collapseOne"
                                 aria-expanded="false" aria-controls="collapseOne">
-                            Entering Device Management
+                            Configuring SSH on your Cisco device
                         </button>
                     </h5>
                 </div>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                        <ol style="line-height: 250%">
-                            <li>Navigate to the Home page</li>
-                            <li>Navigate to the device list and press the 'Device Details' button<br>
-                                <img src="{% static 'images/selectdevice.png' %}" alt="Image Not Found">
+                        <ol style="line-height: 150%; max-width: 50%">
+                            <li>Set hostname & domain-name
+                                <pre class="border border-dark" style="background-color: lightgrey">router# config t
+router(config)# hostname R1
+R1(config)# ip domain-name domain_name.com</pre>
                             </li>
-                            <li>You will then be redirected to that devices management page</li>
-                            <img src="{% static 'images/manager.png' %}" alt="Image Not Found"
-                                 style="height: 500px">
+                            <li>Generate RSA Keys
+                                <pre class="border border-dark" style="background-color: lightgrey">R1(config)# crypto key generate rsa<br>The name for the keys will be: R1.domain_name.com<br>Choose the size of the key modulus in the range of 360 to 2048 for your<br>General Purpose Keys. Choosing a key modulus greater than 512 may take<br>a few minutes.
+How many bits in the modulus [512]: 1024
+ % Generating 1024 bit RSA keys, keys will be non-exportable...[OK]</pre>
+                            </li>
+                            <li>Line VTY Configuration
+                                <pre class="border border-dark" style="background-color: lightgrey">R1# line vty 0 4
+R1(config-line)# transport input ssh
+R1(config-line)# login local
+R1(config-line)# exit</pre>
+                            </li>
+                            <li>Create User Account
+                                <pre class="border border-dark" style="background-color: lightgrey">R1(config)# username yourusername password yourpassword privilege 15</pre>
+                                <label class="text-danger">Users with a privilege lower than 15 will not be able to make configuration changes</label>
+                                <pre class="border border-dark" style="background-color: lightgrey">R1# service password-encryption</pre>
+                            </li>
+                            <li>Verify SSH
+                                <pre class="border border-dark" style="background-color: lightgrey">R1# sh ip ssh
+SSH Enabled - version 1.99
+Authentication timeout: 120 secs; Authentication retries: 3</pre>
+                            </li>
                         </ol>
-                        <p class="text-danger font-weight-bold">If the device is 'Inactive', the details button will be
-                            disabled<br>Check if the device is on and refresh the page until the connection status
-                            changes to 'Active'<br>
-                        </p>
                     </div>
                 </div>
             </div>
@@ -172,6 +187,26 @@
                             </li>
                             <li>Press 'Save Device Configuration' to save the current configuration<br>
                                 <img src="{% static 'images/saveconfig.png' %}" alt="Image Not Found"></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="card ">
+                <div class="card-header" id="headingEight">
+                    <h5 class="mb-0">
+                        <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                data-target="#collapseEight"
+                                aria-expanded="false" aria-controls="collapseEight">
+                                Blah Blah
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="line-height: 250%">
+                            <li>
+
+                            </li>
                         </ol>
                     </div>
                 </div>

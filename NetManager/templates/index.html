@@ -7,7 +7,19 @@
 <!-- Main -->
 <main class="main">
 
-    {% load crispy_forms_tags %}
+    <div class="p-3" id="alert-div">
+        <!-- Alert Response Message -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-0 alert-dismissible fade show alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+                     role="alert">{{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="alert_onclick()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 
     <div class="jumbotron jumbotron-fluid mb-0 card" style="background-color: #1c1f22">
         <div class="container" style="min-width: 100%">
@@ -21,8 +33,8 @@
                 <div class="col jumbo" style="height: 100%;">
                     <p style="display:inline; font-size: 24px" class="text-info">NetManager </p>
                     <p style="display:inline; font-size: 24px">simplifies the process of configuring and managing<br>
-                        your network devices. The easy to use interface allows for faster<br>
-                        network configuration and improved network monitoring.<br>
+                        your network devices. The easy to use tool for faster network<br>
+                        configuration and improved network monitoring.<br>
                     </p>
                     <label class="m-4 text-info" style="font-size: 20px">Don't have an account?</label><br>
                     <a class="btn-lg btn-success nav-btn" href="#signup" title="Sign Up">Sign Up Today!</a>
@@ -32,9 +44,9 @@
     </div>
 
     <div class="jumbotron jumbotron-fluid mb-0 card text-dark">
-        <div class="container" style="min-width: 100%">
-            <div class="row">
-                <div class="col">
+        <div class="container p-4" style="min-width: 100%">
+            <div class="row justify-content-center">
+                <div class="col feature">
                     <h1>
                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
                              class="bi bi-server" viewBox="0 0 16 16">
@@ -44,10 +56,12 @@
                         </svg>
                     </h1>
                     <h4>Device Management</h4>
-                    <p>waffle<br><br><br><br><br><br>F
+                    <p>Manage and configure all your network devices from one location without the command line.
+                        NetManager allows you to connect to your devices, retrieve device information and send
+                        configuration.
                     </p>
                 </div>
-                <div class="col">
+                <div class="col feature">
                     <h1>
                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
                              class="bi bi-key-fill" viewBox="0 0 16 16">
@@ -55,9 +69,12 @@
                         </svg>
                     </h1>
                     <h4>Secure Connections</h4>
-                    <p>waffle</p>
+                    <p>NetManager utilises the Netmiko SSH library to establish secure connections to your devices. All
+                        you need is SSH configured on your network device and you're good to go. Information is polled
+                        from each device periodically as well as on request using the established SSH connection to the
+                        network device</p>
                 </div>
-                <div class="col">
+                <div class="col feature">
                     <h1>
                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
                              class="bi bi-shield-lock-fill" viewBox="0 0 16 16">
@@ -68,7 +85,7 @@
                     <h4>Security Policies</h4>
                     <p>waffle</p>
                 </div>
-                <div class="col">
+                <div class="col feature">
                     <h1>
                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
                              class="bi bi-file-earmark-text-fill" viewBox="0 0 16 16">
@@ -90,6 +107,7 @@
                     <div class="card signup">
                         <form class="form-group text-left text-secondary" method="post">
                             {% csrf_token %}
+                            {% load crispy_forms_tags %}
                             {{ form|crispy }}
                             <button type="submit"
                                     class="btn btn-success btn-block"
@@ -102,6 +120,12 @@
         </div>
     </div>
 </main>
+
+<script>
+    function alert_onclick() {
+        document.getElementById('alert-div').remove()
+    }
+</script>
 
 
 {% include "footer.html" %}

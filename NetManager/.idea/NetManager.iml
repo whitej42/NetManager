@@ -28,13 +28,11 @@
     <orderEntry type="module" module-name="RotaApplication" />
     <orderEntry type="library" name="bootstrap-table" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="jquery-3.5.1.slim" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
-    <option name="TEMPLATE_FOLDERS">
-      <list>
-        <option value="$MODULE_DIR$/../NetManager\templates" />
-      </list>
-    </option>
   </component>
 </module>
