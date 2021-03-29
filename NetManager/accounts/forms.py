@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
 
+
+# get django's auths user model
 User = get_user_model()
 
 
@@ -45,3 +47,39 @@ class RegisterForm(forms.ModelForm):
         if email_check.exists():
             raise forms.ValidationError('Account already registered to this email address')
         return super(RegisterForm, self).clean()
+
+
+class ProfileForm(forms.ModelForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control detail textbox', 'disabled': 'true'}))
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control detail textbox', 'disabled': 'true'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control detail textbox', 'disabled': 'true'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control detail textbox', 'disabled': 'true'}))
+
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+        ]
+
+
+class ChangePasswordForm(forms.ModelForm):
+    password = forms.CharField(label='New Password', widget=forms.PasswordInput(attrs={'class': 'form-control textbox'}))
+    password2 = forms.CharField(label='Confirm New Password', widget=forms.PasswordInput(attrs={'class': 'form-control textbox'}))
+
+    class Meta:
+        model = User
+        fields = [
+            'password',
+            'password2',
+        ]
+
+    def clean(self):
+        password = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('password2')
+
+        if password != password2:
+            raise forms.ValidationError('Passwords do not match')
+        return super(ChangePasswordForm, self).clean()

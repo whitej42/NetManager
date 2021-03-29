@@ -1,5 +1,18 @@
+"""
+
+DASHBOARD VIEWS.PY
+* DASHBOARD PAGE
+    * CHECK CONNECTIONS
+    * ADD NEW DEVICES
+* PROFILE PAGE
+    * UPDATE USER PROFILE
+    * CHANGE PASSWORD
+    * DELETE ACCOUNT
+
+"""
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from netmiko import ConnectHandler
@@ -19,11 +32,13 @@ def dashboard(PageRequest):
     return render(PageRequest, 'dashboard.html', args)
 
 
+# device details view
 @login_required
 def details(PageRequest, device_ID):
     device = Device.objects.filter(id=device_ID)
-    form = SecurityForm(PageRequest.POST or None)
-    args = {'device': device, 'form': form}
+    device_form = DeviceForm(PageRequest.POST or None, instance=device.get())
+    security_form = SecurityForm(PageRequest.POST or None, instance=device.get())
+    args = {'device': device, 'security_form': security_form, 'device_form': device_form}
     return render(PageRequest, 'details.html', args)
 
 
@@ -43,11 +58,13 @@ def check_devices():
         device = {'device_type': 'cisco_ios', 'ip': i.host, 'username': i.username, 'password': i.password,
                   'port': 22}
         try:
+            # if connection established
             c = ConnectHandler(**device)
             i.status = True
             i.save()
             c.disconnect()
         except:
+            # if connection failed
             i.status = False
             i.save()
 
@@ -60,7 +77,7 @@ def add_device(PageRequest):
             device = form.save(commit=False)
             device.user_id = User.objects.get(username=PageRequest.user).pk
             device.save()
-            log = Log(user=PageRequest.user, device=device, type='Device', description='Device: ' + device.deviceName + ' - Added to the Database')
+            log = Log(user=PageRequest.user, device=device, type='Device', description='Device: ' + device.name + ' - Added to the Database')
             log.save()
             messages.success(PageRequest, log.description)
     return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
@@ -71,7 +88,7 @@ def delete_device(PageRequest):
     device_id = PageRequest.POST.get('id')
     d = Device.objects.get(pk=device_id)
     d.delete()
-    log = Log(user=PageRequest.user, device=d.deviceName, type='Device', description='Device: ' + d.deviceName + ' - Removed From Database')
+    log = Log(user=PageRequest.user, device=d.name, type='Device', description='Device: ' + d.name + ' - Removed From Database')
     log.save()
     messages.success(PageRequest, log.description)
     return redirect(dashboard)
@@ -80,26 +97,14 @@ def delete_device(PageRequest):
 # edit existing device in db
 def edit_device(PageRequest):
     device_id = PageRequest.POST.get('id')
-    device = PageRequest.POST.get('device')
-    deviceType = PageRequest.POST.get('type')
-    vendor = PageRequest.POST.get('vendor')
-    host = PageRequest.POST.get('host')
-    location = PageRequest.POST.get('loc')
-    contact = PageRequest.POST.get('cont')
+    device = Device.objects.get(pk=device_id)
+    form = DeviceForm(PageRequest.POST or None, instance=device)
 
-    try:
-        d = Device.objects.get(pk=device_id)
-        d.deviceName = device
-        d.deviceType = deviceType
-        d.vendor = vendor
-        d.host = host
-        d.location = location
-        d.contact = contact
-        d.save()
-    except Device.DoesNotExist:
-        raise Http404('Device Does Not Exist')
-
-    log = Log(user=PageRequest.user, device=device, type='Device', description='Device: ' + device + ' - Changes Applied ')
+    if PageRequest.user.is_authenticated:
+        if form.is_valid():
+            device.save()
+    log = Log(user=PageRequest.user, device=device.name, type='Security',
+              description='Changes made to device: ' + device.name)
     log.save()
     messages.success(PageRequest, log.description)
     return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
@@ -109,16 +114,13 @@ def edit_device(PageRequest):
 def update_security(PageRequest):
     device_id = PageRequest.POST.get('id')
     device = Device.objects.get(pk=device_id)
-    form = SecurityForm(PageRequest.POST or None)
+    form = SecurityForm(PageRequest.POST or None, instance=device)
 
     if PageRequest.user.is_authenticated:
         if form.is_valid():
-            device.username = form.cleaned_data['username']
-            device.password = form.cleaned_data['password']
-            device.secret = form.cleaned_data['secret']
             device.save()
-    log = Log(user=PageRequest.user, device=device.deviceName, type='Security',
-              description='Device: ' + device.deviceName + ' - Security Settings Changed')
+    log = Log(user=PageRequest.user, device=device.name, type='Security',
+              description='Device: ' + device.name + ' - Security Settings Changed')
     log.save()
     messages.success(PageRequest, log.description)
     return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))

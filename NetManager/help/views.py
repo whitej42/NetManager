@@ -1,3 +1,10 @@
+"""
+
+HELP VIEWS.PY
+* HELP PAGE
+
+"""
+
 from django.shortcuts import render
 
 

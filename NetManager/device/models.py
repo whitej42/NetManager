@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 # device object
 class Device(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    deviceName = models.CharField(max_length=250, null=False)
-    deviceType = models.CharField(max_length=250, null=False)
+    name = models.CharField(max_length=250, null=False)
+    type = models.CharField(max_length=250, null=False)
     host = models.CharField(max_length=250, null=False)
     vendor = models.CharField(max_length=250, null=False)
     location = models.CharField(max_length=250, default='Not Specified')
@@ -18,7 +18,7 @@ class Device(models.Model):
     status = models.BooleanField(default=False, editable=False)
 
     def __str__(self):
-        return self.deviceName
+        return self.name
 
 
 # config log object

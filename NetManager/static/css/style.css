@@ -1,7 +1,7 @@
 /* Custom CSS Stylesheet */
 
-/* jump to section  */
 html {
+    /* jump to section  */
     scroll-behavior: smooth;
 }
 
@@ -14,104 +14,27 @@ body {
     min-height: 100vh;
 }
 
-/* light mode */
-.bg-light {
-    background-color: #f8f9fa !important;
-}
-
-.nav-light {
-    background-color: white !important;
-    color: #343a40 !important;
-    box-shadow: 0 0 5px 5px lightgrey !important;
-}
-
-.link-light {
-    color: #343a40 !important;
-}
-
-.link-light:hover {
-    color: #17a2b8 !important;
-}
-
-.widget-light {
-    background-color: #f8f9fa !important;
-    color: #343a40 !important;
-    box-shadow: 0 0 5px 5px lightgrey !important;
-}
-
-.title-light {
-    color: #343a40 !important;
-}
-
-.table-light {
-    background-color: #f8f9fa !important;
-    color: #343a40 !important;
-}
-
-.textbox-light {
-    background-color: #f8f9fa !important;
-    color: #343a40 !important;
-}
-
-.add-light {
-    background-color: #f8f9fa !important;
-    box-shadow: 0 0 5px 5px lightgrey !important;
-
-}
-
-.footer-light {
-    background-color: #f8f9fa !important;
-    color: #343a40 !important;
-    box-shadow: 0 0 5px 5px lightgrey !important;
-}
-
-/* dark Mode */
-.nav-dark {
-    background-color: #343a40;
-    color: black;
-}
-
-.link-dark {
-    color: white;
-}
-
-.link-dark:hover {
-    color: #17a2b8;
-}
-
-.widget-dark {
-    background-color: #343a40;
-    border-radius: 5px;
-    min-height: 250px;
-}
-
-.widget-add-dark {
-    background-color: #343a40;
-    border-radius: 5px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.title-dark {
-    font-size: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    text-align: center;
-    color: #6c757d;
-}
-
-.textbox-dark {
-    background-color: #343a40;
-    color: white;
-}
-
-.footer-dark {
+/* footer */
+.footer {
     background-color: #343a40;
     color: white;
     margin-top: auto;
 }
 
 /* navbar */
+.nav {
+    background-color: #343a40;
+    color: black;
+}
+
+.link {
+    color: white;
+}
+
+.link:hover {
+    color: #17a2b8;
+}
+
 .nav-info {
     padding: 6px;
     cursor: pointer;
@@ -143,6 +66,21 @@ body {
 /* button padding */
 .pad-btn {
     margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* multi-uses */
+.title {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #6c757d;
+}
+
+.textbox {
+    background-color: #343a40 !important;
+    color: white !important;
     margin-bottom: 10px;
 }
 
@@ -213,20 +151,28 @@ body {
 }
 
 /* widgets */
+.widget {
+    background-color: #343a40;
+    border-radius: 5px;
+    min-height: 250px;
+}
+
 .widgets-grid {
     padding: 10px;
     min-height: 100%;
+}
+
+.widget-add {
+    background-color: #343a40;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 /* modals */
 .modal {
     color: #343a40;
     text-align: left;
-}
-
-/* device page */
-.accordion-device {
-    margin-bottom: 20px;
 }
 
 /* help page */
@@ -251,7 +197,7 @@ body {
     margin: auto;
 }
 
-/* interface details page */
+/* interface page */
 .status {
     margin-left: 5px;
     padding-top: 10px;

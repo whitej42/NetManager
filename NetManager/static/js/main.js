@@ -4,7 +4,7 @@ function darkMode() {
     body.classList.toggle("bg-light");
 
     // change widgets to light/dark
-    const widget = document.getElementsByClassName('widget-dark');
+    const widget = document.getElementsByClassName('widget');
     for (let i = 0; i < widget.length; i++) {
         widget[i].classList.toggle("widget-light");
     }
@@ -19,7 +19,7 @@ function darkMode() {
     const navbar = document.getElementById('navbar');
     navbar.classList.toggle("nav-light");
 
-    const links = document.getElementsByClassName('link-dark')
+    const links = document.getElementsByClassName('link')
     for (let i = 0; i < links.length; i++) {
         links[i].classList.toggle("link-light");
     }
@@ -40,12 +40,12 @@ function darkMode() {
     }
 
     // change text boxes to light/dark - Interface Page Only
-    const textbox = document.getElementsByClassName('textbox-dark');
+    const textbox = document.getElementsByClassName('textbox');
     for (let i = 0; i < textbox.length; i++) {
         textbox[i].classList.toggle("textbox-light");
     }
 
-    const title = document.getElementsByClassName('title-dark');
+    const title = document.getElementsByClassName('title');
     for (let i = 0; i < title.length; i++) {
         title[i].classList.toggle("title-light");
     }
@@ -54,5 +54,4 @@ function darkMode() {
     for (let i = 0; i < add_device.length; i++) {
         add_device[i].classList.toggle("add-light");
     }
-
 }

@@ -3,18 +3,18 @@ from device.models import Device
 
 
 class DeviceForm(forms.ModelForm):
-    deviceName = forms.CharField(label='Device Name')
-    deviceType = forms.CharField(label='Device Type')
-    host = forms.CharField(label='Management Address')
-    vendor = forms.CharField(label='Vendor')
-    location = forms.CharField(label='Location')
-    contact = forms.CharField(label='Contact')
+    name = forms.CharField(label="Device Name", widget=forms.TextInput(attrs={'class': 'form-control textbox edit', 'disabled': 'true'}))
+    type = forms.CharField(label="Device Type", widget=forms.TextInput(attrs={'class': 'form-control textbox edit', 'disabled': 'true'}))
+    host = forms.CharField(label="SSH Address", widget=forms.TextInput(attrs={'class': 'form-control textbox edit', 'disabled': 'true'}))
+    vendor = forms.CharField(label="Vendor", widget=forms.TextInput(attrs={'class': 'form-control textbox edit', 'disabled': 'true'}))
+    location = forms.CharField(label="Location", widget=forms.TextInput(attrs={'class': 'form-control textbox edit', 'disabled': 'true'}))
+    contact = forms.CharField(label='Contact', widget=forms.TextInput(attrs={'class': 'form-control textbox edit', 'disabled': 'true'}))
 
     class Meta:
         model = Device
         fields = [
-            'deviceName',
-            'deviceType',
+            'name',
+            'type',
             'host',
             'vendor',
             'location',
@@ -23,9 +23,9 @@ class DeviceForm(forms.ModelForm):
 
 
 class SecurityForm(forms.ModelForm):
-    username = forms.CharField()
-    password = forms.PasswordInput()
-    secret = forms.PasswordInput()
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control textbox security', 'disabled': 'true'}))
+    password = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control textbox security', 'disabled': 'true'}))
+    secret = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control textbox security', 'disabled': 'true'}))
 
     class Meta:
         model = Device

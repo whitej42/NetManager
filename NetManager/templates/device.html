@@ -4,6 +4,17 @@
 {% load static %}
 {% include "navbar.html" %}
 
+<div class="jumbotron jumbotron-fluid mb-0" style="background-color: #1c1f22">
+    <div class="container" style="min-width: 100%">
+        <h2 class="text-info font-weight-bold">Device Configuration
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-cpu nav-icon"
+                 viewBox="0 0 16 16">
+                <path d="M5 0a.5.5 0 0 1 .5.5V2h1V.5a.5.5 0 0 1 1 0V2h1V.5a.5.5 0 0 1 1 0V2h1V.5a.5.5 0 0 1 1 0V2A2.5 2.5 0 0 1 14 4.5h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14a2.5 2.5 0 0 1-2.5 2.5v1.5a.5.5 0 0 1-1 0V14h-1v1.5a.5.5 0 0 1-1 0V14h-1v1.5a.5.5 0 0 1-1 0V14h-1v1.5a.5.5 0 0 1-1 0V14A2.5 2.5 0 0 1 2 11.5H.5a.5.5 0 0 1 0-1H2v-1H.5a.5.5 0 0 1 0-1H2v-1H.5a.5.5 0 0 1 0-1H2v-1H.5a.5.5 0 0 1 0-1H2A2.5 2.5 0 0 1 4.5 2V.5A.5.5 0 0 1 5 0zm-.5 3A1.5 1.5 0 0 0 3 4.5v7A1.5 1.5 0 0 0 4.5 13h7a1.5 1.5 0 0 0 1.5-1.5v-7A1.5 1.5 0 0 0 11.5 3h-7zM5 6.5A1.5 1.5 0 0 1 6.5 5h3A1.5 1.5 0 0 1 11 6.5v3A1.5 1.5 0 0 1 9.5 11h-3A1.5 1.5 0 0 1 5 9.5v-3zM6.5 6a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"></path>
+            </svg>
+        </h2>
+    </div>
+</div>
+
 <!-- Main -->
 <main class="main container-fluid">
 
@@ -24,18 +35,18 @@
         <!-- Top Widgets -->
         <div class="row mb-2">
             <!-- Device Details -->
-            <div class="col-3 widget-dark">
-                <h3 class="title-dark">Device Details</h3>
+            <div class="col-3 widget">
+                <h3 class="title">Device Details</h3>
                 <table class="table table-striped table-dark">
                     <tbody class="text-left">
                     {% for j in version %}
                         <tr>
                             <td><b>Device Name</b></td>
-                            <td>{{ device.deviceName }}</td>
+                            <td>{{ device.name }}</td>
                         </tr>
                         <tr>
                             <td><b>Device Type</b></td>
-                            <td>{{ device.deviceType }}</td>
+                            <td>{{ device.type }}</td>
                         </tr>
                         <tr>
                             <td><b>Device Vendor</b></td>
@@ -82,8 +93,8 @@
             </div>
 
             <!-- Interface Brief -->
-            <div class="col-6 ml-2 table-responsive widget-dark" style="height: 550px">
-                <h3 class="title-dark">Device Interfaces</h3>
+            <div class="col-6 ml-2 table-responsive widget" style="height: 550px">
+                <h3 class="title">Device Interfaces</h3>
                 <table class="table table-striped table-dark">
                     <thead>
                     <tr>
@@ -161,8 +172,8 @@
             </div>
 
             <!-- Active Interfaces -->
-            <div class="col ml-2 widget-dark table-responsive">
-                <h3 class="title-dark">Active IP Addresses</h3>
+            <div class="col ml-2 widget table-responsive">
+                <h3 class="title">Active IP Addresses</h3>
                 <table class="table table-striped table-dark">
                     <thead>
                     <tr>
@@ -191,8 +202,8 @@
         <!-- Bottom Widgets -->
         <div class="row d-flex">
             <!-- Device Security -->
-            <div class="col widget-dark text-left text-secondary">
-                <h3 class="title-dark">Device Security Features</h3>
+            <div class="col widget text-left text-secondary">
+                <h3 class="title">Device Security Features</h3>
                 <div id="accordion" class="accordion accordion-device text-left">
                     <!-- Active Access Lists -->
                     <div class="card">
@@ -349,8 +360,8 @@
                     <!-- NEW TABS HERE -->
                 </div>
             </div>
-            <div class="col ml-2 widget-dark">
-                <h3 class="title-dark">CPU/Power Statistics</h3>
+            <div class="col ml-2 widget">
+                <h3 class="title">CPU/Power Statistics</h3>
             </div>
         </div>
     </div>

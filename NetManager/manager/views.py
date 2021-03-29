@@ -25,7 +25,7 @@ def delete_device(PageRequest):
     id = PageRequest.POST.get('id')
     d = Device.objects.get(pk=id)
     d.delete()
-    log = Log(user=PageRequest.user, device=d.deviceName, type='Device', description='Device: ' + d.deviceName + ' - Removed From Database')
+    log = Log(user=PageRequest.user, device=d.name, type='Device', description='Device: ' + d.name + ' - Removed From Database')
     log.save()
     messages.success(PageRequest, log.description)
     return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
@@ -43,8 +43,8 @@ def update_security(PageRequest):
             device.password = form.cleaned_data['password']
             device.secret = form.cleaned_data['secret']
             device.save()
-    log = Log(user=PageRequest.user, device=device.deviceName, type='Device',
-              description='Device: ' + device.deviceName + ' - Added to the Database')
+    log = Log(user=PageRequest.user, device=device.name, type='Device',
+              description='Device: ' + device.name + ' - Added to the Database')
     log.save()
     messages.success(PageRequest, log.description)
 

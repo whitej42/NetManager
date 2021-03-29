@@ -1,3 +1,14 @@
+"""
+
+DEVICE VIEWS.PY
+* DEVICE PAGE
+    * DEVICE CONNECTIONS
+    * DEVICE CONFIGURATION
+* INTERFACE PAGE
+    * INTERFACE CONFIGURATION
+
+"""
+
 from django.contrib.auth.decorators import login_required
 from device.models import Device
 from .models import Log
@@ -5,40 +16,6 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from netmiko import ConnectHandler
 from django.contrib import messages
-
-
-# device HTML view
-@login_required
-def get_device(PageRequest, device_ID):
-    try:
-        # get selected device from db
-        selected_device = Device.objects.get(pk=device_ID)
-        # get devices IP address
-        # pass device information to template
-        args = {'device': selected_device, 'interfaces': get_interfaces(selected_device), 'version': get_version(selected_device),
-                'acl': get_acl(selected_device)}
-    except Device.DoesNotExist:
-        raise Http404('Device Does Not Exist')
-    return render(PageRequest, 'device.html', args)
-
-
-# interface details HTML view
-@login_required
-def get_interface_details(PageRequest, device_ID):
-    # check item exists in db
-    try:
-        # get selected device from db
-        selected_device = Device.objects.get(pk=device_ID)
-        # get devices IP address
-        # get selected interface
-        selected_interface = PageRequest.POST.get('interface')
-        # pass interface information to template
-        args = {'device': selected_device, 'interface': interface_details(selected_device, selected_interface),
-                'acl': get_acl(selected_device), 'int_acl': interface_acl(selected_device, selected_interface)}
-    except Device.DoesNotExist:
-        # if not - raise http404
-        raise Http404()
-    return render(PageRequest, 'interface.html', args)
 
 
 # connect to host device
@@ -54,7 +31,22 @@ def connect(selected_device):
     return device
 
 
-'''*** Functions for the device management page ***'''
+''' *** Functions for the device configuration page *** '''
+
+
+# device HTML view
+@login_required
+def device(PageRequest, device_ID):
+    try:
+        # get selected device from db
+        selected_device = Device.objects.get(pk=device_ID)
+        # pass device information to template
+        args = {'device': selected_device, 'interfaces': get_interfaces(selected_device),
+                'version': get_version(selected_device),
+                'acl': get_acl(selected_device)}
+    except Device.DoesNotExist:
+        raise Http404('Device Does Not Exist')
+    return render(PageRequest, 'device.html', args)
 
 
 # get device interfaces
@@ -119,7 +111,7 @@ def save_config(PageRequest, device_ID):
         # save config using NetMiko save_config() function
         c.save_config()
         c.disconnect()
-        log = Log(user=PageRequest.user, device=host.deviceName, type='Configuration',
+        log = Log(user=PageRequest.user, device=host.name, type='Configuration',
                   description='Device configuration saved')
         log.save()
         messages.success(PageRequest, log.description)
@@ -151,7 +143,7 @@ def config_interface(PageRequest, device_ID):
             commands = ['interface ' + interface, 'ip address ' + address + ' ' + mask, 'shutdown']
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(user=PageRequest.user, device=host.deviceName, type='Configuration',
+        log = Log(user=PageRequest.user, device=host.name, type='Configuration',
                   description='IP Address ' + address + ' configured on interface ' + interface)
         log.save()
         messages.success(PageRequest, log.description)
@@ -176,7 +168,7 @@ def reset_interface(PageRequest, device_ID):
         commands = ['interface ' + interface, 'no ip address', 'shutdown']
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(user=PageRequest.user, device=host.deviceName, type='Configuration',
+        log = Log(user=PageRequest.user, device=host.name, type='Configuration',
                   description='Interface ' + interface + ' reset')
         log.save()
         messages.success(PageRequest, log.description)
@@ -202,7 +194,7 @@ def create_acl(PageRequest, device_ID):
         commands = ['ip access-list ' + acl_type + " " + acl_name, acl]
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(user=PageRequest.user, device=host.deviceName, type='Security',
+        log = Log(user=PageRequest.user, device=host.name, type='Security',
                   description='Access List ' + acl_name + ' configured')
         log.save()
         messages.success(PageRequest, log.description)
@@ -225,7 +217,7 @@ def delete_acl(PageRequest, device_ID):
         commands = ['no ip access-list ' + acl]
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(user=PageRequest.user, device=host.deviceName, type='Security',
+        log = Log(user=PageRequest.user, device=host.name, type='Security',
                   description='Access List ' + acl + ' removed')
         log.save()
         messages.success(PageRequest, log.description)
@@ -249,7 +241,7 @@ def disable_interfaces(PageRequest, device_ID):
                 commands = ['interface ' + interface['intf'], 'shutdown']
                 c.send_config_set(commands)
         c.disconnect()
-        log = Log(user=PageRequest.user, device=host.deviceName, type='Security',
+        log = Log(user=PageRequest.user, device=host.name, type='Security',
                   description='All unused interfaces shutdown')
         log.save()
         messages.success(PageRequest, log.description)
@@ -258,7 +250,26 @@ def disable_interfaces(PageRequest, device_ID):
         return e
 
 
-'''*** Functions for the interface details page ***'''
+''' *** Functions for the interface details page *** '''
+
+
+# interface details HTML view
+@login_required
+def interface(PageRequest, device_ID):
+    # check item exists in db
+    try:
+        # get selected device from db
+        selected_device = Device.objects.get(pk=device_ID)
+        # get devices IP address
+        # get selected interface
+        selected_interface = PageRequest.POST.get('interface')
+        # pass interface information to template
+        args = {'device': selected_device, 'interface': interface_details(selected_device, selected_interface),
+                'acl': get_acl(selected_device), 'int_acl': interface_acl(selected_device, selected_interface)}
+    except Device.DoesNotExist:
+        # if not - raise http404
+        raise Http404()
+    return render(PageRequest, 'interface.html', args)
 
 
 # get interface details
@@ -309,7 +320,7 @@ def apply_acl(PageRequest, device_ID):
         commands = ['interface ' + interface, 'ip access-group ' + acl + ' ' + direction]
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(user=PageRequest.user, device=host.deviceName, type='Security',
+        log = Log(user=PageRequest.user, device=host.name, type='Security',
                   description='Access List ' + acl + ' applied to ' + interface)
         log.save()
         messages.success(PageRequest, log.description)
@@ -333,7 +344,7 @@ def remove_acl(PageRequest, device_ID):
         commands = ['interface ' + interface, 'no ip access-group ' + acl + ' ' + direction]
         c.send_config_set(commands)
         c.disconnect()
-        log = Log(user=PageRequest.user, device=host.deviceName, type='Security',
+        log = Log(user=PageRequest.user, device=host.name, type='Security',
                   description='Access List ' + acl + ' removed from ' + interface)
         log.save()
         messages.success(PageRequest, log.description)
