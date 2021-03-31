@@ -206,6 +206,7 @@
         $('button.delete').show();
         $('#Submit').hide();
         $('#Cancel-Info').hide();
+        $('form')[0].reset();
     });
 
     // edit security settings
@@ -221,6 +222,7 @@
         $('#Update').hide();
         $('#Cancel-Sec').hide();
         $('#Security').show();
+        $('form')[1].reset();
     });
 
     // get device for id for deletion

@@ -1,7 +1,7 @@
 """
 
-DASHBOARD VIEWS.PY
-* DASHBOARD PAGE
+MAIN/VIEWS.PY
+* MAIN PAGE
     * CHECK CONNECTIONS
     * ADD NEW DEVICES
 * PROFILE PAGE
@@ -17,11 +17,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from netmiko import ConnectHandler
 from device.models import *
-from dashboard.forms import *
+from main.forms import *
 import datetime
 
 
-# dashboard view
+# main view
 @login_required
 def dashboard(PageRequest):
     form = DeviceForm(PageRequest.POST or None)
@@ -29,7 +29,7 @@ def dashboard(PageRequest):
     date = datetime.datetime.now() - datetime.timedelta(days=1)
     config_logs = Log.objects.filter(user__username=PageRequest.user, dateTime__gt=date)
     args = {'all_devices': user_devices, 'status': check_devices(), 'all_logs': config_logs, 'form': form}
-    return render(PageRequest, 'dashboard.html', args)
+    return render(PageRequest, 'main.html', args)
 
 
 # device details view

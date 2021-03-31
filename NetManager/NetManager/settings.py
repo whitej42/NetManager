@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'dashboard.apps.DashboardConfig',
+    'main.apps.DashboardConfig',
     'device.apps.DeviceConfig',
     'accounts.apps.AccountsConfig',
     'django.contrib.admin',
@@ -129,14 +129,6 @@ STATICFILES_DIRS = [
 LOGIN_REDIRECT_URL = '/'
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
-
-MESSAGE_TAGS = {
-    messages.DEBUG: 'alert-info',
-    messages.INFO: 'alert-info',
-    messages.SUCCESS: 'alert-success',
-    messages.WARNING: 'alert-warning',
-    messages.ERROR: 'alert-danger',
-}
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

@@ -47,7 +47,7 @@ def sign_in(request):
         login(request, user)
         if next:
             return redirect(next)
-        return redirect('dashboard')
+        return redirect('main')
     args = {'form': form}
     return render(request, 'registration/login.html', args)
 

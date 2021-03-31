@@ -2,8 +2,8 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    # /dashboard/
-    path('', views.dashboard, name='dashboard'),
+    # /main/
+    path('', views.dashboard, name='main'),
     path('details/<str:device_ID>/', views.details, name='details'),
     path('reports', views.reports, name='reports'),
     path('add-device', views.add_device, name='add_device'),
