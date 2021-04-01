@@ -38,7 +38,7 @@
             <div class="col widget table-responsive">
                 <h3 class="title">Device Details</h3>
                 {% for i in device %}
-                    <div class="card bg-dark text-light p-2 mb-3">
+                    <div class="card card-custom">
                         <form action="{% url 'edit_device' %}" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="id" value="{{ i.id }}">
@@ -92,7 +92,7 @@
                         <h6>NetManager will use to establish SSH connections to this device</h6>
                         <h6>Visit our <a href="{% url 'help' %}" target="_blank">help page</a> for details on setting up
                             SSH on your device</h6>
-                        <div class="card bg-dark text-light p-2 mb-2">
+                        <div class="card card-custom">
                             <form action="{% url 'update_security' %}" method="post">
                                 {% csrf_token %}
                                 <div class="text-left mb-2">

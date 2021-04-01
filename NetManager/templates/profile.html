@@ -36,7 +36,7 @@
         <div class="row">
             <div class="col widget">
                 <h3 class="title">Account Settings</h3>
-                <div class="card bg-dark text-light p-2 mb-3">
+                <div class="card card-custom">
                     <form action="{% url 'update_profile' %}" method="post">
                         {% csrf_token %}
                         <div class="text-left mb-2">
@@ -84,7 +84,7 @@
 
             <div class="col widget table-responsive ml-3">
                 <h3 class="title">Change Password</h3>
-                <div class="card bg-dark text-light p-2 mb-3">
+                <div class="card card-custom">
                     <form action="{% url 'change_password' %}" method="post" class="text-left">
                         {% csrf_token %}
                         {{ pass_form }}

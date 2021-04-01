@@ -133,6 +133,7 @@
                                     <div class="status bg-success"></div>
                                 {% endif %}
                             </td>
+                            <!-- Configure Button -->
                             <td>
                                 {% if i.ipaddr == device.host %}
                                     <!-- Disable configuring SSH interface -->
@@ -149,6 +150,7 @@
                                     </button>
                                 {% endif %}
                             </td>
+                            <!-- Reset Button -->
                             <td>
                                 {% if i.ipaddr == device.host %}
                                     <!-- Disable resetting SSH interface -->
@@ -166,6 +168,7 @@
                                     </button>
                                 {% endif %}
                             </td>
+                            <!-- Details Button -->
                             <td>
                                 {% if i.ipaddr == device.host %}
                                     <!-- Disable SSH interface -->
@@ -213,24 +216,31 @@
                             <div class="card-body">
                                 <label class="font-weight-bold">Manage and Configure Device Access Lists</label><br>
                                 {% for list in acl %}
-                                    <label>{{ list.acl_type }} {{ list.acl_name }}</label>
-                                    <p>{{ list.line_num }} {{ list.action }} {{ list.protocol }}
-                                        {% if list.src_any %}
-                                            {{ list.src_any }}
-                                            {% if list.src_network %}
-                                                {{ list.src_network }}
-                                            {% endif %}
-                                        {% else %}
-                                            {{ list.src_host }}
-                                        {% endif %}
-                                        {% if list.dst_any == 'any' %}
-                                            {{ list.dst_any }}
-                                            {% if list.dst_network %}
-                                                {{ list.dst_network }}
-                                            {% endif %}
-                                        {% else %}
-                                            {{ list.dst_host }}
-                                        {% endif %}
+                                    {% ifchanged list.acl_name %}
+                                        <label class="mb-0">{{ list.acl_type }} {{ list.acl_name }}</label>
+                                    {% else %}
+                                        <ul>
+                                            <li>
+                                                {{ list.line_num }} {{ list.action }} {{ list.protocol }}
+                                                {% if list.src_any == 'any' %}
+                                                    {{ list.src_any }}
+                                                    {% if list.src_network %}
+                                                        {{ list.src_network }}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {{ list.src_host }}
+                                                {% endif %}
+                                                {% if list.dst_any == 'any' %}
+                                                    {{ list.dst_any }}
+                                                    {% if list.dst_network %}
+                                                        {{ list.dst_network }}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {{ list.dst_host }}
+                                                {% endif %}
+                                            </li>
+                                        </ul>
+                                    {% endifchanged %}
                                     </p>
                                 {% empty %}
                                     <h5 class="text-dark">No Access Lists Configured</h5>
@@ -256,7 +266,8 @@
                                 <div class="border border-secondary rounded">
                                     <div style="padding-top: 10px; padding-left: 10px; padding-right: 10px">
                                         <label class="font-weight-bold">Edit or Create New Access List</label>
-                                        <form action="{% url 'access_list' device_ID=device.pk action='CREATE' %}" method="post">
+                                        <form action="{% url 'access_list' device_ID=device.pk action='CREATE' %}"
+                                              method="post">
                                             {% csrf_token %}
                                             <div class="form-group row">
                                                 <div class="form-group col">
@@ -296,13 +307,16 @@
                                     <div class="border border-secondary rounded">
                                         <div style="padding-top: 10px; padding-left: 10px; padding-right: 10px">
                                             <label class="font-weight-bold">Delete Access List</label>
-                                            <form action="{% url 'access_list' device_ID=device.pk action='DELETE' %}" method="post">
+                                            <form action="{% url 'access_list' device_ID=device.pk action='DELETE' %}"
+                                                  method="post">
                                                 {% csrf_token %}
                                                 <label>Select Access List</label>
                                                 <select class="form-control" name="del_acl" required>
                                                     <option selected disabled>--- Select ACL ---</option>
                                                     {% for list in acl %}
-                                                        <option>{{ list.acl_type }} {{ list.acl_name }}</option>
+                                                        {% ifchanged list.acl_name %}
+                                                            <option>{{ list.acl_type }} {{ list.acl_name }}</option>
+                                                        {% endifchanged %}
                                                     {% endfor %}
                                                 </select>
                                                 <button type="submit" class="btn btn-danger pad-btn btn-block"
@@ -339,7 +353,8 @@
                              data-parent="#accordion">
                             <div class="card-body">
                                 <label>Disable all interfaces not in use & not assigned with an IP
-                                    addresses - </label><label class="text-warning">This may take a few moments</label><br>
+                                    addresses - </label><label class="text-warning">This may take a few
+                                moments</label><br>
                                 <a href="{% url 'disable_interfaces' device_ID=device.pk %}" type="button"
                                    class="btn btn-danger" id="button">Disable Interfaces
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -391,7 +406,7 @@
     <div class="modal fade" id="interfaceModal" tabindex="-1" role="dialog" aria-labelledby="label"
          aria-hidden="true">
         <div class="modal-dialog model-sm" role="document">
-            <form action="{% url 'config_interface' device_ID=device.pk %}" method="post">
+            <form action="{% url 'config_interface' device_ID=device.pk action='CONFIG' %}" method="post">
                 {% csrf_token %}
                 <div class="modal-content">
                     <div class="modal-header">
@@ -438,7 +453,7 @@
     <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="label"
          aria-hidden="true">
         <div class="modal-dialog model-sm" role="document">
-            <form action="{% url 'reset_interface' device_ID=device.pk %}" method="post">
+            <form action="{% url 'config_interface' device_ID=device.pk action='RESET' %}" method="post">
                 {% csrf_token %}
                 <div class="modal-content">
                     <div class="modal-header">

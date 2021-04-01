@@ -6,7 +6,6 @@
 
 <div class="jumbotron jumbotron-fluid mb-0" style="background-color: #1c1f22">
     <div class="container" style="min-width: 100%">
-
         <h2 class="text-info font-weight-bold">Dashboard
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
                  class="bi bi-house" style="margin-left: 10px; margin-bottom: 12px"
@@ -117,7 +116,7 @@
             </div>
         </div>
 
-        <div class="row mb-2 ">
+        <div class="row mb-2">
             <div class="col widget-add">
                 <button class="btn btn-success btn-block" type="button" data-toggle="collapse"
                         data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" id="Add">
@@ -170,7 +169,7 @@
                             <td id="user">{{ log.user }}</td>
                             <td id="type">{{ log.type }}</td>
                             <td id="description">{{ log.description }}</td>
-                            <td id="dateTime">{{ log.dateTime }}</td>
+                            <td id="dateTime">{{ log.date }} {{ log.time }}</td>
                             {% empty %}
                         </tbody>
                         </table>

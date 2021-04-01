@@ -169,6 +169,15 @@ body {
     padding-bottom: 10px;
 }
 
+.card-custom {
+    /* bg-dark text-light p-2 mb-3 */
+    background-color: #343a40 !important;
+    color: white !important;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
 /* modals */
 .modal {
     color: #343a40;

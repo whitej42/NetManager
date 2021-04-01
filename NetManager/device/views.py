@@ -32,10 +32,10 @@ def connect(d):
 
 
 # retrieve device information
-def retrieve(d, cmd):
+def retrieve(d, command):
     try:
         c = ConnectHandler(**connect(d))
-        output = c.send_command(cmd, use_textfsm=True)
+        output = c.send_command(command, use_textfsm=True)
         c.disconnect()
     except Exception as e:
         output = e
@@ -43,11 +43,11 @@ def retrieve(d, cmd):
 
 
 # send commands to device
-def configure(d, cmd):
+def configure(d, command):
     try:
         c = ConnectHandler(**connect(d))
         c.enable()
-        c.send_config_set(cmd)
+        c.send_config_set(command)
         c.disconnect()
         # 1 = success
         return 1
@@ -118,51 +118,32 @@ def save_config(PageRequest, device_ID):
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
 
 
-'''BETTER INTERFACE FUNCTIONS'''
-''' CONFIG & RESET'''
-
-
-# configure an interfaces IP Address
-def config_interface(PageRequest, device_ID):
-    # get device from db
+def config_interface(PageRequest, device_ID, action):
+    global cmd, l
     host = Device.objects.get(pk=device_ID)
 
-    # get form data from POST request
-    interface = PageRequest.POST.get('configInterface')
-    address = PageRequest.POST.get('ip')
-    mask = PageRequest.POST.get('mask')
-    enable = PageRequest.POST.get('enable')
+    if action == 'CONFIG':
+        selected_interface = PageRequest.POST.get('configInterface')
+        address = PageRequest.POST.get('ip')
+        mask = PageRequest.POST.get('mask')
+        enable = PageRequest.POST.get('enable')
 
-    if enable == 'on':
-        cmd = ['interface ' + interface, 'ip address ' + address + ' ' + mask, 'no shutdown']
-    else:
-        cmd = ['interface ' + interface, 'ip address ' + address + ' ' + mask, 'shutdown']
+        if enable == 'on':
+            cmd = ['interface ' + selected_interface, 'ip address ' + address + ' ' + mask, 'no shutdown']
+        else:
+            cmd = ['interface ' + selected_interface, 'ip address ' + address + ' ' + mask, 'shutdown']
+
+        l = Log(user=PageRequest.user, device=host.name, type='Configuration',
+                description='IP Address ' + address + ' configured on interface ' + selected_interface)
+
+    if action == 'RESET':
+        selected_interface = PageRequest.POST.get('resetInterface')
+        cmd = ['interface ' + selected_interface, 'no ip address', 'shutdown']
+        l = Log(user=PageRequest.user, device=host.name, type='Configuration',
+                description='Interface ' + selected_interface + ' reset')
 
     c = configure(host, cmd)
-
     if c == 1:
-        l = Log(user=PageRequest.user, device=host.name, type='Configuration',
-                description='IP Address ' + address + ' configured on interface ' + interface)
-        l.save()
-        return refer(PageRequest, l.description)
-    else:
-        return refer(PageRequest, 'Command Failed: ' + str(c))
-
-
-# reset an interface
-def reset_interface(PageRequest, device_ID):
-    # get devices IP address
-    host = Device.objects.get(pk=device_ID)
-
-    # get form data from POST request
-    interface = PageRequest.POST.get('resetInterface')
-
-    cmd = ['interface ' + interface, 'no ip address', 'shutdown']
-    c = configure(host, cmd)
-
-    if c == 1:
-        l = Log(user=PageRequest.user, device=host.name, type='Configuration',
-                description='Interface ' + interface + ' reset')
         l.save()
         return refer(PageRequest, l.description)
     else:
@@ -189,6 +170,34 @@ def disable_interfaces(PageRequest, device_ID):
         return refer(PageRequest, l.description)
     except Exception as e:
         return refer(PageRequest, 'Command Failed: ' + str(e))
+
+
+# create & delete access lists
+def access_list(PageRequest, device_ID, action):
+    # action = 'CREATE', 'DELETE
+    global cmd, l
+    host = Device.objects.get(pk=device_ID)
+
+    if action == 'CREATE':
+        acl_type = PageRequest.POST.get('acl_type')
+        acl_name = PageRequest.POST.get('acl_name')
+        acl = PageRequest.POST.get('acl')
+        cmd = ['ip access-list ' + acl_type + " " + acl_name, acl]
+        l = Log(user=PageRequest.user, device=host.name, type='Security',
+                description='Access List ' + acl_name + ' configured')
+
+    if action == 'DELETE':
+        acl = PageRequest.POST.get('del_acl')
+        cmd = ['no ip access-list ' + acl]
+        l = Log(user=PageRequest.user, device=host.name, type='Security',
+                description='Access List ' + acl + ' removed')
+
+    c = configure(host, cmd)
+    if c == 1:
+        l.save()
+        return refer(PageRequest, l.description)
+    else:
+        return refer(PageRequest, 'Command Failed: ' + str(c))
 
 
 ''' *** Functions for the interface details page *** '''
@@ -243,78 +252,3 @@ def interface_access_list(PageRequest, device_ID, action):
     else:
         messages.success(PageRequest, 'Command Failed: ' + str(c))
         return redirect(device, device_ID=device_ID)
-
-
-# create & delete access lists
-def access_list(PageRequest, device_ID, action):
-    # action = 'CREATE', 'DELETE
-    global cmd, l
-    host = Device.objects.get(pk=device_ID)
-
-    if action == 'CREATE':
-        acl_type = PageRequest.POST.get('acl_type')
-        acl_name = PageRequest.POST.get('acl_name')
-        acl = PageRequest.POST.get('acl')
-        cmd = ['ip access-list ' + acl_type + " " + acl_name, acl]
-        l = Log(user=PageRequest.user, device=host.name, type='Security',
-                description='Access List ' + acl_name + ' configured')
-
-    if action == 'DELETE':
-        acl = PageRequest.POST.get('del_acl')
-        cmd = ['no ip access-list ' + acl]
-        l = Log(user=PageRequest.user, device=host.name, type='Security',
-                description='Access List ' + acl + ' removed')
-
-    c = configure(host, cmd)
-    if c == 1:
-        l.save()
-        return refer(PageRequest, l.description)
-    else:
-        return refer(PageRequest, 'Command Failed: ' + str(c))
-
-
-'''
-# apply access list
-def apply_acl(PageRequest, device_ID):
-    host = Device.objects.get(pk=device_ID)
-
-    interface = PageRequest.POST.get('int')
-    acl = PageRequest.POST.get('acl')
-    direction = PageRequest.POST.get('dir')
-
-    try:
-        c = ConnectHandler(**connect(host))
-        c.enable()
-        commands = ['interface ' + interface, 'ip access-group ' + acl + ' ' + direction]
-        c.send_config_set(commands)
-        c.disconnect()
-        log = Log(user=PageRequest.user, device=host.name, type='Security',
-                  description='Access List ' + acl + ' applied to ' + interface)
-        log.save()
-        messages.success(PageRequest, log.description)
-        return redirect(device, device_ID=device_ID)
-    except Exception as e:
-        return e
-
-
-def remove_acl(PageRequest, device_ID):
-    host = Device.objects.get(pk=device_ID)
-
-    interface = PageRequest.POST.get('int')
-    acl = PageRequest.POST.get('acl')
-    direction = PageRequest.POST.get('dir')
-
-    try:
-        c = ConnectHandler(**connect(host))
-        c.enable()
-        commands = ['interface ' + interface, 'no ip access-group ' + acl + ' ' + direction]
-        c.send_config_set(commands)
-        c.disconnect()
-        log = Log(user=PageRequest.user, device=host.name, type='Security',
-                  description='Access List ' + acl + ' removed from ' + interface)
-        log.save()
-        messages.success(PageRequest, log.description)
-        return redirect(device, device_ID=device_ID)
-    except Exception as e:
-        return e
-'''

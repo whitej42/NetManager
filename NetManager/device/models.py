@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+from django.utils import timezone
 from django.contrib.auth.models import User
 
 
@@ -27,5 +27,6 @@ class Log(models.Model):
     device = models.CharField(max_length=250, null=False)
     type = models.CharField(max_length=250, null=False)
     description = models.CharField(max_length=250, null=False)
-    dateTime = models.DateTimeField(default=datetime.now())
+    date = models.DateField(default=timezone.now().date())
+    time = models.TimeField(default=timezone.now().time())
     flag = models.BooleanField(default=False)

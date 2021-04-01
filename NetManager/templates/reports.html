@@ -4,6 +4,19 @@
 {% load static %}
 {% include "navbar.html" %}
 
+<div class="jumbotron jumbotron-fluid mb-0" style="background-color: #1c1f22">
+    <div class="container" style="min-width: 100%">
+
+        <h2 class="text-info font-weight-bold">Reports
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                 class="bi bi-file-earmark-text nav-icon" viewBox="0 0 16 16">
+                <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"></path>
+                <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"></path>
+            </svg>
+        </h2>
+    </div>
+</div>
+
 <!-- Main -->
 <main class="main container-fluid">
 
@@ -12,52 +25,111 @@
         <div class="row">
             <!-- Audit Logs -->
             <div class="col widget">
-                <div class="well">
-                    <h3 class="title">Audit Logs</h3>
-                    <div id="accordion" class="accordion accordion-device text-left text-dark">
-                        {% for log in all_logs %}
-                            <!-- Active Access Lists -->
-                            <div class="card">
-                                <div class="card-header" id="heading{{ forloop.counter0 }}">
-                                    <h5 class="mb-0">
-                                        <button class="btn collapsed font-weight-bold" data-toggle="collapse"
-                                                data-target="#collapse{{ forloop.counter0 }}"
-                                                aria-expanded="false" aria-controls="collapse{{ forloop.counter0 }}">
-                                            {{ log.date }}
-                                        </button>
-                                    </h5>
+                <button class="btn btn-sm btn-secondary d-inline-block float-left mt-2 mb-2" type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Filters
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-funnel btn-icon" viewBox="0 0 16 16">
+                        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"></path>
+                    </svg>
+                </button>
+                <h3 class="title d-inline-block mt-2 mb-2">Audit Logs</h3>
+                <button class="btn btn-sm btn-success d-inline-block float-right mt-2 mb-2" type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Export
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-file-earmark-arrow-up btn-icon" viewBox="0 0 16 16">
+                        <path d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z"></path>
+                        <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"></path>
+                    </svg>
+                </button>
+                <!-- Filters -->
+                <div class="collapse mt-2 mb-2" id="collapseOne">
+                    <div class="card bg-dark text-light text-left p-2">
+                        <form action="{% url 'add_device' %}" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col">
+                                    <label>Device:</label>
+                                    <select class="form-control bg-dark text-light" id="device">
+                                        <option selected>All Devices</option>
+                                        {% for j in all_devices %}
+                                            <option>{{ j.name }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
-                                <div id="collapse{{ forloop.counter0 }}" class="collapse"
-                                     aria-labelledby="heading{{ forloop.counter0 }}"
-                                     data-parent="#accordion">
-                                    <div class="card-body">
-                                        {% if log.date == log.date %}
-                                                {{ log.description }}
-                                        {% endif %}
-                                    </div>
+                                <div class="col">
+                                    <label>Date From:</label>
+                                    <input type="date" class="form-control bg-dark text-light" id="date_from">
+                                </div>
+                                <div class="col">
+                                    <label>Date to:</label>
+                                    <input type="date" class="form-control bg-dark text-light" id="date_to">
                                 </div>
                             </div>
+                            <button class="btn btn-secondary btn-block mt-2 mb-2"
+                                    type="submit">Apply Filters
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                     fill="currentColor"
+                                     class="bi bi-funnel btn-icon" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Export -->
+                <div class="collapse mt-2 mb-2" id="collapseTwo">
+                    <div class="card bg-dark text-light text-left p-2">
+                        <form action="{% url 'add_device' %}" method="post">
+                            {% csrf_token %}
+                            EXPORT BASED ON CURRENT FILTERS<br>
+                            EXPORT ALL - TAKES FUCKING AGES
+                        </form>
+                    </div>
+                </div>
+                <!-- Log Output -->
+                <div class="card card-custom mt-2">
+                    {% for i in config_logs %}
+                        {% ifchanged i.date %}
+                            {{ i.date }}<br>
+                            {{ i.time }} {{ i.description }}<br>
+                        {% else %}
+                            {{ i.time }} {{ i.description }}<br>
+                        {% endifchanged %}
+                    {% endfor %}
+
+                    <div class="accordion text-dark" id="accordion">
+                        {% for i in config_logs %}
+                            {% ifchanged i.date %}
+                                <div class="card">
+                                    <div class="card-header" id="heading{{ forloop.counter0 }}">
+                                        <h2 class="mb-0">
+                                            <button type="button" class="btn font-weight-bold" data-toggle="collapse"
+                                                    data-target="#collapse{{ forloop.counter0 }}">{{ i.date }}
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapse{{ forloop.counter0 }}" class="collapse"
+                                         aria-labelledby="heading{{ forloop.counter0 }}"
+                                         data-parent="#accordion">
+                                        <div class="card-body">
+                                            {{ i.time }} {{ i.description }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endifchanged %}
                         {% endfor %}
                     </div>
                 </div>
             </div>
-            <!-- Right Widgets -->
-            <div class="col ml-2">
-                <div class="row">
-                    <div class="col mb-2 widget" style="height: 300px">
-                        <div class="well">
-                            <h3 class="title">Configuration Files</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col widget" style="height: 300px">
-                        <div class="well">
-                            <h3 class="title">NO IDEA</h3>
-                        </div>
-                    </div>
-                </div>
+
+            <!-- Configuration Extract -->
+            <div class="col widget ml-2">
+                <h3 class="title">Export Device Configuration</h3>
+
             </div>
+
         </div>
     </div>
 

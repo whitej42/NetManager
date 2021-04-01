@@ -36,7 +36,7 @@
                         <tr>
                             <td><b>Link Status</b></td>
                             <td>
-                            {{ i.link_status }}
+                                {{ i.link_status }}
                                 {% if i.link_status == 'administratively down' %}
                                     <div class="status bg-warning"></div>
                                 {% endif %}
@@ -105,7 +105,8 @@
                                 <td>No Inbound ACL Applied</td>
                             {% else %}
                                 <td>
-                                    <form action="{% url 'interface_access_list' device_ID=device.pk action='REMOVE' %}" method="post">
+                                    <form action="{% url 'interface_access_list' device_ID=device.pk action='REMOVE' %}"
+                                          method="post">
                                         {% csrf_token %}
                                         {{ j.inbound_acl }}
                                         <button type="submit" class="btn btn-danger btn-sm btn-acl"
@@ -127,7 +128,8 @@
                                 <td>No Outgoing ACL Applied</td>
                             {% else %}
                                 <td>
-                                    <form action="{% url 'interface_access_list' device_ID=device.pk action='REMOVE' %}" method="post">
+                                    <form action="{% url 'interface_access_list' device_ID=device.pk action='REMOVE' %}"
+                                          method="post">
                                         {% csrf_token %}
                                         {{ j.outgoing_acl }}
                                         <button type="submit" class="btn btn-danger btn-circle btn-sm btn-acl"
@@ -153,7 +155,8 @@
                 <div class="border border-secondary rounded">
                     <h5 class="title text-center text-secondary">Apply Access List</h5>
                     <div style="padding: 10px">
-                        <form action="{% url 'interface_access_list' device_ID=device.pk action='APPLY' %}" method="post">
+                        <form action="{% url 'interface_access_list' device_ID=device.pk action='APPLY' %}"
+                              method="post">
                             {% csrf_token %}
                             {% for i in interface %}
                                 <input type="hidden" id="Apply" name="int" value="{{ i.interface }}">
@@ -162,7 +165,9 @@
                             <select class="form-control" name="acl">
                                 <option selected disabled>--- Select ACL ---</option>
                                 {% for list in acl %}
-                                    <option>{{ list.acl_name }}</option>
+                                    {% ifchanged list.acl_name %}
+                                        <option>{{ list.acl_type }} {{ list.acl_name }}</option>
+                                    {% endifchanged %}
                                 {% endfor %}
                             </select><br>
                             <label class="text-left text-light">Select Direction</label>
