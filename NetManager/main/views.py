@@ -17,9 +17,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from netmiko import ConnectHandler
-
 from device.models import *
 from main.forms import *
+
+
+# redirect back to page after form submission
+def refer(PageRequest, message):
+    messages.success(PageRequest, message)
+    return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
 
 
 # main view
@@ -29,7 +34,7 @@ def main(PageRequest):
     user_devices = Device.objects.filter(user__username=PageRequest.user)
     date = datetime.datetime.now() - datetime.timedelta(days=1)
     config_logs = Log.objects.filter(user__username=PageRequest.user, date__gt=date)
-    args = {'all_devices': user_devices, 'status': check_connection(), 'all_logs': config_logs, 'form': form}
+    args = {'all_devices': user_devices, 'status': check_connection(), 'config_logs': config_logs, 'form': form}
     return render(PageRequest, 'main.html', args)
 
 
@@ -73,42 +78,53 @@ def check_connection():
 # add device to db
 def add_device(PageRequest):
     form = DeviceForm(PageRequest.POST or None)
-    if PageRequest.user.is_authenticated:
-        if form.is_valid():
-            device = form.save(commit=False)
-            device.user_id = User.objects.get(username=PageRequest.user).pk
-            device.save()
-            log = Log(user=PageRequest.user, device=device, type='Device', description='Device: ' + device.name + ' - Added to database')
-            log.save()
-            messages.success(PageRequest, log.description)
-    return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
+
+    try:
+        if PageRequest.user.is_authenticated:
+            if form.is_valid():
+                device = form.save(commit=False)
+                device.user_id = User.objects.get(username=PageRequest.user).pk
+                device.save()
+                alert = Log(user=PageRequest.user, device=device, type='Device',
+                            description='Device: ' + device.name + ' - Added to database')
+                alert.save()
+                return refer(PageRequest, alert.description)
+    except Exception as e:
+        messages.error(PageRequest, str(e))
+        return redirect(main)
 
 
 # delete device from db
 def delete_device(PageRequest):
-    device_id = PageRequest.POST.get('id')
-    d = Device.objects.get(pk=device_id)
-    d.delete()
-    log = Log(user=PageRequest.user, device=d.name, type='Device', description='Device: ' + d.name + ' - Removed from database')
-    log.save()
-    messages.success(PageRequest, log.description)
-    return redirect(main)
+    try:
+        device_id = PageRequest.POST.get('id')
+        d = Device.objects.get(pk=device_id)
+        d.delete()
+        alert = Log(user=PageRequest.user, device=d.name, type='Device',
+                    description='Device: ' + d.name + ' - Removed from database')
+        alert.save()
+        return redirect(main)
+    except Exception as e:
+        messages.error(PageRequest, str(e))
+        return redirect(main)
 
 
 # edit existing device in db
 def edit_device(PageRequest):
-    device_id = PageRequest.POST.get('id')
-    device = Device.objects.get(pk=device_id)
+    device = Device.objects.get(pk=PageRequest.POST.get('id'))
     form = DeviceForm(PageRequest.POST or None, instance=device)
 
-    if PageRequest.user.is_authenticated:
-        if form.is_valid():
-            device.save()
-    log = Log(user=PageRequest.user, device=device.name, type='Device',
-              description='Changes made to device: ' + device.name)
-    log.save()
-    messages.success(PageRequest, log.description)
-    return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
+    try:
+        if PageRequest.user.is_authenticated:
+            if form.is_valid():
+                device.save()
+        alert = Log(user=PageRequest.user, device=device.name, type='Device',
+                    description='Changes made to device: ' + device.name)
+        alert.save()
+        return refer(PageRequest, alert.description)
+    except Exception as e:
+        messages.error(PageRequest, str(e))
+        return redirect(main)
 
 
 # update device log in information
@@ -117,12 +133,14 @@ def update_security(PageRequest):
     device = Device.objects.get(pk=device_id)
     form = SecurityForm(PageRequest.POST or None, instance=device)
 
-    if PageRequest.user.is_authenticated:
-        if form.is_valid():
-            device.save()
-    log = Log(user=PageRequest.user, device=device.name, type='Security',
-              description='Device: ' + device.name + ' - Security settings changed')
-    log.save()
-    messages.success(PageRequest, log.description)
-    return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
-
+    try:
+        if PageRequest.user.is_authenticated:
+            if form.is_valid():
+                device.save()
+        alert = Log(user=PageRequest.user, device=device.name, type='Security',
+                    description='Device: ' + device.name + ' - Security settings changed')
+        alert.save()
+        return refer(PageRequest, alert.description)
+    except Exception as e:
+        messages.error(PageRequest, str(e))
+        return redirect(main)

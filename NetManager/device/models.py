@@ -17,9 +17,6 @@ class Device(models.Model):
     secret = models.CharField(max_length=250)
     status = models.BooleanField(default=False, editable=False)
 
-    def __str__(self):
-        return self.name
-
 
 # config log object
 class Log(models.Model):

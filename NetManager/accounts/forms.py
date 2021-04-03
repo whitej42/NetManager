@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate, get_user_model
 
 
-# get django's auths user model
+# get django's auth user model
 User = get_user_model()
 
 

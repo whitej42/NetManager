@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import path
 from . import views
 
 urlpatterns = [
@@ -9,5 +9,5 @@ urlpatterns = [
     path('add-device', views.add_device, name='add_device'),
     path('edit-device', views.edit_device, name='edit_device'),
     path('delete-device', views.delete_device, name='delete_device'),
-    path('update-secuirty', views.update_security, name='update_security')
+    path('update-security', views.update_security, name='update_security')
 ]

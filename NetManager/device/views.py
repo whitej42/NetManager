@@ -8,7 +8,7 @@ DEVICE/VIEWS.PY
     * INTERFACE CONFIGURATION
 
 """
-
+from main.views import main
 from .models import Log
 from device.models import Device
 from netmiko import ConnectHandler
@@ -70,13 +70,16 @@ def device(PageRequest, device_ID):
     try:
         # get selected device from db
         selected_device = Device.objects.get(pk=device_ID)
-        # pass device information to template
-        args = {'device': selected_device, 'interfaces': get_interfaces(selected_device),
-                'version': get_version(selected_device),
-                'acl': get_acl(selected_device)}
-    except Device.DoesNotExist:
-        raise Http404('Device Does Not Exist')
-    return render(PageRequest, 'device.html', args)
+        if selected_device.status:
+            args = {'device': selected_device, 'interfaces': get_interfaces(selected_device),
+                    'version': get_version(selected_device),
+                    'acl': get_acl(selected_device)}
+            return render(PageRequest, 'device.html', args)
+        else:
+            raise ValueError('Connection Error: Device inactive')
+    except Exception as e:
+        messages.error(PageRequest, str(e))
+        return redirect(main)
 
 
 # get device interfaces
@@ -114,7 +117,7 @@ def save_config(PageRequest, device_ID):
         messages.success(PageRequest, l.description)
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
     except Exception as e:
-        messages.success(PageRequest, e)
+        messages.success(PageRequest, str(e))
         return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
 
 
@@ -212,7 +215,8 @@ def interface(PageRequest, device_ID):
         args = {'device': selected_device, 'interface': interface_details(selected_device, selected_interface),
                 'acl': get_acl(selected_device), 'int_acl': interface_ip_details(selected_device, selected_interface)}
     except Device.DoesNotExist:
-        raise Http404()
+        messages.success(PageRequest, 'Error: Device does not exist')
+        return redirect(main)
     return render(PageRequest, 'interface.html', args)
 
 
