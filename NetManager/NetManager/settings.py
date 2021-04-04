@@ -29,11 +29,11 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-
 INSTALLED_APPS = [
-    'main.apps.DashboardConfig',
+    'home.apps.HomeConfig',
     'device.apps.DeviceConfig',
     'accounts.apps.AccountsConfig',
+    'help.apps.HelpConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'rest_framework',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

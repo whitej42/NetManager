@@ -179,9 +179,10 @@ body {
 }
 
 /* modals */
-.modal {
-    color: #343a40;
-    text-align: left;
+.modal-custom {
+    background-color: #343a40 !important;
+    color: white !important;
+    text-align: left !important;
 }
 
 /* help page */

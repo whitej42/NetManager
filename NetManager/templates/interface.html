@@ -105,7 +105,7 @@
                                 <td>No Inbound ACL Applied</td>
                             {% else %}
                                 <td>
-                                    <form action="{% url 'interface_access_list' device_ID=device.pk action='REMOVE' %}"
+                                    <form action="{% url 'remove' device_ID=device.pk %}"
                                           method="post">
                                         {% csrf_token %}
                                         {{ j.inbound_acl }}
@@ -128,7 +128,7 @@
                                 <td>No Outgoing ACL Applied</td>
                             {% else %}
                                 <td>
-                                    <form action="{% url 'interface_access_list' device_ID=device.pk action='REMOVE' %}"
+                                    <form action="{% url 'remove' device_ID=device.pk %}"
                                           method="post">
                                         {% csrf_token %}
                                         {{ j.outgoing_acl }}
@@ -155,7 +155,7 @@
                 <div class="border border-secondary rounded">
                     <h5 class="title text-center text-secondary">Apply Access List</h5>
                     <div style="padding: 10px">
-                        <form action="{% url 'interface_access_list' device_ID=device.pk action='APPLY' %}"
+                        <form action="{% url 'apply' device_ID=device.pk %}"
                               method="post">
                             {% csrf_token %}
                             {% for i in interface %}
@@ -166,7 +166,7 @@
                                 <option selected disabled>--- Select ACL ---</option>
                                 {% for list in acl %}
                                     {% ifchanged list.acl_name %}
-                                        <option>{{ list.acl_type }} {{ list.acl_name }}</option>
+                                        <option>{{ list.acl_name }}</option>
                                     {% endifchanged %}
                                 {% endfor %}
                             </select><br>

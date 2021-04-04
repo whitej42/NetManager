@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="db" uuid="f9c74d82-4147-4716-b6fd-2721a7768b02">
+    <data-source source="LOCAL" name="db" uuid="1640271a-d31c-4c42-836e-92ad2b950c8c">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\James\Documents\University\Year 3\COMP3000\NetManager\db.sqlite3</jdbc-url>
-    </data-source>
-    <data-source source="LOCAL" name="" uuid="9dc95ebe-4851-4c6c-830a-b0405d62efa5">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\James\Documents\University\Year 3\NetManager\NetManager\.coverage</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\James\Documents\University\Year 3\NetManager\NetManager\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

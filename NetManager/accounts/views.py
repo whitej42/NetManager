@@ -28,7 +28,7 @@ def index(request):
         login(request, user)
         if next:
             return redirect(next)
-        return redirect('dashboard')
+        return redirect('home')
 
     args = {'form': form}
     messages.warning(request,
@@ -47,7 +47,7 @@ def sign_in(request):
         login(request, user)
         if next:
             return redirect(next)
-        return redirect('main')
+        return redirect('home')
     args = {'form': form}
     return render(request, 'registration/login.html', args)
 

@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import *
 
+from device.models import Device, Security, Alert
 
-# Register your models here.
 admin.site.register(Device)
-admin.site.register(Log)
+admin.site.register(Alert)
+admin.site.register(Security)

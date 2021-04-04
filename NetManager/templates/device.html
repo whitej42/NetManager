@@ -81,7 +81,7 @@
                     </tbody>
                 </table>
                 <div>
-                    <a href="{% url 'save_config' device_ID=device.pk %}" type="button"
+                    <a href="{% url 'save' device_ID=device.pk %}" type="button"
                        class="btn btn-warning btn-block"
                        title="Save Configuration">Save Device
                         Configuration
@@ -139,9 +139,9 @@
                                     <!-- Disable configuring SSH interface -->
                                     (Disabled)
                                 {% else %}
-                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
+                                    <button type="button" class="btn btn-success btn-sm config" data-toggle="modal"
                                             data-target="#interfaceModal" title="Configure Interface"
-                                            id="{{ i.intf }}" onclick="getID(this.id)">
+                                            id="{{ i.intf }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                              fill="currentColor"
                                              class="bi bi-tools btn-icon" viewBox="0 0 16 16">
@@ -156,9 +156,9 @@
                                     <!-- Disable resetting SSH interface -->
                                     (Disabled)
                                 {% else %}
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                    <button type="button" class="btn btn-danger btn-sm reset" data-toggle="modal"
                                             data-target="#resetModal" title="Reset Interface"
-                                            id="{{ i.intf }}" onclick="getID(this.id)">
+                                            id="{{ i.intf }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                              fill="currentColor"
                                              class="bi bi-x-circle btn-icon" viewBox="0 0 16 16">
@@ -249,14 +249,14 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Config Access Lists -->
+                    <!-- Manage Access Lists -->
                     <div class="card">
                         <div class="card-header" id="headingTwo">
                             <h5 class="mb-0">
                                 <button class="btn collapsed font-weight-bold" data-toggle="collapse"
                                         data-target="#collapseTwo"
                                         aria-expanded="false" aria-controls="collapseTwo">
-                                    Configure Access Lists
+                                    Manage Access Lists
                                 </button>
                             </h5>
                         </div>
@@ -266,28 +266,25 @@
                                 <div class="border border-secondary rounded">
                                     <div style="padding-top: 10px; padding-left: 10px; padding-right: 10px">
                                         <label class="font-weight-bold">Edit or Create New Access List</label>
-                                        <form action="{% url 'access_list' device_ID=device.pk action='CREATE' %}"
+                                        <form action="{% url 'create' device_ID=device.pk %}"
                                               method="post">
                                             {% csrf_token %}
-                                            <div class="form-group row">
-                                                <div class="form-group col">
-                                                    <label>Access List Type</label>
-                                                    <select class="form-control" name="acl_type" required>
-                                                        <option selected disabled>--- Select ACL Type ---</option>
-                                                        <option value="standard">Standard</option>
-                                                        <option value="extended">Extended</option>
-                                                    </select>
-                                                </div>
+                                            <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label>Access List Type</label>
+                                                       {{ acl_form.type }}
+                                                    </div>
                                                 <div class="form-group col">
                                                     <label>Access List Name</label>
-                                                    <input type="text" class="form-control"
-                                                           placeholder="Access List Name"
-                                                           name="acl_name" required>
+                                                       {{ acl_form.name }}
+                                                    </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col">
+                                                    <label>Access List Command</label>
+                                                    {{ acl_form.statement }}
                                                 </div>
                                             </div>
-                                            <label>Access List Command</label>
-                                            <input type="text" class="form-control"
-                                                   placeholder="e.g. permit tcp any any" name="acl" required>
                                             <button type="submit" class="btn btn-success pad-btn btn-block"
                                                     id="button">Push
                                                 Changes
@@ -307,11 +304,10 @@
                                     <div class="border border-secondary rounded">
                                         <div style="padding-top: 10px; padding-left: 10px; padding-right: 10px">
                                             <label class="font-weight-bold">Delete Access List</label>
-                                            <form action="{% url 'access_list' device_ID=device.pk action='DELETE' %}"
-                                                  method="post">
+                                            <form action="{% url 'delete' device_ID=device.pk  %}" method="post">
                                                 {% csrf_token %}
                                                 <label>Select Access List</label>
-                                                <select class="form-control" name="del_acl" required>
+                                                <select class="form-control" name="acl" required>
                                                     <option selected disabled>--- Select ACL ---</option>
                                                     {% for list in acl %}
                                                         {% ifchanged list.acl_name %}
@@ -353,9 +349,9 @@
                              data-parent="#accordion">
                             <div class="card-body">
                                 <label>Disable all interfaces not in use & not assigned with an IP
-                                    addresses - </label><label class="text-warning">This may take a few
+                                    addresses</label><br><label class="text-danger">This may take a few
                                 moments</label><br>
-                                <a href="{% url 'disable_interfaces' device_ID=device.pk %}" type="button"
+                                <a href="{% url 'disable' device_ID=device.pk %}" type="button"
                                    class="btn btn-danger" id="button">Disable Interfaces
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                          fill="currentColor"
@@ -406,33 +402,17 @@
     <div class="modal fade" id="interfaceModal" tabindex="-1" role="dialog" aria-labelledby="label"
          aria-hidden="true">
         <div class="modal-dialog model-sm" role="document">
-            <form action="{% url 'config_interface' device_ID=device.pk action='CONFIG' %}" method="post">
+            <form action="{% url 'config' device_ID=device.pk %}" method="post">
                 {% csrf_token %}
-                <div class="modal-content">
+                <div class="modal-custom  modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="title"></h5>
-                        <input type="hidden" id="config" name="configInterface">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>IP Address</label>
-                            <input type="text" class="form-control is-invalid" name="ip"
-                                   placeholder="Enter IP Address" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Subnet Mask</label>
-                            <input type="text" class="form-control is-invalid" name="mask"
-                                   placeholder="Enter Subnet Mask" required>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="enable" checked>
-                            <label class="form-check-label" for="flexCheckChecked">Enable Interface</label><br>
-                            <label class="form-check-label text-danger font-weight-bold" for="flexCheckChecked">Warning!
-                                Interface will be enabled by default</label>
-                        </div>
+                        {{ int_form }}
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success" id="button">Confirm Changes
@@ -453,12 +433,12 @@
     <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="label"
          aria-hidden="true">
         <div class="modal-dialog model-sm" role="document">
-            <form action="{% url 'config_interface' device_ID=device.pk action='RESET' %}" method="post">
+            <form action="{% url 'reset' device_ID=device.pk %}" method="post">
                 {% csrf_token %}
-                <div class="modal-content">
+                <div class="modal-content bg-dark text-light">
                     <div class="modal-header">
                         <h5 class="modal-title">Warning!</h5>
-                        <input type="hidden" id="reset" name="resetInterface">
+                        <input type="hidden" id="reset" name="reset">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -492,13 +472,21 @@
 
 </main>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
 <script>
-    function getID(id) {
-        document.getElementById("title").innerText = id;
-        document.getElementById('config').value = id;
-        document.getElementById('reset').value = id;
-        document.getElementById('interface').value = id;
-    }
+
+    $('button.config').click(function () {
+        $("#id_interface").val(this.id)
+        $('#title').innerHTML(this.id)
+    });
+
+    $('button.reset').click(function () {
+        $('#reset').val(this.id)
+        $('#title').innerHTML(this.id)
+    })
+
 </script>
 
 {% include "footer.html" %}

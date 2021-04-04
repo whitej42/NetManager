@@ -5,8 +5,9 @@ device views test
 """
 from django.test import TestCase, Client
 from django.urls import reverse
-from device.models import *
 from django.contrib.auth.models import User
+
+from device.models import Device
 
 
 class TestViews(TestCase):

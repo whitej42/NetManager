@@ -19,7 +19,7 @@
         {% if user.is_authenticated %}
             <ul class="navbar-nav mr-auto" style="font-size: 18px">
                 <li class="nav-item">
-                    <a class="nav-item nav-link link" href="{% url 'main' %}">Dashboard
+                    <a class="nav-item nav-link link" href="{% url 'home' %}">Home
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                              class="bi bi-house nav-icon"
                              viewBox="0 0 16 16">
@@ -118,7 +118,7 @@
     <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="label"
          aria-hidden="true">
         <div class="modal-dialog model-sm" role="document">
-            <div class="modal-content">
+            <div class="modal-custom modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Log Out</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

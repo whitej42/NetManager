@@ -39,7 +39,7 @@
                 <h3 class="title">Device Details</h3>
                 {% for i in device %}
                     <div class="card card-custom">
-                        <form action="{% url 'edit_device' %}" method="post">
+                        <form action="{% url 'edit' %}" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="id" value="{{ i.id }}">
                             <div class="text-left mb-2">
@@ -93,7 +93,7 @@
                         <h6>Visit our <a href="{% url 'help' %}" target="_blank">help page</a> for details on setting up
                             SSH on your device</h6>
                         <div class="card card-custom">
-                            <form action="{% url 'update_security' %}" method="post">
+                            <form action="{% url 'security' %}" method="post">
                                 {% csrf_token %}
                                 <div class="text-left mb-2">
                                     <input type="hidden" name="id" value="{{ i.id }}">
@@ -138,9 +138,9 @@
     <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="label"
          aria-hidden="true">
         <div class="modal-dialog model-sm" role="document">
-            <form action="{% url 'delete_device' %}" method="post">
+            <form action="{% url 'delete' %}" method="post">
                 {% csrf_token %}
-                <div class="modal-content">
+                <div class="modal-custom modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="title">Delete Device</h5>
                         <input type="hidden" id="delete" name="id">

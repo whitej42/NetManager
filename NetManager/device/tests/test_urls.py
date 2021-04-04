@@ -8,6 +8,8 @@ from django.urls import reverse, resolve
 from device.views import *
 from django.contrib.auth.models import User
 
+from device.models import Device
+
 
 class TestUrls(TestCase):
 
@@ -36,11 +38,11 @@ class TestUrls(TestCase):
 
     def test_device_url(self):
         url = reverse('device', args=[self.device.pk])
-        self.assertEqual(resolve(url).func, device)
+        self.assertEqual(resolve(url).func, device_view)
 
     def test_interface_url(self):
         url = reverse('interface', args=[self.device.pk])
-        self.assertEqual(resolve(url).func, interface)
+        self.assertEqual(resolve(url).func, interface_view)
 
     def test_save_config_url(self):
         url = reverse('save_config', args=[self.device.pk])

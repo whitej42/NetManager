@@ -1,5 +1,5 @@
 from django.test import TestCase
-from device.models import *
+from device.models import Device
 
 
 class TestModels(TestCase):
