@@ -1,11 +1,25 @@
 """
 
 DEVICE/VIEWS.PY
-* DEVICE PAGE
-    * DEVICE CONNECTIONS
-    * DEVICE CONFIGURATION
-* INTERFACE PAGE
-    * INTERFACE CONFIGURATION
+
+* DEVICE MANAGER VIEW
+    * DEVICE SUMMARY
+    * ADD NEW DEVICE
+
+* DEVICE CONFIGURATION VIEW
+    * GET DEVICE DETAILS
+    * CONFIGURE IP ADDRESSING
+    * CREATE/DELETE ACCESS LISTS
+    * DISABLE INTERFACES
+
+* INTERFACE DETAILS VIEW
+    * GET INTERFACE CONFIGURATION
+    * APPLY/REMOVE ACCESS LISTS
+
+* DEVICE SETTINGS VIEW
+    * EDIT DEVICE INFORMATION
+    * CHANGE DEVICE SECURITY SETTINGS
+    * DELETE DEVICE
 
 """
 import datetime
@@ -24,7 +38,7 @@ def refer(PageRequest, message):
     return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
 
 
-''' *** devices list view *** '''
+''' *** devices manager view *** '''
 
 
 @login_required
