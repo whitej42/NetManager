@@ -43,7 +43,7 @@ def index_view(request):
         login(request, user)
         if next:
             return redirect(next)
-        return redirect('devices:device-list')
+        return redirect('devices:device-manager')
 
     args = {'form': form}
     messages.warning(request,

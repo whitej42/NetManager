@@ -24,7 +24,16 @@
                 Back
             </a>
             <h3 class="title d-inline-block">Audit Logs</h3>
-            <div class="card bg-dark text-left p-3 mt-3 mb-3">
+            <button type="button" class="btn btn-sm btn-success d-inline-block float-right mt-2" id="refresh"
+                    title="Refresh">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-arrow-repeat btn-icon" viewBox="0 0 16 16">
+                    <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"></path>
+                    <path fill-rule="evenodd"
+                          d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"></path>
+                </svg>
+            </button>
+            <div class="card card-custom">
                 <table id="Table" class="table table-dark table-striped table-bordered">
                     <thead>
                     <tr>
@@ -51,17 +60,41 @@
         </div>
     </div>
 
-    <div class="row mt-2">
-        <!-- Configuration Extract -->
-        <div class="col widget">
-            <h3 class="title">Export Device Configuration</h3>
 
-        </div>
-    </div>
 {% endblock %}
 
 {% block script %}
-    <script>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/rg-1.1.2/sc-2.0.3/datatables.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/rg-1.1.2/sc-2.0.3/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
 
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Table').DataTable({
+                buttons: [
+                    'copy', 'excel', 'pdf'
+                ]
+            });
+        });
+
+        $('#Add').click(function () {
+            $("input.edit").prop('disabled', false)
+        });
+
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+            $('.popover').popover({
+                trigger: 'focus'
+            });
+        })
+
+        $('#refresh').click(function () {
+            location.reload();
+        });
     </script>
 {% endblock %}
+

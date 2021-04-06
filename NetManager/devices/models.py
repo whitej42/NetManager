@@ -36,29 +36,29 @@ class Device(models.Model):
 
 class Security(models.Model):
     id = models.AutoField(primary_key=True)
-    device_id = models.ForeignKey(Device, on_delete=models.CASCADE)
+    device = models.ForeignKey(Device, on_delete=models.CASCADE)
     username = models.CharField(max_length=250, blank=True, null=True)
     password = models.CharField(max_length=250, blank=True, null=True)
     secret = models.CharField(max_length=250, blank=True, null=True)
 
     def create_security(self):
-        s = Security.objects.create(device_id=self)
+        s = Security.objects.create(device_id=self.id)
         s.save()
 
     def get_device_security(self):
-        security = Security.objects.get(device_id=self)
+        security = Security.objects.get(device=self)
         return security
 
     def get_username(self):
-        username = Security.objects.filter(device_id=self.id).get().username
+        username = Security.objects.filter(device=self.id).get().username
         return username
 
     def get_password(self):
-        password = Security.objects.filter(device_id=self.id).get().password
+        password = Security.objects.filter(device=self.id).get().password
         return password
 
     def get_secret(self):
-        secret = Security.objects.filter(device_id=self.id).get().secret
+        secret = Security.objects.filter(device=self.id).get().secret
         return secret
 
 
@@ -70,7 +70,7 @@ class Alert(models.Model):
     description = models.CharField(max_length=250, null=False)
     date = models.DateField(default=timezone.now().date())
     time = models.TimeField(default=timezone.now().time())
-    flag = models.BooleanField(default=False)
 
-    #def create_alert(self):
-        #do something
+    def create_alert(self, device, type, description):
+        a = Alert.objects.create(user=self, device=device, type=type, description=description)
+        a.save()

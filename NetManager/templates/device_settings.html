@@ -13,6 +13,7 @@
 {% block body %}
 
     <div class="row">
+        <!-- Device Preferences -->
         <div class="col widget table-responsive">
             <a href="{% url 'devices:device-manager' %}" class="btn btn-danger btn-sm d-inline-block btn-back">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -22,7 +23,7 @@
                 </svg>
                 Back
             </a>
-            <h3 class="title d-inline-block">Device Details</h3>
+            <h3 class="title d-inline-block">Device Preferences</h3>
             <div class="card card-custom">
                 <form action="{% url 'devices:edit-device' device_id=device.pk %}" method="post">
                     {% csrf_token %}
@@ -70,6 +71,7 @@
             </div>
         </div>
 
+        <!-- Device Security Settings -->
         <div class="col widget table-responsive ml-2">
             <h3 class="title">Device Security Settings</h3>
             <h6 class="text-center">Update this devices user login credentials here</h6>
@@ -82,6 +84,8 @@
                     {% csrf_token %}
                     <div class="text-left mb-2">
                         {{ security_form }}
+                        <label for="show_pass">Show Password/Secret</label>
+                        <input type="checkbox" id="show_pass">
                     </div>
                     <button class="btn btn-warning btn-block" type="button" id="Security">
                         Update Security Settings
@@ -205,6 +209,16 @@
             $('#Cancel-Sec').hide();
             $('#Security').show();
             $('form')[1].reset();
+        });
+
+        $('#show_pass').click(function () {
+            if ($('#id_password').attr('type') === 'password') {
+                $('#id_password').prop('type', 'text');
+                $('#id_secret').prop('type', 'text');
+            } else {
+                $('#id_password').prop('type', 'password');
+                $('#id_secret').prop('type', 'password');
+            }
         });
 
         // get device for id for deletion

@@ -13,9 +13,10 @@
 {% block body %}
     <!-- Device Summary -->
     <div class="row mb-2">
-        <div class="col widget table-responsive">
+        <div class="col widget table-responsive" style="min-height: 300px; max-height: 500px">
             <h3 class="title d-inline-block">Device Summary</h3>
-            <button type="button" class="btn btn-sm btn-success d-inline-block float-right mt-2" id="refresh">
+            <button type="button" class="btn btn-sm btn-success d-inline-block float-right mt-2" id="refresh"
+                    title="Refresh">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      class="bi bi-arrow-repeat btn-icon" viewBox="0 0 16 16">
                     <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"></path>
@@ -31,8 +32,8 @@
                     <th>Vendor</th>
                     <th>IP Address</th>
                     <th>Status</th>
-                    <th style="max-width: 20px;">Configuration</th>
-                    <th style="max-width: 20px;">Device Settings</th>
+                    <th>Configuration</th>
+                    <th>Device Settings</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -90,7 +91,7 @@
                     </tbody>
                     </table>
                     <div>
-                        <h3 class="title">It appears you have no devices configured</h3>
+                        <h4 class="title">It appears you have no devices configured</h4>
                         <h4 class="title">Add new devices below</h4>
                     </div>
                 {% endfor %}
@@ -112,7 +113,7 @@
                 </svg>
             </button>
             <div class="collapse mt-2" id="collapseOne">
-                <div class="card bg-dark text-light text-left p-2">
+                <div class="card card-custom">
                     <form action="{% url 'devices:add_device' %}" method="post">
                         {% csrf_token %}
                         <div class="form-row">
@@ -164,7 +165,7 @@
 
     <!-- Recent Changes -->
     <div class="row">
-        <div class="col widget table-responsive" style="min-height: 300px ;max-height: 500px">
+        <div class="col widget table-responsive" style="min-height: 300px; max-height: 500px">
             <h3 class="title">Recent Configuration Changes: Last 24 Hours</h3>
             <table class="table table-striped table-dark" style="font-size: 14px">
                 <thead>
@@ -188,7 +189,7 @@
                         {% empty %}
                     </tbody>
                     </table>
-                    <h4>No Recent Configuration Changes</h4>
+                    <h4 class="title">No Recent Configuration Changes</h4>
                 {% endfor %}
             </tbody>
             </table>

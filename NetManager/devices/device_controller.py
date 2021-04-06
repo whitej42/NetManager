@@ -6,6 +6,7 @@ CISCO DEVICE CONTROLLER
 
 from netmiko import ConnectHandler
 from .models import Security
+from devices import alert_generator
 
 
 def connect(d):
@@ -24,7 +25,8 @@ def connect(d):
 def retrieve(device, command):
     try:
         c = ConnectHandler(**connect(device))
-        output = c.send_command(command, use_textfsm=True)
+        output = c.send_command(command ,use_textfsm=True)
+        print(output)
         c.disconnect()
     except Exception as e:
         output = e
@@ -45,7 +47,7 @@ def configure(d, command):
 
 # test connection to all devices
 def connect_test(user_devices):
-    for i in user_devices:  # hard-coded - CHANGE THIS!!
+    for i in user_devices:
         try:
             # if connection established
             c = ConnectHandler(**connect(i))
@@ -54,17 +56,6 @@ def connect_test(user_devices):
         except:
             i.status = False
         i.save()
-
-
-# save config with Netmiko save_config() function
-def save_config(d):
-    try:
-        c = ConnectHandler(**connect(d))
-        c.save_config()
-        c.disconnect()
-        return 'Configuration Saved'
-    except Exception as e:
-        return str(e)
 
 
 # get show ip interface brief output
@@ -104,32 +95,51 @@ def get_interface_ip(d, i):
     return output
 
 
+# save config with Netmiko save_config() function
+def save_config(user, d):
+    try:
+        c = ConnectHandler(**connect(d))
+        c.save_config()
+        c.disconnect()
+        return alert_generator.save_alert(user, d)
+    except Exception as e:
+        return str(e)
+
+
 # Configure interface with ip address
 # d = devices object
 # form = InterfaceForm
-def config_interface(d, form):
-    current_interface = form.cleaned_data.get('interface')
-    address = form.cleaned_data.get('ip_address')
-    subnet = form.cleaned_data.get('subnet')
+def config_interface(user, d, form):
+    intface = form.cleaned_data.get('interface')
+    ip = form.cleaned_data.get('ip_address')
+    mask = form.cleaned_data.get('subnet')
     enable = form.cleaned_data.get('enable')
     if enable:
-        cmd = ['interface ' + current_interface, 'ip address ' + address + ' ' + subnet, 'no shutdown']
+        cmd = ['interface ' + intface, 'ip address ' + ip + ' ' + mask, 'no shutdown']
     else:
-        cmd = ['interface ' + current_interface, 'ip address ' + address + ' ' + subnet, 'shutdown']
-    return configure(d, cmd)
+        cmd = ['interface ' + intface, 'ip address ' + ip + ' ' + mask, 'shutdown']
+    c = configure(d, cmd)
+    if c:
+        return alert_generator.configuration_alert(user, d, intface, ip, 'CONFIG')
+    else:
+        return str(c)
 
 
 # Reset specific interface to default
 # d = devices object
-# i = interface as string
-def reset_interface(d, i):
-    cmd = ['interface ' + i, 'no ip address', 'shutdown']
-    return configure(d, cmd)
+# intface = interface as string
+def reset_interface(user, d, intface):
+    cmd = ['interface ' + intface, 'no ip address', 'shutdown']
+    c = configure(d, cmd)
+    if c:
+        return alert_generator.configuration_alert(user, d, intface, None, 'RESET')
+    else:
+        return str(c)
 
 
 # Reset all unused interfaces
 # d = devices object
-def disable_interfaces(d):
+def disable_interfaces(user, d):
     interfaces = retrieve(d, 'show ip int brief')
     for i in interfaces:
         if i['ipaddr'] == 'unassigned' and i['status'] != 'administratively down':
@@ -138,40 +148,56 @@ def disable_interfaces(d):
     return True
 
 
-# Configure new access lists & add to access lists
+# Create new access lists & add to access lists
 # d = devices object
-# form=AccessListForm
-def configure_acl(d, form):
+# form = AccessListForm
+def create_acl(user, d, form):
     acl_type = form.cleaned_data.get('type')
-    name = form.cleaned_data.get('name')
-    acl = form.cleaned_data.get('statement')
-    cmd = ['ip access-list ' + acl_type + " " + name, acl]
-    return configure(d, cmd)
+    acl_name = form.cleaned_data.get('name')
+    statement = form.cleaned_data.get('statement')
+    cmd = ['ip access-list ' + acl_type + " " + acl_name, statement]
+    c = configure(d, cmd)
+    if c:
+        return alert_generator.security_alert(user, d, acl_name, None, 'CREATE')
+    else:
+        return str(c)
 
 
 # Delete access lists from devices
 # d = devices object
-# acl = list name as string
-def delete_acl(d, acl):
-    cmd = ['no ip access-list ' + acl]
-    return configure(d, cmd)
+# acl_name = list name as string
+def delete_acl(user, d, acl_name):
+    cmd = ['no ip access-list ' + acl_name]
+    c = configure(d, cmd)
+    if c:
+        return alert_generator.security_alert(user, d, acl_name, None, 'DELETE')
+    else:
+        return str(c)
 
 
 # Apply access list to interface
 # d = devices object
-# i = interface as string
-# acl = access list as string
+# intface = interface as string
+# acl_name = access list as string
 # direction = direction as string
-def apply_acl(d, i, acl, direction):
-    cmd = ['interface ' + i, 'ip access-group ' + acl + ' ' + direction]
-    return configure(d, cmd)
+def apply_acl(user, d, intface, acl_name, direction):
+    cmd = ['interface ' + intface, 'ip access-group ' + acl_name + ' ' + direction]
+    c = configure(d, cmd)
+    if c:
+        return alert_generator.security_alert(user, d, acl_name, intface, 'APPLY')
+    else:
+        return str(c)
 
 
 # Remove access list from interface
 # d = devices object
-# i = interface as string
-# acl = access list as string
+# intface = interface as string
+# acl_name = access list as string
 # direction = direction as string
-def remove_acl(d, i, acl, direction):
-    cmd = ['interface ' + i, 'no ip access-group ' + acl + ' ' + direction]
-    return configure(d, cmd)
+def remove_acl(user, d, intface, acl_name, direction):
+    cmd = ['interface ' + intface, 'no ip access-group ' + acl_name + ' ' + direction]
+    c = configure(d, cmd)
+    if c:
+        return alert_generator.security_alert(user, d.name, acl_name, intface, 'REMOVE')
+    else:
+        return str(c)

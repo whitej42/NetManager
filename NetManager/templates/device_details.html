@@ -58,6 +58,13 @@
                 </tbody>
             </table>
             <div>
+                <a href="{% url 'config:config' device_id=device.pk %}" type="button" class="btn btn-info btn-block mb-2" title="Send Configuration" id="config">Send Configuration Manually
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-terminal btn-icon" viewBox="0 0 16 16">
+                        <path d="M6 9a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3A.5.5 0 0 1 6 9zM3.854 4.146a.5.5 0 1 0-.708.708L4.793 6.5 3.146 8.146a.5.5 0 1 0 .708.708l2-2a.5.5 0 0 0 0-.708l-2-2z"></path>
+                        <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h12z"></path>
+                    </svg>
+                </a>
                 <a href="{% url 'devices:save-config' device_id=device.pk %}" type="button"
                    class="btn btn-warning btn-block"
                    title="Save Configuration">Save Device
@@ -71,7 +78,7 @@
         </div>
 
         <!-- Interface Brief -->
-        <div class="col ml-2 table-responsive widget" style="height: 550px">
+        <div class="col ml-2 table-responsive widget" style="height: 600px">
             <h3 class="title">Device Interfaces</h3>
             <table class="table table-striped table-dark">
                 <thead>
@@ -116,7 +123,7 @@
                                 <!-- Disable configuring SSH interface -->
                                 (Disabled)
                             {% else %}
-                                <button type="button" class="btn btn-success btn-sm config" data-toggle="modal"
+                                <button type="button" class="btn btn-success btn-sm interface" data-toggle="modal"
                                         data-target="#interfaceModal" title="Configure Interface"
                                         id="{{ i.intf }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -376,10 +383,10 @@
     <!-- Interface Modal -->
     <div class="modal fade" id="interfaceModal" tabindex="-1" role="dialog" aria-labelledby="label"
          aria-hidden="true">
-        <div class="modal-dialog model-sm" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <form action="{% url 'devices:config-interface' device_id=device.pk %}" method="post">
                 {% csrf_token %}
-                <div class="modal-custom  modal-content">
+                <div class="modal-custom modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="title"></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -407,10 +414,10 @@
     <!-- Reset Alert Modal -->
     <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="label"
          aria-hidden="true">
-        <div class="modal-dialog model-sm" role="document">
+        <div class="modal-dialog" role="document">
             <form action="{% url 'devices:reset-interface' device_id=device.pk %}" method="post">
                 {% csrf_token %}
-                <div class="modal-content bg-dark text-light">
+                <div class="modal-custom modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Warning!</h5>
                         <input type="hidden" id="reset" name="reset">
@@ -444,19 +451,19 @@
             </form>
         </div>
     </div>
+
 {% endblock %}
 
 {% block script %}
     <script type="text/javascript">
 
-        $('button.config').click(function () {
+        $('button.interface').click(function () {
             $("#id_interface").val(this.id)
-            $('#title').innerHTML(this.id)
+            $('#title').innerText(this.id)
         });
 
         $('button.reset').click(function () {
             $('#reset').val(this.id)
-            $('#title').innerHTML(this.id)
         })
 
     </script>

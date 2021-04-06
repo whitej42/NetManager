@@ -11,6 +11,7 @@ DEVICE/VIEWS.PY
     * CONFIGURE IP ADDRESSING
     * CREATE/DELETE ACCESS LISTS
     * DISABLE INTERFACES
+    * SAVE CONFIGURATION
 
 * INTERFACE DETAILS VIEW
     * GET INTERFACE CONFIGURATION
@@ -30,6 +31,7 @@ from django.shortcuts import render, redirect
 from devices import device_controller as controller
 from devices.forms import *
 from devices.models import *
+from devices import alert_generator
 
 
 # redirect back to page
@@ -52,6 +54,7 @@ def device_manager_view(PageRequest):
     return render(PageRequest, 'device_manager.html', args)
 
 
+
 # add devices to db - ERROR HANDLING
 @login_required
 def add_device(PageRequest):
@@ -63,7 +66,11 @@ def add_device(PageRequest):
         d.user = user
         d.save()
         Security.create_security(d)
-    return refer(PageRequest, True)
+        alert = alert_generator.device_alert(PageRequest.user, d, 'ADD')
+        try:
+            return refer(PageRequest, alert)
+        except Exception as e:
+            return redirect('devices:device-manager')
 
 
 ''' *** devices configuration view *** '''
@@ -80,15 +87,19 @@ def device_details_view(PageRequest, device_id):
                 'version': controller.get_version(d), 'acl': controller.get_acl(d)}
     except Device.DoesNotExist:
         messages.error(PageRequest, 'Invalid URL: Device does not exist')
-        return redirect('devices-list')
+        return redirect('devices:device-manager')
     return render(PageRequest, 'device_details.html', args)
+
+
+def send_config(PageRequest, device_id):
+    return refer(PageRequest, True)
 
 
 # always returns /devices
 @login_required
 def save_config(PageRequest, device_id):
     d = Device.get_device(device_id)
-    save = controller.save_config(d)
+    save = controller.save_config(PageRequest.user, d)
     return refer(PageRequest, save)
 
 
@@ -99,7 +110,7 @@ def config_interface(PageRequest, device_id):
     d = Device.get_device(device_id)
     form = InterfaceForm(PageRequest.POST or None)
     if form.is_valid():
-        c = controller.config_interface(d, form)
+        c = controller.config_interface(PageRequest.user, d, form)
     return refer(PageRequest, str(c))
 
 
@@ -109,7 +120,7 @@ def reset_interface(PageRequest, device_id):
     global c
     d = Device.get_device(device_id)
     i = PageRequest.POST.get('reset')
-    c = controller.reset_interface(d, i)
+    c = controller.reset_interface(PageRequest.user, d, i)
     return refer(PageRequest, str(c))
 
 
@@ -118,7 +129,7 @@ def reset_interface(PageRequest, device_id):
 def disable_interfaces(PageRequest, device_id):
     global c
     d = Device.get_device(device_id)
-    c = controller.disable_interfaces(d)
+    c = controller.disable_interfaces(PageRequest.user, d)
     return refer(PageRequest, str(c))
 
 
@@ -129,7 +140,7 @@ def create_access_list(PageRequest, device_id):
     d = Device.get_device(device_id)
     form = AclForm(PageRequest.POST or None)
     if form.is_valid():
-        c = controller.configure_acl(d, form)
+        c = controller.create_acl(PageRequest.user, d, form)
     return refer(PageRequest, str(c))
 
 
@@ -139,7 +150,7 @@ def delete_access_list(PageRequest, device_id):
     global c
     d = Device.get_device(device_id)
     acl = PageRequest.POST.get('acl')
-    c = controller.delete_acl(d, acl)
+    c = controller.delete_acl(PageRequest.user, d, acl)
     return refer(PageRequest, str(c))
 
 
@@ -167,9 +178,10 @@ def apply_access_list(PageRequest, device_id, interface):
     global c
     i = interface
     d = Device.get_device(device_id)
+    # poor form implementation
     acl = PageRequest.POST.get('acl')
     direction = PageRequest.POST.get('dir')
-    c = controller.apply_acl(d, i, acl, direction)
+    c = controller.apply_acl(PageRequest.user, d, i, acl, direction)
     return refer(PageRequest, str(c))
 
 
@@ -179,10 +191,10 @@ def remove_access_list(PageRequest, device_id, interface):
     global c
     i = interface
     d = Device.get_device(device_id)
-    # annoying form implementation
+    # poor form implementation
     acl = PageRequest.POST.get('acl')
     direction = PageRequest.POST.get('dir')
-    c = controller.remove_acl(d, i, acl, direction)
+    c = controller.remove_acl(PageRequest.user, d, i, acl, direction)
     return refer(PageRequest, str(c))
 
 
@@ -205,7 +217,8 @@ def device_settings_view(PageRequest, device_id):
 def delete_device(PageRequest, device_id):
     d = Device.get_device(device_id)
     d.delete()
-    messages.success(PageRequest, 'Device Deleted')
+    alert = alert_generator.device_alert(PageRequest.user, d, 'DELETE')
+    messages.success(PageRequest, alert)
     return redirect('devices:device-manager')
 
 
@@ -216,7 +229,8 @@ def edit_device(PageRequest, device_id):
     form = DeviceForm(PageRequest.POST or None, instance=d)
     if form.is_valid():
         d.save()
-    return refer(PageRequest, True)
+        alert = alert_generator.device_alert(PageRequest.user, d, 'UPDATE')
+        return refer(PageRequest, alert)
 
 
 # update devices log in information - ERROR HANDLING
@@ -226,4 +240,6 @@ def device_security(PageRequest, device_id):
     form = SecurityForm(PageRequest.POST or None, instance=s)
     if form.is_valid():
         s.save()
-    return refer(PageRequest, True)
+        alert = alert_generator.device_alert(PageRequest.user, s.device, 'SECURITY')
+        return refer(PageRequest, alert)
+

@@ -92,6 +92,7 @@ body {
 .textbox {
     background-color: #343a40 !important;
     color: white !important;
+    border: solid #6c757d 1px !important;
     margin-bottom: 10px;
 }
 
@@ -166,7 +167,7 @@ body {
 .widget {
     background-color: #343a40;
     border-radius: 5px;
-    min-height: 250px;
+    min-height: auto;
 }
 
 .widgets-grid {
@@ -185,6 +186,7 @@ body {
     /* bg-dark text-light p-2 mb-3 */
     background-color: #343a40 !important;
     color: white !important;
+    border: solid #6c757d 1px !important;
     padding: 10px;
     margin-bottom: 10px;
     text-align: left;

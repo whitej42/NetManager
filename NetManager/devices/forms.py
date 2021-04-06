@@ -43,8 +43,8 @@ class DeviceForm(forms.ModelForm):
 
 class SecurityForm(forms.ModelForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control textbox security', 'disabled': 'true'}))
-    password = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control textbox security', 'disabled': 'true'}))
-    secret = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control textbox security', 'disabled': 'true'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control textbox security', 'disabled': 'true'}))
+    secret = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control textbox security', 'disabled': 'true'}))
 
     class Meta:
         model = Security
@@ -70,5 +70,4 @@ class AclForm(forms.Form):
     type = forms.CharField(label='Access List Type', widget=forms.Select(choices=type_choices, attrs={'class': 'form-control'}))
     name = forms.CharField(label='Access List Name', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Access List Name'}))
     statement = forms.CharField(label='Access List Command', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. permit tcp any any'}))
-
 
