@@ -1,5 +1,7 @@
 # COMP3000 - Final Year Project
 
+### BSc (Hons) Computer & Information Security - University of Plymouth
+
 * Project Owner: James White 
 * Project Supervisor: Lingfen Sun
   
