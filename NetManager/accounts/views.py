@@ -13,9 +13,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from devices.models import Alert
 
 
-def index(request):
+def index_view(request):
     next = request.GET.get('next')
     form = RegisterForm(request.POST or None)
 
@@ -28,7 +29,7 @@ def index(request):
         login(request, user)
         if next:
             return redirect(next)
-        return redirect('home')
+        return redirect('devices:device-list')
 
     args = {'form': form}
     messages.warning(request,
@@ -37,7 +38,7 @@ def index(request):
 
 
 # login views.
-def sign_in(request):
+def login_view(request):
     next = request.GET.get('next')
     form = LoginForm(request.POST or None)
     if form.is_valid():
@@ -47,43 +48,57 @@ def sign_in(request):
         login(request, user)
         if next:
             return redirect(next)
-        return redirect('home')
+        return redirect('misc')
     args = {'form': form}
     return render(request, 'registration/login.html', args)
 
 
 # profile view
 @login_required
-def profile(request):
+def profile_view(request):
     profile_form = ProfileForm(request.POST or None, instance=request.user)
     pass_form = ChangePasswordForm(request.POST or None)
     args = {'profile_form': profile_form, 'pass_form': pass_form}
-    return render(request, 'profile.html', args)
+    return render(request, 'accounts_profile.html', args)
 
 
 # update user profile
+@login_required
 def update_profile(request):
     form = ProfileForm(request.POST or None, instance=request.user)
-    if request.user.is_authenticated:
-        if form.is_valid():
-            form.save()
+    if form.is_valid():
+        form.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 # change password
+@login_required
 def change_password(request):
     form = ChangePasswordForm(request.POST or None, instance=request.user)
     user = User.objects.get(id=request.user.id)
-    if request.user.is_authenticated:
-        if form.is_valid():
-            user.set_password(form.cleaned_data.get('password'))
-            user.save()
+    if form.is_valid():
+        user.set_password(form.cleaned_data.get('password'))
+        user.save()
     return redirect('/')
 
 
 # delete account
+@login_required
 def delete_account(request):
     user_id = request.user.id
     user = User.objects.get(pk=user_id)
     user.delete()
     return redirect('/')
+
+
+# reports view
+@login_required
+def reports_view(PageRequest):
+    config_logs = Alert.objects.filter(user__username=PageRequest.user)
+    args = {'config_logs': config_logs}
+    return render(PageRequest, 'accounts_reports.html', args)
+
+
+# help page view
+def help_view(request):
+    return render(request, 'accounts_help.html')

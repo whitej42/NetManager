@@ -42,7 +42,7 @@ class TestViews(TestCase):
         response = self.client.get(self.profile_url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'profile.html')
+        self.assertTemplateUsed(response, 'accounts_profile.html')
 
     # login required
     def test_update_profile_view(self):
@@ -50,7 +50,7 @@ class TestViews(TestCase):
         response = self.client.get(self.profile_url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'profile.html')
+        self.assertTemplateUsed(response, 'accounts_profile.html')
 
     # login required
     def test_change_password_view(self):
@@ -58,7 +58,7 @@ class TestViews(TestCase):
         response = self.client.get(self.profile_url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'profile.html')
+        self.assertTemplateUsed(response, 'accounts_profile.html')
 
     # login required
     def test_delete_account_view(self):
@@ -66,4 +66,4 @@ class TestViews(TestCase):
         response = self.client.get(self.profile_url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'profile.html')
+        self.assertTemplateUsed(response, 'accounts_profile.html')

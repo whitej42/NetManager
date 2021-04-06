@@ -12,15 +12,15 @@ class TestUrls(SimpleTestCase):
 
     def test_index_url(self):
         url = reverse('index')
-        self.assertEqual(resolve(url).func, index)
+        self.assertEqual(resolve(url).func, index_view)
 
     def test_login_url(self):
         url = reverse('login')
-        self.assertEqual(resolve(url).func, sign_in)
+        self.assertEqual(resolve(url).func, login_view)
 
     def test_profile_url(self):
         url = reverse('profile')
-        self.assertEqual(resolve(url).func, profile)
+        self.assertEqual(resolve(url).func, profile_view)
 
     def test_update_profile_url(self):
         url = reverse('update_profile')

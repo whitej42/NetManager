@@ -1,0 +1,51 @@
+{% include "header.html" %}
+
+<body>
+{% load static %}
+{% include "navbar.html" %}
+
+<div class="jumbotron jumbotron-fluid mb-0" style="background-color: #1c1f22">
+    <div class="container" style="min-width: 100%">
+        {% block jumbotron %}
+
+        {% endblock %}
+    </div>
+</div>
+
+<!-- Main -->
+<main class="main container-fluid">
+
+    <div class="widgets-grid">
+        <!-- Alert Response Message -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mt-1 alert-dismissible fade show alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+                     role="alert">{{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% block body %}
+
+        {% endblock %}
+    </div>
+
+    {% block modals %}
+
+    {% endblock %}
+
+</main>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% block script %}
+
+{% endblock %}
+
+{% include "footer.html" %}
+</body>
+</html>

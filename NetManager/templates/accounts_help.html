@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% block jumbotron %}
+    <h2 class="text-info font-weight-bold">Help
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-question-circle nav-icon"
+             viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+            <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"></path>
+        </svg>
+    </h2>
+{% endblock %}
+
+{% block body %}
+    {% load static %}
+    <div class="row">
+        <div class="col widget">
+            <div id="accordion" class="accordion accordion-help text-left text-secondary">
+                <div class="card ">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                    data-target="#collapseOne"
+                                    aria-expanded="false" aria-controls="collapseOne">
+                                Configuring SSH on your Cisco device
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="card-body">
+                            <ol style="line-height: 150%; max-width: 50%">
+                                <li>Set hostname & domain-name
+                                    <pre class="border border-dark" style="background-color: lightgrey">router# config t
+router(config)# hostname R1
+R1(config)# ip domain-name domain_name.com</pre>
+                                </li>
+                                <li>Generate RSA Keys
+                                    <pre class="border border-dark" style="background-color: lightgrey">R1(config)# crypto key generate rsa<br>The name for the keys will be: R1.domain_name.com<br>Choose the size of the key modulus in the range of 360 to 2048 for your<br>General Purpose Keys. Choosing a key modulus greater than 512 may take<br>a few minutes.
+How many bits in the modulus [512]: 1024
+ % Generating 1024 bit RSA keys, keys will be non-exportable...[OK]</pre>
+                                </li>
+                                <li>Line VTY Configuration
+                                    <pre class="border border-dark" style="background-color: lightgrey">R1# line vty 0 4
+R1(config-line)# transport input ssh
+R1(config-line)# login local
+R1(config-line)# exit</pre>
+                                </li>
+                                <li>Create User Account
+                                    <pre class="border border-dark" style="background-color: lightgrey">R1(config)# username yourusername password yourpassword privilege 15</pre>
+                                    <label class="text-danger">Users with a privilege lower than 15 will not be able to
+                                        make
+                                        configuration changes</label>
+                                    <pre class="border border-dark" style="background-color: lightgrey">R1# service password-encryption</pre>
+                                </li>
+                                <li>Verify SSH
+                                    <pre class="border border-dark" style="background-color: lightgrey">R1# sh ip ssh
+SSH Enabled - version 1.99
+Authentication timeout: 120 secs; Authentication retries: 3</pre>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                    data-target="#collapseTwo"
+                                    aria-expanded="false" aria-controls="collapseTwo">
+                                Adding a New Device
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
+                            <p class="font-weight-bold">All devices within your topology need to be added to the
+                                management
+                                database to allow
+                                connections and configurations</p>
+                            <ol style="line-height: 250%">
+                                <li>Navigate to the Device Manager page</li>
+                                <li>STEP</li>
+                                <li>STEP</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                    data-target="#collapseThree"
+                                    aria-expanded="false" aria-controls="collapseThree">
+                                Editing Device Details
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                        <div class="card-body">
+                            <ol style="line-height: 250%">
+                                <li>Navigate to the Device Manager page</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingFour">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                    data-target="#collapseFour"
+                                    aria-expanded="false" aria-controls="collapseFour">
+                                Configuring a Security Policy
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                        <div class="card-body">
+                            <ol style="line-height: 250%">
+                                <li>Navigate to the Home page</li>
+                                <li>Navigate to 'Security Policy'</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingFive">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                    data-target="#collapseFive"
+                                    aria-expanded="false" aria-controls="collapseFive">
+                                Configuring an Interface
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                        <div class="card-body">
+                            <ol style="line-height: 250%">
+                                <li>Navigate to the devices management page for the device you wish to configure<br>
+                                    *If you unsure how to do this, see 'Entering Device Management'
+                                </li>
+                                <li>From the 'Device Interfaces' tab, select the interface you wish to configure
+                                    <img src="{% static 'images/deviceint.png' %}" alt="Image Not Found"></li>
+                                <li>In the interface configuration pop-up, specify the interfaces IP address, subnet
+                                    mask
+                                    and enable status
+                                    <img src="{% static 'images/intconfig.png' %}" alt="Image Not Found"></li>
+                                <li>Press the 'Confirm Changes' button to apply these changes to the interface
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingSix">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                    data-target="#collapseSix"
+                                    aria-expanded="false" aria-controls="collapseSix">
+                                Resetting an Interface
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+                        <div class="card-body">
+                            <ol style="line-height: 250%">
+                                <li>Navigate to the devices management page for the device you wish to reset<br>
+                                    *If you unsure how to do this, see 'Entering Device Management' section
+                                </li>
+                                <li>From the 'Device Interfaces' tab, select the interface you wish to reset
+                                    <img src="{% static 'images/devicereset.png' %}" alt="Image Not Found"></li>
+                                <li>The following pop-up will appear to confirm you want to reset this interface<br>
+                                    <img src="{% static 'images/intreset.png' %}" alt="Image Not Found"></li>
+                                <li>Press 'Yes' to confirm interface reset
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingSeven">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                    data-target="#collapseSeven"
+                                    aria-expanded="false" aria-controls="collapseSeven">
+                                Saving Configuration
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
+                        <div class="card-body">
+                            <ol style="line-height: 250%">
+                                <li>In the devices management page, navigate to 'Device Details'<br>
+                                    *If you unsure how to do this, see 'Entering Device Management'
+                                </li>
+                                <li>Press 'Save Device Configuration' to save the current configuration<br>
+                                    <img src="{% static 'images/saveconfig.png' %}" alt="Image Not Found"></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="card ">
+                    <div class="card-header" id="headingEight">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                    data-target="#collapseEight"
+                                    aria-expanded="false" aria-controls="collapseEight">
+                                Blah Blah
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion">
+                        <div class="card-body">
+                            <ol style="line-height: 250%">
+                                <li>
+
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- NEW HELP TABS HERE!-->
+            </div>
+        </div>
+    </div>
+
+    <div class="row text-center mt-2">
+        <div class="col widget">
+            <h2 class="text-light help-title">Can't Find What You're Looking For?</h2>
+            <h5 class="text-light">Send Us a Question</h5>
+            <div class="question">
+                <form>
+                    <label>Email Address</label>
+                    <input type="email" class="form-control text-left" required>
+                    <label>Question</label>
+                    <textarea type="text" class="form-control text-left" required></textarea>
+                    <button class="btn btn-success pad-btn btn-block">Submit Question</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

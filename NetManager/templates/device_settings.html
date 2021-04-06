@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+{% block jumbotron %}
+    <h2 class="text-info font-weight-bold">Device Settings
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-gear nav-icon"
+             viewBox="0 0 16 16">
+            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"></path>
+            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"></path>
+        </svg>
+    </h2>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col widget table-responsive">
+            <a href="{% url 'devices:device-manager' %}" class="btn btn-danger btn-sm d-inline-block btn-back">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-arrow-left-square btn-icon" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"></path>
+                </svg>
+                Back
+            </a>
+            <h3 class="title d-inline-block">Device Details</h3>
+            <div class="card card-custom">
+                <form action="{% url 'devices:edit-device' device_id=device.pk %}" method="post">
+                    {% csrf_token %}
+                    <div class="text-left mb-2">
+                        {{ device_form }}
+                    </div>
+                    <button class="btn btn-info btn-block mb-2" type="button" id="Edit" title="Edit Device">
+                        Edit Device
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-pencil btn-icon" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
+                        </svg>
+                    </button>
+                    <button class="btn btn-success btn-block" type="submit" id="Submit" title="Submit">Submit
+                        Changes
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-arrow-right-square btn-icon" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1
+                                  0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0
+                                  1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0
+                                  0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                        </svg>
+                    </button>
+                </form>
+                <button class="btn btn-danger btn-block delete" type="button" title="Delete Device"
+                        data-toggle="modal" data-target="#DeleteModal" id="{{ i.id }}"
+                        onclick="getID(this.id)">
+                    Delete Device
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                         fill="currentColor"
+                         class="bi bi-trash btn-icon" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                        <path fill-rule="evenodd"
+                              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                    </svg>
+                </button>
+                <button class="btn btn-danger btn-block" type="button" title="Cancel" id="Cancel-Info">
+                    Cancel
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-x-square btn-icon" viewBox="0 0 16 16">
+                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="col widget table-responsive ml-2">
+            <h3 class="title">Device Security Settings</h3>
+            <h6 class="text-center">Update this devices user login credentials here</h6>
+            <h6>NetManager will use to establish SSH connections to this device</h6>
+            <h6>Visit our <a href="{% url 'accounts:help' %}" target="_blank">help page</a> for details on setting
+                up
+                SSH on your device</h6>
+            <div class="card card-custom">
+                <form action="{% url 'devices:device-security' device_id=device.pk %}" method="post">
+                    {% csrf_token %}
+                    <div class="text-left mb-2">
+                        {{ security_form }}
+                    </div>
+                    <button class="btn btn-warning btn-block" type="button" id="Security">
+                        Update Security Settings
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                             fill="currentColor"
+                             class="bi bi-shield-lock btn-icon" viewBox="0 0 16 16">
+                            <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"></path>
+                            <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415z"></path>
+                        </svg>
+                    </button>
+                    <button class="btn btn-success btn-block mb-2" type="submit" id="Update" title="Submit">
+                        Submit
+                        Changes
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-arrow-right-square btn-icon" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1
+                                  0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0
+                                  1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0
+                                  0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                        </svg>
+                    </button>
+                    <button class="btn btn-danger btn-block" type="button" title="Cancel" id="Cancel-Sec">
+                        Cancel
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-x-square btn-icon" viewBox="0 0 16 16">
+                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block modals %}
+    <!-- Delete Device Model -->
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="label"
+         aria-hidden="true">
+        <div class="modal-dialog model-sm" role="document">
+            <form action="{% url 'devices:delete-device' device_id=device.pk %}" method="post">
+                {% csrf_token %}
+                <div class="modal-custom modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="title">Delete Device</h5>
+                        <input type="hidden" id="delete" name="id">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-left">
+                        <h6 class="text-danger">Deleting this device will remove it from the device
+                            database. This
+                            will not affect the network but will prevent connections to and from
+                            this
+                            device.</h6>
+                        <h6>Are you sure you wish to proceed?</h6>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">No
+                            <svg width="1em" height="1em" viewBox="0 0 16 16"
+                                 class="bi bi-x-circle-fill btn-icon"
+                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                            </svg>
+                        </button>
+                        <button type="submit" class="btn btn-success">Yes
+                            <svg width="1em" height="1em" viewBox="0 0 16 16"
+                                 class="bi bi-check-circle-fill btn-icon"
+                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+
+        //hide buttons
+        $('#Submit').hide();
+        $('#Cancel-Info').hide();
+        $('#Update').hide();
+        $('#Cancel-Sec').hide();
+
+        //edit device
+        $('#Edit').click(function () {
+            $("input.edit").prop('disabled', false)
+            $('#Submit').show();
+            $('#Cancel-Info').show();
+            $('#Edit').hide();
+            $('button.delete').hide();
+        });
+
+        $("#Cancel-Info").click(function () {
+            $("input.edit").prop('disabled', true)
+            $('#Edit').show();
+            $('button.delete').show();
+            $('#Submit').hide();
+            $('#Cancel-Info').hide();
+            $('form')[0].reset();
+        });
+
+        // edit security settings
+        $("#Security").click(function () {
+            $("input.security").prop('disabled', false)
+            $('#Update').show();
+            $('#Cancel-Sec').show();
+            $('#Security').hide();
+        });
+
+        $("#Cancel-Sec").click(function () {
+            $("input.security").prop('disabled', true)
+            $('#Update').hide();
+            $('#Cancel-Sec').hide();
+            $('#Security').show();
+            $('form')[1].reset();
+        });
+
+        // get device for id for deletion
+        function getID(id) {
+            document.getElementById('delete').value = id;
+        }
+
+    </script>
+{% endblock %}

@@ -1,0 +1,463 @@
+{% extends 'base.html' %}
+
+{% block jumbotron %}
+    <h2 class="text-info font-weight-bold">Device Configuration
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-cpu nav-icon"
+             viewBox="0 0 16 16">
+            <path d="M5 0a.5.5 0 0 1 .5.5V2h1V.5a.5.5 0 0 1 1 0V2h1V.5a.5.5 0 0 1 1 0V2h1V.5a.5.5 0 0 1 1 0V2A2.5 2.5 0 0 1 14 4.5h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14a2.5 2.5 0 0 1-2.5 2.5v1.5a.5.5 0 0 1-1 0V14h-1v1.5a.5.5 0 0 1-1 0V14h-1v1.5a.5.5 0 0 1-1 0V14h-1v1.5a.5.5 0 0 1-1 0V14A2.5 2.5 0 0 1 2 11.5H.5a.5.5 0 0 1 0-1H2v-1H.5a.5.5 0 0 1 0-1H2v-1H.5a.5.5 0 0 1 0-1H2v-1H.5a.5.5 0 0 1 0-1H2A2.5 2.5 0 0 1 4.5 2V.5A.5.5 0 0 1 5 0zm-.5 3A1.5 1.5 0 0 0 3 4.5v7A1.5 1.5 0 0 0 4.5 13h7a1.5 1.5 0 0 0 1.5-1.5v-7A1.5 1.5 0 0 0 11.5 3h-7zM5 6.5A1.5 1.5 0 0 1 6.5 5h3A1.5 1.5 0 0 1 11 6.5v3A1.5 1.5 0 0 1 9.5 11h-3A1.5 1.5 0 0 1 5 9.5v-3zM6.5 6a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"></path>
+        </svg>
+    </h2>
+{% endblock %}
+
+{% block body %}
+    <!-- Top Widgets -->
+    <div class="row mb-2">
+        <!-- Device Details -->
+        <div class="col-3 widget">
+            <h3 class="title">Device Details</h3>
+            <table class="table table-striped table-dark">
+                <tbody class="text-left">
+                {% for j in version %}
+                    <tr>
+                        <td><b>Device Name</b></td>
+                        <td>{{ device.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Device Type</b></td>
+                        <td>{{ device.type }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Device Vendor</b></td>
+                        <td>{{ device.vendor }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>SSH IP Address</b></td>
+                        <td>{{ device.host }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Hardware Type</b></td>
+                        <td>{{ device.vendor }} {{ j.hardware }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Uptime</b></td>
+                        <td>{{ j.uptime }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>IOS Version</b></td>
+                        <td>{{ j.version }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Location</b></td>
+                        <td>{{ device.location }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Contact</b></td>
+                        <td>{{ device.contact }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div>
+                <a href="{% url 'devices:save-config' device_id=device.pk %}" type="button"
+                   class="btn btn-warning btn-block"
+                   title="Save Configuration">Save Device
+                    Configuration
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-save btn-icon" viewBox="0 0 16 16">
+                        <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Interface Brief -->
+        <div class="col ml-2 table-responsive widget" style="height: 550px">
+            <h3 class="title">Device Interfaces</h3>
+            <table class="table table-striped table-dark">
+                <thead>
+                <tr>
+                    <th>Interface</th>
+                    <th>IP Address</th>
+                    <th>Status</th>
+                    <th>Protocol</th>
+                    <th>IP Config</th>
+                    <th>Reset</th>
+                    <th>More Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in interfaces %}
+                    <tr>
+                        <td>{{ i.intf }}</td>
+                        <td>{{ i.ipaddr }}</td>
+                        <td>
+                            {{ i.status }}
+                            {% if i.status == 'administratively down' %}
+                                <div class="status bg-warning"></div>
+                            {% endif %}
+                            {% if i.status == 'down' %}
+                                <div class="status bg-danger"></div>
+                            {% endif %}
+                            {% if i.status == 'up' %}
+                                <div class="status bg-success"></div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ i.proto }}
+                            {% if i.proto == 'down' %}
+                                <div class="status bg-danger"></div>
+                            {% else %}
+                                <div class="status bg-success"></div>
+                            {% endif %}
+                        </td>
+                        <!-- Configure Button -->
+                        <td>
+                            {% if i.ipaddr == device.host %}
+                                <!-- Disable configuring SSH interface -->
+                                (Disabled)
+                            {% else %}
+                                <button type="button" class="btn btn-success btn-sm config" data-toggle="modal"
+                                        data-target="#interfaceModal" title="Configure Interface"
+                                        id="{{ i.intf }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="currentColor"
+                                         class="bi bi-tools btn-icon" viewBox="0 0 16 16">
+                                        <path d="M1 0L0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.356 3.356a1 1 0 0 0 1.414 0l1.586-1.586a1 1 0 0 0 0-1.414l-3.356-3.356a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3c0-.269-.035-.53-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814L1 0zm9.646 10.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708zM3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026L3 11z"></path>
+                                    </svg>
+                                </button>
+                            {% endif %}
+                        </td>
+                        <!-- Reset Button -->
+                        <td>
+                            {% if i.ipaddr == device.host %}
+                                <!-- Disable resetting SSH interface -->
+                                (Disabled)
+                            {% else %}
+                                <button type="button" class="btn btn-danger btn-sm reset" data-toggle="modal"
+                                        data-target="#resetModal" title="Reset Interface"
+                                        id="{{ i.intf }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="currentColor"
+                                         class="bi bi-x-circle btn-icon" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                                    </svg>
+                                </button>
+                            {% endif %}
+                        </td>
+                        <!-- Interface Button -->
+                        <td>
+                            {% if i.ipaddr == device.host %}
+                                <!-- Disable SSH interface -->
+                                (Disabled)
+                            {% else %}
+                                <a href="{% url 'devices:interface-details' device_id=device.pk interface=i.intf %}"
+                                   class="btn btn-info btn-sm" title="More Details">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="currentColor" class="bi bi-list btn-icon" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                              d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+                                    </svg>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bottom Widgets -->
+    <div class="row d-flex">
+        <!-- Device Security -->
+        <div class="col widget text-left text-secondary">
+            <h3 class="title">Device Security Features</h3>
+            <div id="accordion" class="accordion accordion-device text-left mb-3">
+                <!-- Active Access Lists -->
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                    data-target="#collapseOne"
+                                    aria-expanded="false" aria-controls="collapseOne">
+                                Active Access Lists
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                         data-parent="#accordion">
+                        <div class="card-body">
+                            <label class="font-weight-bold">Manage and Configure Device Access Lists</label><br>
+                            {% for list in acl %}
+                                {% ifchanged list.acl_name %}
+                                    <label class="mb-0">{{ list.acl_type }} {{ list.acl_name }}</label>
+                                {% else %}
+                                    <ul>
+                                        <li>
+                                            {{ list.line_num }} {{ list.action }} {{ list.protocol }}
+                                            {% if list.src_any == 'any' %}
+                                                {{ list.src_any }}
+                                                {% if list.src_network %}
+                                                    {{ list.src_network }}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ list.src_host }}
+                                            {% endif %}
+                                            {% if list.dst_any == 'any' %}
+                                                {{ list.dst_any }}
+                                                {% if list.dst_network %}
+                                                    {{ list.dst_network }}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ list.dst_host }}
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                {% endifchanged %}
+                                </p>
+                            {% empty %}
+                                <h5 class="text-dark">No Access Lists Configured</h5>
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <!-- Manage Access Lists -->
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                    data-target="#collapseTwo"
+                                    aria-expanded="false" aria-controls="collapseTwo">
+                                Manage Access Lists
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                         data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="border border-secondary rounded">
+                                <div style="padding-top: 10px; padding-left: 10px; padding-right: 10px">
+                                    <label class="font-weight-bold">Edit or Create New Access List</label>
+                                    <form action="{% url 'devices:create-acl' device_id=device.pk %}"
+                                          method="post">
+                                        {% csrf_token %}
+                                        <div class="form-row">
+                                            <div class="form-group col">
+                                                <label>Access List Type</label>
+                                                {{ acl_form.type }}
+                                            </div>
+                                            <div class="form-group col">
+                                                <label>Access List Name</label>
+                                                {{ acl_form.name }}
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col">
+                                                <label>Access List Command</label>
+                                                {{ acl_form.statement }}
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-success pad-btn btn-block"
+                                                id="button">Push
+                                            Changes
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 fill="currentColor"
+                                                 class="bi bi-arrow-right-square btn-icon" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                      d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <br>
+                            <!-- Delete Access List -->
+                            <div>
+                                <div class="border border-secondary rounded">
+                                    <div style="padding-top: 10px; padding-left: 10px; padding-right: 10px">
+                                        <label class="font-weight-bold">Delete Access List</label>
+                                        <form action="{% url 'devices:delete-acl' device_id=device.pk %}" method="post">
+                                            {% csrf_token %}
+                                            <label>Select Access List</label>
+                                            <select class="form-control" name="acl" required>
+                                                <option selected disabled>--- Select ACL ---</option>
+                                                {% for list in acl %}
+                                                    {% ifchanged list.acl_name %}
+                                                        <option>{{ list.acl_type }} {{ list.acl_name }}</option>
+                                                    {% endifchanged %}
+                                                {% endfor %}
+                                            </select>
+                                            <button type="submit" class="btn btn-danger pad-btn btn-block"
+                                                    id="button">Delete
+                                                Access
+                                                List
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     fill="currentColor" class="bi bi-trash btn-icon"
+                                                     viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                                    <path fill-rule="evenodd"
+                                                          d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Disable unused interfaces -->
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold" data-toggle="collapse"
+                                    data-target="#collapseThree"
+                                    aria-expanded="false" aria-controls="collapseThree">
+                                Disable Unused Interfaces
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                         data-parent="#accordion">
+                        <div class="card-body">
+                            <label>Disable all interfaces not in use & not assigned with an IP
+                                addresses</label><br><label class="text-danger">This may take a few
+                            moments</label><br>
+                            <a href="{% url 'devices:disable-interfaces' device_id=device.pk %}" type="button"
+                               class="btn btn-danger" id="button">Disable Interfaces
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                     fill="currentColor"
+                                     class="bi bi-arrow-right-square btn-icon" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- NEW TABS HERE -->
+            </div>
+        </div>
+        <!-- Active Interfaces -->
+        <div class="col ml-2 widget table-responsive">
+            <h3 class="title">Active IP Addresses</h3>
+            <table class="table table-striped table-dark">
+                <thead>
+                <tr>
+                    <th>Interface</th>
+                    <th>IP Address</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for a in interfaces %}
+                    {% if a.ipaddr != 'unassigned' %}
+                        <tr>
+                        <td>
+                            {{ a.intf }}
+                        </td>
+                        <td>{{ a.ipaddr }}
+                            {% if a.ipaddr == device.host %}
+                                (SSH IP)
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block modals %}
+    <!-- Interface Modal -->
+    <div class="modal fade" id="interfaceModal" tabindex="-1" role="dialog" aria-labelledby="label"
+         aria-hidden="true">
+        <div class="modal-dialog model-sm" role="document">
+            <form action="{% url 'devices:config-interface' device_id=device.pk %}" method="post">
+                {% csrf_token %}
+                <div class="modal-custom  modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ int_form }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" id="button">Confirm Changes
+                            <svg width="1em" height="1em" viewBox="0 0 16 16"
+                                 class="bi bi-check-circle-fill btn-icon"
+                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reset Alert Modal -->
+    <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="label"
+         aria-hidden="true">
+        <div class="modal-dialog model-sm" role="document">
+            <form action="{% url 'devices:reset-interface' device_id=device.pk %}" method="post">
+                {% csrf_token %}
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Warning!</h5>
+                        <input type="hidden" id="reset" name="reset">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6 class="text-danger">Resetting this interface will remove its IP address and shut this
+                            interface down which may impact your network</h6>
+                        <h6>Are you sure wish to proceed?</h6>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">No
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle-fill btn-icon"
+                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                            </svg>
+                        </button>
+                        <button type="submit" class="btn btn-success">Yes
+                            <svg width="1em" height="1em" viewBox="0 0 16 16"
+                                 class="bi bi-check-circle-fill btn-icon"
+                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+
+        $('button.config').click(function () {
+            $("#id_interface").val(this.id)
+            $('#title').innerHTML(this.id)
+        });
+
+        $('button.reset').click(function () {
+            $('#reset').val(this.id)
+            $('#title').innerHTML(this.id)
+        })
+
+    </script>
+{% endblock %}
