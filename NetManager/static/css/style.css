@@ -96,6 +96,22 @@ body {
     margin-bottom: 10px;
 }
 
+.textbox-ip {
+    background-color: #343a40 !important;
+    color: white !important;
+    border: solid #6c757d 1px !important;
+    margin-bottom: 10px;
+    max-width: 10vh;
+    display: inline-block;
+}
+
+.card-accordion {
+    background-color: #343a40 !important;
+    border: 1px solid #6c757d !important;
+    color: white !important;
+}
+
+
 /* login */
 .form-login {
     width: 100%;
@@ -197,28 +213,6 @@ body {
     background-color: #343a40 !important;
     color: white !important;
     text-align: left !important;
-}
-
-/* help page */
-.help {
-    padding: 25px;
-    min-width: 100%;
-}
-
-.help-title {
-    padding: 10px;
-}
-
-.accordion-help {
-    align-content: center;
-    padding-left: 250px;
-    padding-right: 250px;
-    padding-bottom: 25px;
-}
-
-.question {
-    width: 650px;
-    margin: auto;
 }
 
 /* interface page */

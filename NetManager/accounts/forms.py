@@ -1,6 +1,6 @@
 """
 
-ACCOUNTS/FORMS.PY
+ACCOUNTS FORMS
 
 * LOGIN FORM
     * LOGGING USER IN
@@ -60,7 +60,7 @@ class RegisterForm(forms.ModelForm):
         email = self.cleaned_data.get('email')
         email2 = self.cleaned_data.get('email2')
         if email != email2:
-            return forms.ValidationError('Email addresses must match')
+            raise forms.ValidationError('Email addresses must match')
         email_check = User.objects.filter(email=email)
         if email_check.exists():
             raise forms.ValidationError('Account already registered to this email address')
@@ -91,7 +91,6 @@ class ChangePasswordForm(forms.ModelForm):
         model = User
         fields = [
             'password',
-            'password2',
         ]
 
     def clean(self):
@@ -100,4 +99,5 @@ class ChangePasswordForm(forms.ModelForm):
 
         if password != password2:
             raise forms.ValidationError('Passwords do not match')
+
         return super(ChangePasswordForm, self).clean()

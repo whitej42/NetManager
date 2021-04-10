@@ -15,7 +15,7 @@
 
     <div class="row mb-2">
         <div class="col widget">
-            <a href="{% url 'devices:device-details' device_id=device.pk %}"
+            <a href="{% url 'devices:Device-Details' device_id=device.pk %}"
                class="btn btn-danger btn-sm d-inline-block btn-back">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      class="bi bi-arrow-left-square btn-icon" viewBox="0 0 16 16">
@@ -24,6 +24,7 @@
                 </svg>
                 Back
             </a>
+            <!-- Device Details -->
             <h3 class="title d-inline-block">Device Details</h3>
             <table class="table table-striped table-dark">
                 <thead>
@@ -60,18 +61,17 @@
     {% endif %}
 
     <div class="row mb-2">
-        <!-- Device Details -->
         <div class="col-4 widget">
             <h3 class="title">Retrieve Information</h3>
             <div class="card card-custom">
                 <h6 class="text-center">Send show commands to this device to retrieve more specific information</h6>
                 <h6 class="text-danger text-center">Please note: All returned outputs will be unformatted</h6>
-                <form action="{% url 'config:show' device_id=device.id %}" method="post">
+                <form action="{% url 'config:Config' device_id=device.id %}" method="post">
                     {% csrf_token %}
                     <label for="show">Show Command:</label>
                     <input class="form-control textbox" id="show" name="txt_show" placeholder="Enter show command"
                            required>
-                    <button type="submit" class="btn btn-success btn-block" title="Send Command" id="btn_show">Send
+                    <button type="submit" class="btn btn-success btn-block" title="Send Command" name="show" id="btn_show">Send
                         Command
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-arrow-right-square nav-icon" viewBox="0 0 16 16">
@@ -87,13 +87,13 @@
         <div class="col widget ml-2">
             <h3 class="title">Send Configuration</h3>
             <div class="card card-custom">
-                <form action="{% url 'config:send-config' device_id=device.id %}" method="post">
+                <form action="{% url 'config:Config' device_id=device.id %}" method="post">
                     {% csrf_token %}
                     <label for="config">Configuration Commands:</label>
                     <textarea class="form-control textbox" style="min-height: 20vh" id="config" name="txt_config"
                               placeholder="Each new command must be separated by a new line"
                               required></textarea>
-                    <button type="submit" class="btn btn-info btn-block" title="Send Commands" id="btn_show">Send
+                    <button type="submit" class="btn btn-info btn-block" title="Send Commands" name="send" id="btn_show">Send
                         Commands
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-arrow-right-square nav-icon" viewBox="0 0 16 16">

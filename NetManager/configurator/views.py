@@ -6,52 +6,37 @@ CONFIGURATOR VIEWS.PY
 
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from devices import device_controller as controller
 from devices .models import Device
+from django.views import View
 
 
-# redirect back to page
-def refer(PageRequest, message):
-    messages.success(PageRequest, message)
-    return HttpResponseRedirect(PageRequest.META.get('HTTP_REFERER'))
+class ConfigView(View):
+    template = 'device_config.html'
+    success_redirect = 'config:Config'
 
-
-@login_required
-def configurator_view(PageRequest, device_id):
-    # get selected devices from db
-    try:
+    def get(self, request, **kwargs):
+        device_id = self.kwargs['device_id']
         d = Device.get_device(device_id)
         args = {'device': d}
-    except Device.DoesNotExist:
-        messages.error(PageRequest, 'Invalid URL: Device does not exist')
-        return redirect('devices:device-details', device_id)
-    return render(PageRequest, 'device_config.html', args)
+        return render(request, self.template, args)
 
+    def post(self, request, **kwargs):
 
-# always returns /configurator
-@login_required
-def show_command(PageRequest, device_id):
-    d = Device.get_device(device_id)
-    cmd = PageRequest.POST.get('txt_show')
-    output = controller.retrieve(d, cmd)
-    args = {'device': d, 'output': output}
-    try:
-        return render(PageRequest, 'device_config.html', args)
-    except Exception as e:
-        return redirect('devices:device-manager')
+        if 'show' in request.POST:
+            device_id = self.kwargs['device_id']
+            d = Device.get_device(device_id)
+            cmd = request.POST.get('txt_show')
+            output = controller.retrieve(d, cmd)
+            args = {'device': d, 'output': output}
+            return render(request, self.template, args)
 
-
-# always returns /configurator
-@login_required
-def send_config(PageRequest, device_id):
-    d = Device.get_device(device_id)
-    config = PageRequest.POST.get('txt_config')
-    cmd = config.split("\n")
-    controller.configure(d, cmd)
-    try:
-        return refer(PageRequest, 'Configuration Sent')
-    except Exception as e:
-        return redirect('devices:device-manager')
+        if 'send' in request.POST:
+            device_id = self.kwargs['device_id']
+            d = Device.get_device(device_id)
+            config = request.POST.get('txt_config')
+            cmd = config.split("\n")
+            controller.configure(d, cmd)
+            messages.success(request, 'Configuration Sent')
+            return redirect(self.success_redirect, device_id)

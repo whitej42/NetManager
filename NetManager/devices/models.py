@@ -41,7 +41,7 @@ class Security(models.Model):
     password = models.CharField(max_length=250, blank=True, null=True)
     secret = models.CharField(max_length=250, blank=True, null=True)
 
-    def create_security(self):
+    def create_blank_security(self):
         s = Security.objects.create(device_id=self.id)
         s.save()
 

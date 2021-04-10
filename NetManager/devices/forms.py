@@ -1,6 +1,6 @@
 """
 
-DEVICE/FORMS.PY
+DEVICES FORMS
 
 * DEVICE FORM
     * ADD DEVICE
@@ -57,10 +57,8 @@ class SecurityForm(forms.ModelForm):
 
 class InterfaceForm(forms.Form):
     interface = forms.CharField(widget=forms.HiddenInput)
-    ip_address = forms.CharField(label="IP Address", widget=forms.TextInput(
-        attrs={'class': 'form-control textbox', 'placeholder': 'Enter IP Address'}))
-    subnet = forms.CharField(label="IP Address", widget=forms.TextInput(
-        attrs={'class': 'form-control textbox', 'placeholder': 'Enter Subnet Mask'}))
+    ip_address = forms.CharField(label='IP Address', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter IP Address'}))
+    mask = forms.CharField(label='', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Subnet Mask'}))
     enable = forms.BooleanField(label='Enable Interface', required=False, initial=True)
 
 

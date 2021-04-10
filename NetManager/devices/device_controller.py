@@ -26,7 +26,6 @@ def retrieve(device, command):
     try:
         c = ConnectHandler(**connect(device))
         output = c.send_command(command ,use_textfsm=True)
-        print(output)
         c.disconnect()
     except Exception as e:
         output = e
@@ -112,7 +111,7 @@ def save_config(user, d):
 def config_interface(user, d, form):
     intface = form.cleaned_data.get('interface')
     ip = form.cleaned_data.get('ip_address')
-    mask = form.cleaned_data.get('subnet')
+    mask = form.cleaned_data.get('mask')
     enable = form.cleaned_data.get('enable')
     if enable:
         cmd = ['interface ' + intface, 'ip address ' + ip + ' ' + mask, 'no shutdown']
@@ -198,6 +197,6 @@ def remove_acl(user, d, intface, acl_name, direction):
     cmd = ['interface ' + intface, 'no ip access-group ' + acl_name + ' ' + direction]
     c = configure(d, cmd)
     if c:
-        return alert_generator.security_alert(user, d.name, acl_name, intface, 'REMOVE')
+        return alert_generator.security_alert(user, d, acl_name, intface, 'REMOVE')
     else:
         return str(c)
