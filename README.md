@@ -1,6 +1,6 @@
-# COMP3000 - Final Year Project
+# COMP3000 - University of Plymouth
 
-### BSc (Hons) Computer & Information Security - University of Plymouth
+### BSc (Hons) Computer & Information Security
 
 * Project Owner: James White 
 * Project Supervisor: Lingfen Sun
@@ -8,11 +8,15 @@
 ![Logo](https://github.com/jwhite96/COMP3000/blob/main/NetManager/static/images/logo.png)
 
 ## NetManager: Network Configuration & Management Tool
-Network Configuration & Management Application for automated configuration, management and monitoring of a network topology with additional security automation for implementing network security features (e.g. access lists, port security etc.)
+NetManager is a network configuration & management (NCM) tool for automated configuration and monitoring of network devices. Built using the [Django Web Framework](https://www.djangoproject.com), NetManager provides a clean and easy to use web interface that interacts with network devices to retrieve information and push configuration changes by utilising the [Netmiko](https://pypi.org/project/netmiko/) Python library.
 
 ### System Functionality
-* Display current network topology to the user
-* Automatically configure basic network hardware settings
-* Actively monitor network performance and security
-* Allow for individual device management without requiring direct access to the hardware
-* Automatically configure security policies set by the user by implementing network security features
+* User account functionality
+* Store and manage network devices
+* View device information & configuration
+* Configure device interfaces
+* Disable all unused interfaces
+* Create and delete access lists
+* Apply and remove access lists from interfaces
+* Send commands manually *if required
+* Configuration audit logs
