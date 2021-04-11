@@ -1,15 +1,10 @@
 """
 
-DEVICE/MODELS.PY
+File: devices/forms.py
 
-* DEVICE
-    * USER DEVICES
-
-* SECURITY
-    * DEVICE SECURITY SETTINGS
-
-* ALERT
-    * CONFIGURATION ALERT
+Purpose:
+    This code defines the models for the devices application.
+    These are stored in the sqlite3 database
 
 """
 from django.contrib.auth.models import User
@@ -17,6 +12,7 @@ from django.db import models
 from django.utils import timezone
 
 
+# network device
 class Device(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -33,6 +29,7 @@ class Device(models.Model):
         return device
 
 
+# devices login credentials
 class Security(models.Model):
     id = models.AutoField(primary_key=True)
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
@@ -40,27 +37,33 @@ class Security(models.Model):
     password = models.CharField(max_length=250, blank=True, null=True)
     secret = models.CharField(max_length=250, blank=True, null=True)
 
+    # create empty security object
     def create_blank_security(self):
         s = Security.objects.create(device_id=self.id)
         s.save()
 
+    # get device object
     def get_device_security(self):
         security = Security.objects.get(device=self)
         return security
 
+    # get devices username
     def get_username(self):
         username = Security.objects.filter(device=self.id).get().username
         return username
 
+    # get devices password
     def get_password(self):
         password = Security.objects.filter(device=self.id).get().password
         return password
 
+    # get devices secret
     def get_secret(self):
         secret = Security.objects.filter(device=self.id).get().secret
         return secret
 
 
+# audit log alerts
 class Alert(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

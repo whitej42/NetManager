@@ -1,19 +1,10 @@
 """
 
-DEVICES FORMS
+File: devices/forms.py
 
-* DEVICE FORM
-    * ADD DEVICE
-    * EDIT DEVICE
-
-* SECURITY FORM
-    * EDIT DEVICE SECURITY SETTINGS
-
-* INTERFACE FORM
-    * CONFIGURING INTERFACES
-
-* ACL FORM
-    * CREATING ACCESS LISTS
+Purpose:
+    This code generates Django forms for the
+    devices application views.
 
 """
 
@@ -21,6 +12,7 @@ from django import forms
 from devices.models import Device, Security
 
 
+# adding and editing devices
 class DeviceForm(forms.ModelForm):
     name = forms.CharField(label="Device Name", widget=forms.TextInput(attrs={'class': 'form-control textbox edit', 'disabled': 'true'}))
     type = forms.CharField(label="Device Type", widget=forms.TextInput(attrs={'class': 'form-control textbox edit', 'disabled': 'true'}))
@@ -41,6 +33,7 @@ class DeviceForm(forms.ModelForm):
         ]
 
 
+# changing device security information
 class SecurityForm(forms.ModelForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control textbox security', 'disabled': 'true'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control textbox security', 'disabled': 'true'}))
@@ -55,6 +48,7 @@ class SecurityForm(forms.ModelForm):
         ]
 
 
+# configuring an interface ip address
 class InterfaceForm(forms.Form):
     interface = forms.CharField(widget=forms.HiddenInput)
     ip_address = forms.CharField(label='IP Address', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter IP Address'}))
@@ -62,6 +56,7 @@ class InterfaceForm(forms.Form):
     enable = forms.BooleanField(label='Enable Interface', required=False, initial=True)
 
 
+# creating a new access list
 class AclForm(forms.Form):
     type_choices = [('standard', 'Standard'), ('extended', 'Extended')]
 

@@ -50,6 +50,7 @@ class TestViews(TestCase):
         self.device_details_url = reverse('devices:Device-Details', args=[pk])
         self.interface_details_url = reverse('devices:Interface-Details', args=[pk, 'f0/1'])
         self.device_settings_url = reverse('devices:Device-Settings', args=[pk])
+        self.config_view_url = reverse('devices:Device-Config', args=[pk])
 
     def test_device_manager_view_GET(self):
         login = self.client.login(username=self.username, password=self.password)
@@ -82,6 +83,14 @@ class TestViews(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'device_settings.html')
+
+    def test_config_view_GET(self):
+        login = self.client.login(username=self.username, password=self.password)
+        self.assertTrue(login)
+        response = self.client.get(self.config_view_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'device_config.html')
 
     def test_device_manager_add_device_POST(self):
         login = self.client.login(username=self.username, password=self.password)
@@ -228,3 +237,26 @@ class TestViews(TestCase):
         })
 
         self.assertRedirects(response, self.device_manager_url, status_code=302, target_status_code=200)
+
+    def test_config_view_show_POST(self):
+        login = self.client.login(username=self.username, password=self.password)
+        self.assertTrue(login)
+
+        response = self.client.post(self.config_view_url, {
+            'txt_show': 'test',
+            'show': 'show',
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'device_config.html')
+
+    def test_config_view_send_POST(self):
+        login = self.client.login(username=self.username, password=self.password)
+        self.assertTrue(login)
+
+        response = self.client.post(self.config_view_url, {
+            'txt_config': 'test',
+            'send': 'send',
+        })
+
+        self.assertRedirects(response, self.config_view_url, status_code=302, target_status_code=200)

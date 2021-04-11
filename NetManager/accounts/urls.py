@@ -1,3 +1,12 @@
+"""
+
+File: accounts/urls.py
+
+Purpose:
+    This code contains the url paths for the accounts application
+
+"""
+
 from django.urls import path
 from .views import *
 from django.contrib.auth.decorators import login_required

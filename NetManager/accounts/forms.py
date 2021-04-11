@@ -1,18 +1,10 @@
 """
 
-ACCOUNTS FORMS
+File: accounts/forms.py
 
-* LOGIN FORM
-    * LOGGING USER IN
-
-* REGISTER FORM
-    * REGISTERING A NEW USER
-
-* PROFILE FORM
-    * EDIT ACCOUNT SETTINGS
-
-* CHANGE PASSWORD FORM
-    * CHANGING USER PASSWORD
+Purpose:
+    This code generates Django forms for the
+    accounts application views.
 
 """
 
@@ -24,14 +16,17 @@ from django.contrib.auth import authenticate, get_user_model
 User = get_user_model()
 
 
+# logging user in
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
+    # validate form
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
 
+        # authenticate user
         if username and password:
             user = authenticate(username=username, password=password)
             if not user:
@@ -41,6 +36,7 @@ class LoginForm(forms.Form):
         return super(LoginForm, self).clean()
 
 
+# register new user
 class RegisterForm(forms.ModelForm):
     username = forms.CharField(label='Username')
     email = forms.EmailField(label='Email Address')
@@ -56,6 +52,7 @@ class RegisterForm(forms.ModelForm):
             'password'
         ]
 
+    # validate form
     def clean(self):
         email = self.cleaned_data.get('email')
         email2 = self.cleaned_data.get('email2')
@@ -67,6 +64,7 @@ class RegisterForm(forms.ModelForm):
         return super(RegisterForm, self).clean()
 
 
+# updating user profile
 class ProfileForm(forms.ModelForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control detail textbox', 'disabled': 'true'}))
     email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control detail textbox', 'disabled': 'true'}))
@@ -83,6 +81,7 @@ class ProfileForm(forms.ModelForm):
         ]
 
 
+# changing password
 class ChangePasswordForm(forms.ModelForm):
     password = forms.CharField(label='New Password', widget=forms.PasswordInput(attrs={'class': 'form-control textbox'}))
     password2 = forms.CharField(label='Confirm New Password', widget=forms.PasswordInput(attrs={'class': 'form-control textbox'}))
@@ -93,6 +92,7 @@ class ChangePasswordForm(forms.ModelForm):
             'password',
         ]
 
+    # validate form
     def clean(self):
         password = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('password2')

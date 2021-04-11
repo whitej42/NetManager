@@ -51,7 +51,7 @@
                                 <h6><span class="badge-pill badge-danger">Inactive</span></h6>
                             {% endif %}
                         </td>
-                        <!-- Config Button -->
+                        <!-- Configuration Button -->
                         <td>
                             {% if device.status %}
                                 <a href="{% url 'devices:Device-Details' device_id=device.pk %}" type="button"
@@ -178,7 +178,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for log in config_logs %}
+                {% for log in audit_logs %}
                     <tr>
                         <td>{{ log.id }}</td>
                         <td>{{ log.device }}</td>
