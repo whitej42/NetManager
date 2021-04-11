@@ -1,6 +1,6 @@
 """
 
-CONFIGURATOR VIEWS.PY
+CONFIGURATOR VIEWS
 
 """
 
@@ -15,6 +15,7 @@ from django.views import View
 class ConfigView(View):
     template = 'device_config.html'
     success_redirect = 'config:Config'
+    exception_redirect = 'device:Device-Manager'
 
     def get(self, request, **kwargs):
         device_id = self.kwargs['device_id']
@@ -24,8 +25,9 @@ class ConfigView(View):
 
     def post(self, request, **kwargs):
 
+        device_id = self.kwargs['device_id']
+
         if 'show' in request.POST:
-            device_id = self.kwargs['device_id']
             d = Device.get_device(device_id)
             cmd = request.POST.get('txt_show')
             output = controller.retrieve(d, cmd)
@@ -33,10 +35,10 @@ class ConfigView(View):
             return render(request, self.template, args)
 
         if 'send' in request.POST:
-            device_id = self.kwargs['device_id']
             d = Device.get_device(device_id)
             config = request.POST.get('txt_config')
             cmd = config.split("\n")
             controller.configure(d, cmd)
             messages.success(request, 'Configuration Sent')
             return redirect(self.success_redirect, device_id)
+        return redirect(self.exception_redirect)

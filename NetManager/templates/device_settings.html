@@ -76,7 +76,7 @@
             <h3 class="title">Device Security Settings</h3>
             <h6 class="text-center">Update this devices user login credentials here</h6>
             <h6>NetManager will use to establish SSH connections to this device</h6>
-            <h6>Visit our <a href="{% url 'accounts:help' %}" target="_blank">help page</a> for details on setting
+            <h6>Visit our <a href="{% url 'accounts:Help' %}" target="_blank">help page</a> for details on setting
                 up SSH on your device</h6>
             <div class="card card-custom">
                 <form action="{% url 'devices:Device-Settings' device_id=device.pk %}" method="post">
@@ -151,7 +151,7 @@
                                       d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
                             </svg>
                         </button>
-                        <button type="submit" class="btn btn-success">Yes
+                        <button type="submit" class="btn btn-success" name="delete">Yes
                             <svg width="1em" height="1em" viewBox="0 0 16 16"
                                  class="bi bi-check-circle-fill btn-icon"
                                  fill="currentColor" xmlns="http://www.w3.org/2000/svg">

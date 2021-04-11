@@ -1,18 +1,6 @@
 """
 
-ACCOUNTS/VIEWS.PY
-
-* INDEX VIEW
-
-* LOGIN VIEW
-
-* PROFILE VIEW
-
-* CHANGE PASSWORD
-
-* REPORTS VIEW
-
-* HELP VIEW
+Accounts Class Based Views
 
 """
 
@@ -24,6 +12,9 @@ from django.contrib.auth import authenticate, login
 from devices.models import Alert
 from django.views import View
 
+''' 
+Index Class Based View
+'''
 
 class IndexView(View):
     template = 'index.html'
@@ -37,6 +28,7 @@ class IndexView(View):
                          'Multi-vendor support will be developed in the near future')
         return render(request, self.template, args)
 
+    # Register new user
     def post(self, request):
         next = request.GET.get('next')
         form = RegisterForm(request.POST or None)
@@ -50,6 +42,11 @@ class IndexView(View):
             if next:
                 return redirect(next)
         return redirect('devices:Device-Manager')
+
+
+''' 
+Login Class Based View
+'''
 
 
 class LoginView(View):
@@ -70,7 +67,12 @@ class LoginView(View):
             login(request, user)
             if next:
                 return redirect(next)
-            return redirect('accounts:Index')
+            return redirect('devices:Device-Manager')
+
+
+''' 
+Profile Class Based View
+'''
 
 
 class ProfileView(View):
@@ -85,20 +87,29 @@ class ProfileView(View):
 
     def post(self, request):
 
-        if 'update' in request.POST:
-            form = ProfileForm(request.POST or None, instance=request.user)
-            if form.is_valid():
-                form.save()
-            return redirect(self.success_redirect)
+        if request.POST:
+            # Edit user details
+            if 'update' in request.POST:
+                form = ProfileForm(request.POST or None, instance=request.user)
+                if form.is_valid():
+                    form.save()
+                return redirect(self.success_redirect)
 
-        if 'delete' in request.POST:
-            user_id = request.user.id
-            user = User.objects.get(pk=user_id)
-            user.delete()
-            return redirect('/')
+            # Delete user account
+            if 'delete' in request.POST:
+                user_id = request.user.id
+                user = User.objects.get(pk=user_id)
+                user.delete()
+                return redirect('/')
+        return redirect('/')
 
 
-# change password
+''' 
+Change password function based view
+Unable to implement into CBV
+'''
+
+
 @login_required
 def change_password(request):
     form = ChangePasswordForm(request.POST or None, instance=request.user)
@@ -112,6 +123,11 @@ def change_password(request):
     return redirect('accounts:Profile')
 
 
+''' 
+Reports Class Based View
+'''
+
+
 class ReportsView(View):
     template = 'accounts_reports.html'
 
@@ -119,6 +135,11 @@ class ReportsView(View):
         config_logs = Alert.objects.filter(user__username=request.user)
         args = {'config_logs': config_logs}
         return render(request, self.template, args)
+
+
+''' 
+Help Class Based View
+'''
 
 
 class HelpView(View):

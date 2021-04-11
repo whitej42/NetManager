@@ -1,6 +1,6 @@
 """
 
-ACCOUNTS URL TESTS
+ACCOUNTS URL UNIT TESTS
 
 """
 from django.test import SimpleTestCase
@@ -11,29 +11,25 @@ from accounts.views import *
 class TestUrls(SimpleTestCase):
 
     def test_index_url(self):
-        url = reverse('accounts:index')
-        self.assertEqual(resolve(url).func, index_view)
+        url = reverse('accounts:Index')
+        self.assertEqual(resolve(url).func.view_class, IndexView)
 
     def test_login_url(self):
-        url = reverse('accounts:login')
-        self.assertEqual(resolve(url).func, login_view)
+        url = reverse('accounts:Login')
+        self.assertEqual(resolve(url).func.view_class, LoginView)
 
     def test_profile_url(self):
-        url = reverse('accounts:profile')
-        self.assertEqual(resolve(url).func, profile_view)
-
-    def test_update_profile_url(self):
-        url = reverse('accounts:update_profile')
-        self.assertEqual(resolve(url).func, update_profile)
+        url = reverse('accounts:Profile')
+        self.assertEqual(resolve(url).func.view_class, ProfileView)
 
     def test_change_password_url(self):
-        url = reverse('accounts:change_password')
+        url = reverse('accounts:Change-Password')
         self.assertEqual(resolve(url).func, change_password)
 
-    def test_delete_account_url(self):
-        url = reverse('accounts:reports')
-        self.assertEqual(resolve(url).func, reports_view)
+    def test_reports_url(self):
+        url = reverse('accounts:Reports')
+        self.assertEqual(resolve(url).func.view_class, ReportsView)
 
-    def test_help_view(self):
-        url = reverse('accounts:help')
-        self.assertEqual(resolve(url).func, help_view)
+    def test_help_url(self):
+        url = reverse('accounts:Help')
+        self.assertEqual(resolve(url).func.view_class, HelpView)

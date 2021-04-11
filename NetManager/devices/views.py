@@ -1,6 +1,6 @@
 """
 
-// Devices Class Based Views
+Devices Class Based Views
 
 """
 import datetime
@@ -34,6 +34,8 @@ class DeviceManager(View):
         return render(request, self.template, args)
 
     def post(self, request):
+
+        # add device
         user = User.objects.get(username=request.user)
         form = self.form_class(request.POST or None)
         if form.is_valid():
@@ -43,7 +45,8 @@ class DeviceManager(View):
             Security.create_blank_security(d)
             alert = alert_generator.device_alert(request.user, d, 'ADD')
             messages.success(request, alert)
-        return redirect(self.success_redirect)
+            return redirect(self.success_redirect)
+        return redirect(self.exception_redirect)
 
 
 ''' 
@@ -67,48 +70,45 @@ class DeviceDetails(View):
 
     def post(self, request, **kwargs):
         device_id = self.kwargs['device_id']
+        d = Device.get_device(device_id)
 
         if 'save' in request.POST:
-            d = Device.get_device(device_id)
             save = controller.save_config(request.user, d)
             messages.success(request, save)
             return redirect(self.success_redirect, device_id)
 
         if 'config' in request.POST:
-            d = Device.get_device(device_id)
             form = InterfaceForm(request.POST or None)
             if form.is_valid():
                 c = controller.config_interface(request.user, d, form)
                 messages.success(request, str(c))
-            return redirect(self.success_redirect, device_id)
+                return redirect(self.success_redirect, device_id)
 
         if 'reset' in request.POST:
-            d = Device.get_device(device_id)
             i = request.POST.get('reset')
             c = controller.reset_interface(request.user, d, i)
             messages.success(request, str(c))
             return redirect(self.success_redirect, device_id)
 
         if 'disable' in request.POST:
-            d = Device.get_device(device_id)
             c = controller.disable_interfaces(request.user, d)
             messages.success(request, str(c))
             return redirect(self.success_redirect, device_id)
 
         if 'create' in request.POST:
-            d = Device.get_device(device_id)
             form = AclForm(request.POST or None)
             if form.is_valid():
                 c = controller.create_acl(request.user, d, form)
-            messages.success(request, str(c))
-            return redirect(self.success_redirect, device_id)
+                messages.success(request, str(c))
+                return redirect(self.success_redirect, device_id)
 
         if 'delete' in request.POST:
-            d = Device.get_device(device_id)
             acl = request.POST.get('acl')
             c = controller.delete_acl(request.user, d, acl)
             messages.success(request, str(c))
             return redirect(self.success_redirect, device_id)
+
+        return redirect(self.exception_redirect)
 
 
 """
@@ -131,10 +131,11 @@ class InterfaceDetails(View):
 
     def post(self, request, **kwargs):
 
+        device_id = self.kwargs['device_id']
+        i = self.kwargs['interface']
+        d = Device.get_device(device_id)
+
         if 'apply' in request.POST:
-            device_id = self.kwargs['device_id']
-            i = self.kwargs['interface']
-            d = Device.get_device(device_id)
             # poor form implementation
             acl = request.POST.get('acl')
             direction = request.POST.get('dir')
@@ -143,15 +144,14 @@ class InterfaceDetails(View):
             return redirect(self.success_redirect, device_id, i)
 
         if 'remove' in request.POST:
-            device_id = self.kwargs['device_id']
-            i = self.kwargs['interface']
-            d = Device.get_device(device_id)
             # poor form implementation
             acl = request.POST.get('acl')
             direction = request.POST.get('dir')
             c = controller.remove_acl(request.user, d, i, acl, direction)
             messages.success(request, str(c))
             return redirect(self.success_redirect, device_id, i)
+
+        return redirect(self.exception_redirect)
 
 
 ''' 
@@ -175,31 +175,30 @@ class DeviceSettings(View):
         return render(request, self.template, args)
 
     def post(self, request, **kwargs):
+        device_id = self.kwargs['device_id']
+        d = Device.get_device(device_id)
 
         if 'edit' in request.POST:
-            device_id = self.kwargs['device_id']
-            d = Device.get_device(device_id)
             form = DeviceForm(request.POST or None, instance=d)
             if form.is_valid():
                 d.save()
                 alert = alert_generator.device_alert(request.user, d, 'UPDATE')
                 messages.success(request, alert)
-            return redirect(self.success_redirect, device_id)
+                return redirect(self.success_redirect, device_id)
 
         if 'security' in request.POST:
-            device_id = self.kwargs['device_id']
             s = Security.get_device_security(device_id)
             form = SecurityForm(request.POST or None, instance=s)
             if form.is_valid():
                 s.save()
                 alert = alert_generator.device_alert(request.user, s.device, 'SECURITY')
                 messages.success(request, alert)
-            return redirect(self.success_redirect, device_id)
+                return redirect(self.success_redirect, device_id)
 
         if 'delete' in request.POST:
-            device_id = self.kwargs['device_id']
-            d = Device.get_device(device_id)
             d.delete()
             alert = alert_generator.device_alert(request.user, d, 'DELETE')
             messages.success(request, alert)
             return redirect('devices:Device-Manager')
+
+        return redirect(self.exception_redirect)

@@ -1,9 +1,8 @@
 """
 
-ACCOUNTS TEST FORMS
+ACCOUNTS FORMS UNIT TESTS
 
 """
-
 from django.test import TestCase
 from accounts.forms import *
 from test_scripts import test_objects
