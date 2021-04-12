@@ -15,7 +15,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from devices.forms import *
 from devices.models import *
-from devices.controllers import alert_generator
+from devices.factory import alert_factory
 
 
 class DeviceSettings(View):

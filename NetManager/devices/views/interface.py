@@ -13,7 +13,7 @@ Purpose:
 from django.views import View
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from devices.controllers import device_controller as controller
+from devices.controllers import cisco_controller as controller
 from devices.models import *
 
 

@@ -13,7 +13,8 @@ import datetime
 from django.views import View
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from devices.controllers import device_controller as controller, alert_generator
+from devices.factory import alert_factory
+from devices.controllers import cisco_controller as controller
 from devices.forms import *
 from devices.models import *
 
@@ -46,7 +47,7 @@ class DeviceManager(View):
             d.user = user
             d.save()
             Security.create_blank_security(d)
-            alert = alert_generator.device_alert(request.user, d, 'ADD')
+            alert = alert_factory.device_alert(request.user, d, 'ADD')
             messages.success(request, alert)
             return redirect(self.success_redirect)
         # exception redirect
