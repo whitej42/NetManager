@@ -66,13 +66,13 @@
             <div class="card card-custom">
                 <h6 class="text-center">Send show commands to this device to retrieve more specific information</h6>
                 <h6 class="text-danger text-center">Please note: All returned outputs will be unformatted</h6>
-                <form action="{% url 'config:Config' device_id=device.id %}" method="post">
+                <form action="{% url 'devices:Device-Config' device_id=device.id %}" method="post">
                     {% csrf_token %}
                     <label for="show">Show Command:</label>
-                    <input class="form-control textbox" id="show" name="txt_show" placeholder="Enter show command"
+                    <input class="form-control textbox mb-2" id="show" name="txt_show" placeholder="Enter show command"
                            required>
-                    <button type="submit" class="btn btn-success btn-block" title="Send Command" name="show" id="btn_show">Send
-                        Command
+                    <button type="submit" class="btn btn-success btn-block" title="Send Command" name="show" id="btn_show">
+                        Send Command
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-arrow-right-square nav-icon" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
@@ -87,14 +87,14 @@
         <div class="col widget ml-2">
             <h3 class="title">Send Configuration</h3>
             <div class="card card-custom">
-                <form action="{% url 'config:Config' device_id=device.id %}" method="post">
+                <form action="{% url 'devices:Device-Config' device_id=device.id %}" method="post">
                     {% csrf_token %}
                     <label for="config">Configuration Commands:</label>
-                    <textarea class="form-control textbox" style="min-height: 20vh" id="config" name="txt_config"
+                    <textarea class="form-control textbox mb-2" style="min-height: 20vh" id="config" name="txt_config"
                               placeholder="Each new command must be separated by a new line"
                               required></textarea>
-                    <button type="submit" class="btn btn-info btn-block" title="Send Commands" name="send" id="btn_show">Send
-                        Commands
+                    <button type="submit" class="btn btn-info btn-block" title="Send Commands" name="send" id="btn_show">
+                        Send Commands
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-arrow-right-square nav-icon" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"

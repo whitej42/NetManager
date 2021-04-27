@@ -1,19 +1,20 @@
-{% extends 'base.html' %}
-{% block jumbotron %}
-    <h2 class="text-info font-weight-bold">Help
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-question-square"
-             viewBox="0 0 16 16">
-            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
-            <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"></path>
-        </svg>
-    </h2>
-{% endblock %}
+{% include "header.html" %}
 
-{% block body %}
-    {% load static %}
-    <div class="row">
-        <div class="col widget">
-            <h3 class="title">How can we help you?</h3>
+<body>
+{% load static %}
+{% include "navbar.html" %}
+
+<div class="jumbotron jumbotron-fluid mb-0" style="background-color: #1c1f22">
+    <div class="container" style="min-width: 100%">
+        <h2 class="text-info font-weight-bold">How can we help you?</h2>
+    </div>
+</div>
+
+<!-- Main -->
+<main class="main container-fluid">
+
+    <div class="row bg-dark">
+        <div class="col p-5">
             <div id="accordion" class="accordion text-left">
                 <div class="card card-accordion">
                     <div class="card-header" id="headingOne">
@@ -27,33 +28,23 @@
                     </div>
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body">
-                            <ol style="line-height: 150%; max-width: 50%">
-                                <li>Set hostname & domain-name
-                                    <pre class="border border-dark" style="background-color: lightgrey">router# config t
-router(config)# hostname R1
-R1(config)# ip domain-name domain_name.com</pre>
+                            <ol style="line-height: 100%; max-width: 50%">
+                                <li>Set hostname & domain-name<br>
+                                    <img src="{% static 'images/hostname.png' %}" alt="Image Not Found">
                                 </li>
-                                <li>Generate RSA Keys
-                                    <pre class="border border-dark" style="background-color: lightgrey">R1(config)# crypto key generate rsa<br>The name for the keys will be: R1.domain_name.com<br>Choose the size of the key modulus in the range of 360 to 2048 for your<br>General Purpose Keys. Choosing a key modulus greater than 512 may take<br>a few minutes.
-How many bits in the modulus [512]: 1024
- % Generating 1024 bit RSA keys, keys will be non-exportable...[OK]</pre>
+                                <li>Generate RSA Keys<br>
+                                    <img src="{% static 'images/rsa.png' %}" alt="Image Not Found">
                                 </li>
-                                <li>Line VTY Configuration
-                                    <pre class="border border-dark" style="background-color: lightgrey">R1# line vty 0 4
-R1(config-line)# transport input ssh
-R1(config-line)# login local
-R1(config-line)# exit</pre>
+                                <li>Line VTY Configuration<br>
+                                    <img src="{% static 'images/vty.png' %}" alt="Image Not Found">
                                 </li>
-                                <li>Create User Account
-                                    <pre class="border border-dark" style="background-color: lightgrey">R1(config)# username yourusername password yourpassword privilege 15</pre>
+                                <li>Create User Account<br>
+                                    <img src="{% static 'images/user.png' %}" alt="Image Not Found">
                                     <label class="text-danger">Users with a privilege lower than 15 will not be able to
                                         make configuration changes</label>
-                                    <pre class="border border-dark" style="background-color: lightgrey">R1# service password-encryption</pre>
                                 </li>
-                                <li>Verify SSH
-                                    <pre class="border border-dark" style="background-color: lightgrey">R1# sh ip ssh
-SSH Enabled - version 1.99
-Authentication timeout: 120 secs; Authentication retries: 3</pre>
+                                <li>Verify SSH<br>
+                                    <img src="{% static 'images/ssh.png' %}" alt="Image Not Found">
                                 </li>
                             </ol>
                         </div>
@@ -72,13 +63,18 @@ Authentication timeout: 120 secs; Authentication retries: 3</pre>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                         <div class="card-body">
                             <p class="font-weight-bold">All devices within your topology need to be added to the
-                                management
-                                database to allow
-                                connections and configurations</p>
-                            <ol style="line-height: 250%">
+                                management database to allow connections and configurations</p>
+                            <ol style="line-height: 150%">
                                 <li>Navigate to the Device Manager page</li>
-                                <li>STEP</li>
-                                <li>STEP</li>
+                                <li>Click the Add New Device button<br>
+                                    <img class="border rounded m-2" src="{% static 'images/add.png' %}"
+                                         alt="Image Not Found" style="width: 1500px;">
+                                </li>
+                                <li>Enter the device information in the dropdown</li>
+                                <li>Click Add Device button when finished<br>
+                                    <label class="text-danger">NOTE: New devices are not configured with login
+                                        credentials. Go to the device settings to update security settings</label>
+                                </li>
                             </ol>
                         </div>
                     </div>
@@ -89,14 +85,19 @@ Authentication timeout: 120 secs; Authentication retries: 3</pre>
                             <button class="btn collapsed font-weight-bold text-light" data-toggle="collapse"
                                     data-target="#collapseThree"
                                     aria-expanded="false" aria-controls="collapseThree">
-                                Editing Device Details
+                                Editing Device Settings
                             </button>
                         </h5>
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                         <div class="card-body">
-                            <ol style="line-height: 250%">
+                            <ol style="line-height: 150%">
                                 <li>Navigate to the Device Manager page</li>
+                                <li>Click the device settings button on a device<br>
+                                    <img class="border rounded m-2" src="{% static 'images/settings.png' %}"
+                                         alt="Image Not Found" style="width: 1500px;">
+                                </li>
+                                <li>You will be redirected to that devices settings page</li>
                             </ol>
                         </div>
                     </div>
@@ -107,15 +108,38 @@ Authentication timeout: 120 secs; Authentication retries: 3</pre>
                             <button class="btn collapsed font-weight-bold text-light" data-toggle="collapse"
                                     data-target="#collapseFour"
                                     aria-expanded="false" aria-controls="collapseFour">
-                                Configuring a Security Policy
+                                Device Configuration
                             </button>
                         </h5>
                     </div>
                     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                         <div class="card-body">
-                            <ol style="line-height: 250%">
-                                <li>Navigate to the Home page</li>
-                                <li>Navigate to 'Security Policy'</li>
+                            <h5>Device connected:</h5>
+                            <ol style="line-height: 150%">
+                                <li>Navigate to the device manager page</li>
+                                <li>Click the configuration button on a device<br>
+                                    <img class="border rounded m-2" src="{% static 'images/configure.png' %}"
+                                         alt="Image Not Found" style="width: 1500px;">
+                                </li>
+                                <li>You will be redirected to that devices configuration page</li>
+                            </ol>
+                            <h5>Device not connected:</h5>
+                            <ol style="line-height: 150%">
+                                <li>
+                                    <p>
+                                        If this is symbol is displayed, it means NetManager has been unable to establish
+                                        a connection to this device<br>
+                                        <img class="border rounded m-2" src="{% static 'images/alert.png' %}"
+                                             alt="Image Not Found"><br>
+                                        <label class="text-warning mb-0">
+                                            Remember! New devices are configured without login information.
+                                            Try updating this devices security credentials in the device settings
+                                        </label><br>
+                                        <label class="text-danger mb-0">
+                                            If issue persists, check the SSH configuration or connection on your device
+                                        </label>
+                                    </p>
+                                </li>
                             </ol>
                         </div>
                     </div>
@@ -126,24 +150,33 @@ Authentication timeout: 120 secs; Authentication retries: 3</pre>
                             <button class="btn collapsed font-weight-bold text-light" data-toggle="collapse"
                                     data-target="#collapseFive"
                                     aria-expanded="false" aria-controls="collapseFive">
-                                Configuring an Interface
+                                Configuring & Resetting an Interface
                             </button>
                         </h5>
                     </div>
                     <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
                         <div class="card-body">
-                            <ol style="line-height: 250%">
-                                <li>Navigate to the devices management page for the device you wish to configure<br>
-                                    *If you unsure how to do this, see 'Entering Device Management'
+                            <h5>Configuring:</h5>
+                            <ol style="line-height: 150%">
+                                <li>Navigate to the device configuration page<br>
+                                    <label class="text-info">Unsure how to do this? See 'Device
+                                        Configuration'</label>
                                 </li>
-                                <li>From the 'Device Interfaces' tab, select the interface you wish to configure
-                                    <img src="{% static 'images/deviceint.png' %}" alt="Image Not Found"></li>
-                                <li>In the interface configuration pop-up, specify the interfaces IP address, subnet
-                                    mask
-                                    and enable status
-                                    <img src="{% static 'images/intconfig.png' %}" alt="Image Not Found"></li>
-                                <li>Press the 'Confirm Changes' button to apply these changes to the interface
+                                <li>From the 'Device Interfaces' widget, select the interface you wish to configure
+                                    <img class="border rounded m-2" src="{% static 'images/int-config.png' %}"
+                                         alt="Image Not Found"></li>
+                                <li>In the pop-up, specify the interfaces IP address, subnet
+                                    mask and enable status
                                 </li>
+                                <li>Click 'Yes' in the pop-up to confirm</li>
+                            </ol>
+                            <h5>Resetting:</h5>
+                            <ol style="line-height: 150%">
+                                <li>Navigate to the device configuration page</li>
+                                <li>From the 'Device Interfaces' widget, select the interface you wish to reset
+                                    <img class="border rounded m-2" src="{% static 'images/int-reset.png' %}"
+                                         alt="Image Not Found"></li>
+                                <li>Click 'Yes' in the pop-up to confirm the reset</li>
                             </ol>
                         </div>
                     </div>
@@ -154,22 +187,21 @@ Authentication timeout: 120 secs; Authentication retries: 3</pre>
                             <button class="btn collapsed font-weight-bold text-light" data-toggle="collapse"
                                     data-target="#collapseSix"
                                     aria-expanded="false" aria-controls="collapseSix">
-                                Resetting an Interface
+                                Saving Device Configuration
                             </button>
                         </h5>
                     </div>
                     <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
                         <div class="card-body">
-                            <ol style="line-height: 250%">
-                                <li>Navigate to the devices management page for the device you wish to reset<br>
-                                    *If you unsure how to do this, see 'Entering Device Management' section
+                            <ol style="line-height: 150%">
+                                <li>Navigate to the device configuration page<br>
+                                    <label class="text-info">Unsure how to do this? See 'Device
+                                        Configuration'</label>
                                 </li>
-                                <li>From the 'Device Interfaces' tab, select the interface you wish to reset
-                                    <img src="{% static 'images/devicereset.png' %}" alt="Image Not Found"></li>
-                                <li>The following pop-up will appear to confirm you want to reset this interface<br>
-                                    <img src="{% static 'images/intreset.png' %}" alt="Image Not Found"></li>
-                                <li>Press 'Yes' to confirm interface reset
-                                </li>
+                                <li>In the device configuration page, navigate to the 'Device Details' widget</li>
+                                <li>Click the Save Configuration button<br>
+                                    <img class="border rounded m-2" src="{% static 'images/save.png' %}"
+                                         alt="Image Not Found" style="width: 325px; height: 400px"></li>
                             </ol>
                         </div>
                     </div>
@@ -180,18 +212,21 @@ Authentication timeout: 120 secs; Authentication retries: 3</pre>
                             <button class="btn collapsed font-weight-bold text-light" data-toggle="collapse"
                                     data-target="#collapseSeven"
                                     aria-expanded="false" aria-controls="collapseSeven">
-                                Saving Configuration
+                                Sending Configuration Manually
                             </button>
                         </h5>
                     </div>
                     <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
                         <div class="card-body">
-                            <ol style="line-height: 250%">
-                                <li>In the devices management page, navigate to 'Device Details'<br>
-                                    *If you unsure how to do this, see 'Entering Device Management'
+                            <ol style="line-height: 150%">
+                                <li>Navigate to the device configuration page<br>
+                                    <label class="text-info">Unsure how to do this? See 'Device
+                                        Configuration'</label>
                                 </li>
-                                <li>Press 'Save Device Configuration' to save the current configuration<br>
-                                    <img src="{% static 'images/saveconfig.png' %}" alt="Image Not Found"></li>
+                                <li>In the device configuration page, navigate to the 'Device Details' widget</li>
+                                <li>Click the Send Configuration Manually button<br>
+                                    <img class="border rounded m-2" src="{% static 'images/manual.png' %}"
+                                         alt="Image Not Found" style="width: 325px; height: 400px"></li>
                             </ol>
                         </div>
                     </div>
@@ -202,16 +237,42 @@ Authentication timeout: 120 secs; Authentication retries: 3</pre>
                             <button class="btn collapsed font-weight-bold text-light" data-toggle="collapse"
                                     data-target="#collapseEight"
                                     aria-expanded="false" aria-controls="collapseEight">
-                                Blah Blah
+                                Managing Access Lists
                             </button>
                         </h5>
                     </div>
                     <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion">
                         <div class="card-body">
-                            <ol style="line-height: 250%">
-                                <li>
-
+                            <ol>
+                                <li>Navigate to the device configuration page<br>
+                                    <label class="text-info">Unsure how to do this? See 'Device
+                                        Configuration'</label>
                                 </li>
+                                <li>In the device configuration page, navigate to the 'Device Security Features'
+                                    widget
+                                </li>
+                                <li>Click 'Manage Access Lists'</li>
+                            </ol>
+                            <h5>Creating Access Lists</h5>
+                            <ol style="line-height: 150%">
+                                <li>Fill out the 'Edit and Create Access List' form (shown below)<br>
+                                    <label class="text-warning">Access lists can be created without specifying a command</label><br>
+                                    <img class="border rounded m-2" src="{% static 'images/acl-create.png' %}"
+                                         alt="Image Not Found" style="width: 700px; height: 600px"></li>
+                                <li>Click the 'Push Changes' button to create the new access list</li>
+                            </ol>
+                            <h5>Editing Access Lists</h5>
+                            <ol style="line-height: 150%">
+                                <li>Use the 'Edit and Create Access List' form using the <b>name of the access list</b> you want to edit<br>
+                                <label class="text-warning">This will append a new line to the existing access list</label></li>
+                                <li>Click the 'Push Changes' button to add the new line</li>
+                            </ol>
+                            <h5>Deleting Access Lists</h5>
+                            <ol style="line-height: 150%">
+                                <li>Select the access list you wish to delete from the 'Delete Access List' form<br>
+                                <img class="border rounded m-2" src="{% static 'images/acl-delete.png' %}"
+                                         alt="Image Not Found" style="width: 700px; height: 600px"></li>
+                                <li>Click the 'Delete Access List' button</li>
                             </ol>
                         </div>
                     </div>
@@ -221,20 +282,12 @@ Authentication timeout: 120 secs; Authentication retries: 3</pre>
         </div>
     </div>
 
-    <div class="row text-center mt-2">
-        <div class="col widget">
-            <h2 class="text-light help-title">Can't Find What You're Looking For?</h2>
-            <h5 class="text-light">Send Us a Question</h5>
-            <div class="question">
-                <form>
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" class="form-control text-left" required>
-                    <label for="question">Question</label>
-                    <textarea type="text" class="form-control text-left" id="question" required></textarea>
-                    <button class="btn btn-success pad-btn btn-block">Submit Question</button>
-                </form>
-            </div>
-        </div>
-    </div>
+</main>
 
-{% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% include "footer.html" %}
+</body>
+</html>

@@ -20,7 +20,7 @@ from devices.models import *
 class InterfaceDetails(View):
     template = 'device_interface.html'
     success_redirect = 'devices:Interface-Details'
-    exception_redirect = 'device:Device-Manager'
+    exception_redirect = 'devices:Device-Manager'
 
     # get interface configuration
     # **kwargs = devices primary key
@@ -31,7 +31,12 @@ class InterfaceDetails(View):
         d = Device.get_device(device_id)
         args = {'device': d, 'interface': i, 'details': controller.get_interface_details(d, i),
                 'int_acl': controller.get_interface_ip(d, i), 'acl': controller.get_acl(d)}
-        return render(request, self.template, args)
+
+        try:
+            return render(request, self.template, args)
+        except Exception as e:
+            messages.error(request, 'Error - ' + str(e))
+            return redirect(self.exception_redirect)
 
     # post interface configuration
     # **kwargs = devices primary key
@@ -49,7 +54,6 @@ class InterfaceDetails(View):
             direction = request.POST.get('dir')
             c = controller.apply_acl(request.user, d, i, acl, direction)
             messages.success(request, str(c))
-            return redirect(self.success_redirect, device_id, i)
 
         # remove access list from interface
         if 'remove' in request.POST:
@@ -58,6 +62,9 @@ class InterfaceDetails(View):
             direction = request.POST.get('dir')
             c = controller.remove_acl(request.user, d, i, acl, direction)
             messages.success(request, str(c))
-            return redirect(self.success_redirect, device_id, i)
 
-        return redirect(self.exception_redirect)
+        try:
+            return redirect(self.success_redirect, device_id, i)
+        except Exception as e:
+            messages.error(request, 'Error - ' + str(e))
+            return redirect(self.exception_redirect)

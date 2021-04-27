@@ -22,7 +22,7 @@ from devices.models import *
 class DeviceDetails(View):
     template = 'device_details.html'
     success_redirect = 'devices:Device-Details'
-    exception_redirect = 'device:Device-Manager'
+    exception_redirect = 'devices:Device-Manager'
 
     # get device configuration & config
     # **kwargs = devices primary key
@@ -34,7 +34,11 @@ class DeviceDetails(View):
         acl_form = AclForm
         args = {'device': d, 'int_form': int_form, 'acl_form': acl_form, 'interfaces': controller.get_interfaces(d),
                 'version': controller.get_version(d), 'acl': controller.get_acl(d)}
-        return render(request, self.template, args)
+        try:
+            return render(request, self.template, args)
+        except Exception as e:
+            messages.error(request, 'Error - ' + str(e))
+            return redirect(self.exception_redirect)
 
     # post device configuration
     # **kwargs = devices primary key
@@ -47,7 +51,6 @@ class DeviceDetails(View):
         if 'save' in request.POST:
             save = controller.save_config(request.user, d)
             messages.success(request, save)
-            return redirect(self.success_redirect, device_id)
 
         # configure interface ip address
         if 'config' in request.POST:
@@ -55,20 +58,17 @@ class DeviceDetails(View):
             if form.is_valid():
                 c = controller.config_interface(request.user, d, form)
                 messages.success(request, str(c))
-                return redirect(self.success_redirect, device_id)
 
         # reset interface
         if 'reset' in request.POST:
             i = request.POST.get('reset')
             c = controller.reset_interface(request.user, d, i)
             messages.success(request, str(c))
-            return redirect(self.success_redirect, device_id)
 
         # disable all unused interfaces
         if 'disable' in request.POST:
             c = controller.disable_interfaces(request.user, d)
             messages.success(request, str(c))
-            return redirect(self.success_redirect, device_id)
 
         # create new access list
         if 'create' in request.POST:
@@ -76,14 +76,15 @@ class DeviceDetails(View):
             if form.is_valid():
                 c = controller.create_acl(request.user, d, form)
                 messages.success(request, str(c))
-                return redirect(self.success_redirect, device_id)
 
         # delete access list
         if 'delete' in request.POST:
             acl = request.POST.get('acl')
             c = controller.delete_acl(request.user, d, acl)
             messages.success(request, str(c))
-            return redirect(self.success_redirect, device_id)
 
-        # exception redirect
-        return redirect(self.exception_redirect)
+        try:
+            return redirect(self.success_redirect, device_id)
+        except Exception as e:
+            messages.error(request, 'Error - ' + str(e))
+            return redirect(self.exception_redirect)

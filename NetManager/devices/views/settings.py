@@ -21,7 +21,7 @@ from devices.factory import alert_factory
 class DeviceSettings(View):
     template = 'device_settings.html'
     success_redirect = 'devices:Device-Settings'
-    exception_redirect = 'device:Device-Manager'
+    exception_redirect = 'devices:Device-Manager'
 
     # get device database information
     # **kwargs = devices primary key
@@ -32,7 +32,12 @@ class DeviceSettings(View):
         device_form = DeviceForm(instance=d)
         security_form = SecurityForm(instance=Security.get_device_security(device_id))
         args = {'device': d, 'security_form': security_form, 'device_form': device_form}
-        return render(request, self.template, args)
+
+        try:
+            return render(request, self.template, args)
+        except Exception as e:
+            messages.error(request, 'Error - ' + str(e))
+            return redirect(self.exception_redirect)
 
     # post device information
     # **kwargs = devices primary key
@@ -46,9 +51,8 @@ class DeviceSettings(View):
             form = DeviceForm(request.POST or None, instance=d)
             if form.is_valid():
                 d.save()
-                alert = alert_generator.device_alert(request.user, d, 'UPDATE')
+                alert = alert_factory.device_alert(request.user, d, 'UPDATE')
                 messages.success(request, alert)
-                return redirect(self.success_redirect, device_id)
 
         # edit device security information
         if 'security' in request.POST:
@@ -56,16 +60,18 @@ class DeviceSettings(View):
             form = SecurityForm(request.POST or None, instance=s)
             if form.is_valid():
                 s.save()
-                alert = alert_generator.device_alert(request.user, s.device, 'SECURITY')
+                alert = alert_factory.device_alert(request.user, s.device, 'SECURITY')
                 messages.success(request, alert)
-                return redirect(self.success_redirect, device_id)
 
         # delete device - returns device manager
         if 'delete' in request.POST:
             d.delete()
-            alert = alert_generator.device_alert(request.user, d, 'DELETE')
+            alert = alert_factory.device_alert(request.user, d, 'DELETE')
             messages.success(request, alert)
             return redirect('devices:Device-Manager')
 
-        # exception redirect
-        return redirect(self.exception_redirect)
+        try:
+            return redirect(self.success_redirect, device_id)
+        except Exception as e:
+            messages.error(request, 'Error - ' + str(e))
+            return redirect(self.exception_redirect)

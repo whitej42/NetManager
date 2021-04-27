@@ -35,7 +35,11 @@ class DeviceManager(View):
 
         args = {'devices': user_devices, 'status': controller.connect_test(user_devices),
                 'audit_logs': audit_logs, 'form': form}
-        return render(request, self.template, args)
+        try:
+            return render(request, self.template, args)
+        except Exception as e:
+            messages.error(request, 'Error - ' + str(e))
+            return redirect(self.exception_redirect)
 
     # post new device
     # returns device manager view
@@ -48,7 +52,10 @@ class DeviceManager(View):
             d.save()
             Security.create_blank_security(d)
             alert = alert_factory.device_alert(request.user, d, 'ADD')
-            messages.success(request, alert)
+            messages.success(request, alert + " - Remember! Add login credentials in the device settings")
+
+        try:
             return redirect(self.success_redirect)
-        # exception redirect
-        return redirect(self.exception_redirect)
+        except Exception as e:
+            messages.error(request, 'Error - ' + str(e))
+            return redirect(self.exception_redirect)

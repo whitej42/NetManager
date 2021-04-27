@@ -23,10 +23,10 @@ urlpatterns = [
     # /devices/device_id/interface/
     path('<int:device_id>/<path:interface>/', login_required(InterfaceDetails.as_view()), name='Interface-Details'),
 
-    # /devices/configurator/device_id/
-    path('<int:device_id>/configurator', login_required(DeviceConfig.as_view()), name='Device-Config'),
+    # /devices/device_id/manual-config/
+    path('<int:device_id>/manual-config', login_required(DeviceConfig.as_view()), name='Device-Config'),
 
-    # /devices/settings/device_id/
+    # /devices/device_id/settings/
     path('settings/<int:device_id>/', login_required(DeviceSettings.as_view()), name='Device-Settings'),
 
 ]

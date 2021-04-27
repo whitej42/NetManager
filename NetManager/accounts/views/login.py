@@ -1,6 +1,6 @@
 """
 
-File: devices/views/configurator.py
+File: devices/views/config.py
 
 Purpose:
     This code is a class based view used to render

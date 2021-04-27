@@ -19,8 +19,8 @@ from django.views import View
 
 class DeviceConfig(View):
     template = 'device_config.html'
-    success_redirect = 'config:Config'
-    exception_redirect = 'device:Device-Manager'
+    success_redirect = 'devices:Device-Config'
+    exception_redirect = 'devices:Device-Manager'
 
     # get device and template
     # **kwargs = devices primary key

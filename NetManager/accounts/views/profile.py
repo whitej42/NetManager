@@ -1,6 +1,6 @@
 """
 
-File: devices/views/configurator.py
+File: devices/views/config.py
 
 Purpose:
     This code is a class based view used to render and provide
@@ -20,6 +20,7 @@ from django.views import View
 class ProfileView(View):
     template = 'accounts_profile.html'
     success_redirect = 'accounts:Profile'
+    exception_redirect = 'accounts:Index'
 
     # get account information
     # returns profile page
@@ -27,7 +28,12 @@ class ProfileView(View):
         profile_form = ProfileForm(instance=request.user)
         pass_form = ChangePasswordForm
         args = {'profile_form': profile_form, 'pass_form': pass_form}
-        return render(request, self.template, args)
+
+        try:
+            return render(request, self.template, args)
+        except Exception as e:
+            messages.error(request, 'Error - ' + str(e))
+            return redirect(self.exception_redirect)
 
     # post account information
     # returns profile page (except 'delete')
@@ -37,7 +43,7 @@ class ProfileView(View):
             form = ProfileForm(request.POST or None, instance=request.user)
             if form.is_valid():
                 form.save()
-            return redirect(self.success_redirect)
+                return redirect(self.success_redirect)
 
         # delete user account
         # returns index page
@@ -46,8 +52,6 @@ class ProfileView(View):
             user = User.objects.get(pk=user_id)
             user.delete()
             return redirect('/')
-        # exception redirect
-        return redirect('/')
 
 
 # change password function based view
