@@ -71,7 +71,8 @@
                     <label for="show">Show Command:</label>
                     <input class="form-control textbox mb-2" id="show" name="txt_show" placeholder="Enter show command"
                            required>
-                    <button type="submit" class="btn btn-success btn-block" title="Send Command" name="show" id="btn_show">
+                    <button type="submit" class="btn btn-success btn-block" title="Send Command" name="show"
+                            id="btn_show">
                         Send Command
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-arrow-right-square nav-icon" viewBox="0 0 16 16">
@@ -87,13 +88,19 @@
         <div class="col widget ml-2">
             <h3 class="title">Send Configuration</h3>
             <div class="card card-custom">
+                <label class="font-weight-bold">Send multiple configuration commands</label>
                 <form action="{% url 'devices:Device-Config' device_id=device.id %}" method="post">
                     {% csrf_token %}
+                    <p class="text-danger font-weight-bold">Warning! NetManager recommends this feature not be used for large scale
+                        configuration changes and only be used by experienced network engineers<br>
+                        <label class="text-warning">There is no need for the "configure terminal" command!</label>
+                    </p>
                     <label for="config">Configuration Commands:</label>
                     <textarea class="form-control textbox mb-2" style="min-height: 20vh" id="config" name="txt_config"
                               placeholder="Each new command must be separated by a new line"
-                              required></textarea>
-                    <button type="submit" class="btn btn-info btn-block" title="Send Commands" name="send" id="btn_show">
+                              required spellcheck="false"></textarea>
+                    <button type="submit" class="btn btn-info btn-block" title="Send Commands" name="send"
+                            id="btn_show">
                         Send Commands
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-arrow-right-square nav-icon" viewBox="0 0 16 16">

@@ -47,15 +47,18 @@ class DeviceManager(View):
         user = User.objects.get(username=request.user)
         form = self.form_class(request.POST or None)
         if form.is_valid():
-            d = form.save(commit=False)
-            d.user = user
-            d.save()
-            Security.create_blank_security(d)
-            alert = alert_factory.device_alert(request.user, d, 'ADD')
+            device = form.save(commit=False)
+            device.user = user
+            device.save()
+
+            Security.create_blank_security(device)
+            Backup.create_blank_backup(device, user)
+
+            alert = alert_factory.device_alert(request.user, device, 'ADD')
             messages.success(request, alert + " - Remember! Add login credentials in the device settings")
 
         try:
             return redirect(self.success_redirect)
         except Exception as e:
-            messages.error(request, 'Error - ' + str(e))
+            messages.error(request, 'Unexpected Error - ' + str(e))
             return redirect(self.exception_redirect)

@@ -23,7 +23,7 @@
                 </svg>
                 Back
             </a>
-            <h3 class="title d-inline-block">Device Preferences</h3>
+            <h3 class="title d-inline-block">Device Information</h3>
             <div class="card card-custom">
                 <form action="{% url 'devices:Device-Settings' device_id=device.pk %}" method="post">
                     {% csrf_token %}

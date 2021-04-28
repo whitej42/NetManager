@@ -72,8 +72,12 @@
                                 </li>
                                 <li>Enter the device information in the dropdown</li>
                                 <li>Click Add Device button when finished<br>
-                                    <label class="text-danger">NOTE: New devices are not configured with login
-                                        credentials. Go to the device settings to update security settings</label>
+                                    <label class="text-warning font-weight-bold">New devices are not configured with
+                                        login
+                                        credentials. Go to the device settings to update security settings</label><br>
+                                    <label class="text-info font-weight-bold">Unsure how to do this?</label>
+                                    <a class="text-primary" data-toggle="collapse" data-target="#collapseThree">
+                                        See 'Editing Device Settings'</a>
                                 </li>
                             </ol>
                         </div>
@@ -91,13 +95,18 @@
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                         <div class="card-body">
+                            <h5>1. Getting Started</h5>
                             <ol style="line-height: 150%">
                                 <li>Navigate to the Device Manager page</li>
                                 <li>Click the device settings button on a device<br>
                                     <img class="border rounded m-2" src="{% static 'images/settings.png' %}"
                                          alt="Image Not Found" style="width: 1500px;">
                                 </li>
-                                <li>You will be redirected to that devices settings page</li>
+                                <li>This will redirect to the device settings page</li>
+                            </ol>
+                            <h5>2. Editing Device Information</h5>
+                            <ol>
+                                <li>Click the 'Edit Device' button, complete the Device Information form and click submit</li>
                             </ol>
                         </div>
                     </div>
@@ -114,7 +123,7 @@
                     </div>
                     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                         <div class="card-body">
-                            <h5>Device connected:</h5>
+                            <h5>1. Device Connected</h5>
                             <ol style="line-height: 150%">
                                 <li>Navigate to the device manager page</li>
                                 <li>Click the configuration button on a device<br>
@@ -123,7 +132,7 @@
                                 </li>
                                 <li>You will be redirected to that devices configuration page</li>
                             </ol>
-                            <h5>Device not connected:</h5>
+                            <h5>2. Device Not Connected</h5>
                             <ol style="line-height: 150%">
                                 <li>
                                     <p>
@@ -156,26 +165,29 @@
                     </div>
                     <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
                         <div class="card-body">
-                            <h5>Configuring:</h5>
+                            <h5>1. Configuring:</h5>
                             <ol style="line-height: 150%">
                                 <li>Navigate to the device configuration page<br>
-                                    <label class="text-info">Unsure how to do this? See 'Device
-                                        Configuration'</label>
+                                    <label class="text-info font-weight-bold">Unsure how to do this?</label>
+                                    <a class="text-primary" data-toggle="collapse" data-target="#collapseFour">
+                                        See 'Device Configuration'</a>
                                 </li>
                                 <li>From the 'Device Interfaces' widget, select the interface you wish to configure
-                                    <img class="border rounded m-2" src="{% static 'images/int-config.png' %}"
-                                         alt="Image Not Found"></li>
+                                    <img class="border rounded m-2" src="{% static 'images/ip-config.png' %}"
+                                         alt="Image Not Found">
+                                </li>
                                 <li>In the pop-up, specify the interfaces IP address, subnet
                                     mask and enable status
                                 </li>
                                 <li>Click 'Yes' in the pop-up to confirm</li>
                             </ol>
-                            <h5>Resetting:</h5>
+                            <h5>2. Resetting:</h5>
                             <ol style="line-height: 150%">
                                 <li>Navigate to the device configuration page</li>
                                 <li>From the 'Device Interfaces' widget, select the interface you wish to reset
                                     <img class="border rounded m-2" src="{% static 'images/int-reset.png' %}"
-                                         alt="Image Not Found"></li>
+                                         alt="Image Not Found">
+                                </li>
                                 <li>Click 'Yes' in the pop-up to confirm the reset</li>
                             </ol>
                         </div>
@@ -195,13 +207,26 @@
                         <div class="card-body">
                             <ol style="line-height: 150%">
                                 <li>Navigate to the device configuration page<br>
-                                    <label class="text-info">Unsure how to do this? See 'Device
-                                        Configuration'</label>
+                                    <label class="text-info">Unsure how to do this?</label>
+                                    <a class="text-primary"
+                                       data-toggle="collapse"
+                                       data-target="#collapseFour">
+                                        See 'Device Configuration'</a>
                                 </li>
                                 <li>In the device configuration page, navigate to the 'Device Details' widget</li>
-                                <li>Click the Save Configuration button<br>
+                                <li>Click the 'Save Device Configuration' button<br>
                                     <img class="border rounded m-2" src="{% static 'images/save.png' %}"
-                                         alt="Image Not Found" style="width: 325px; height: 400px"></li>
+                                         alt="Image Not Found">
+                                </li>
+                                <li>The following popup will appear<br>
+                                    <img class="border rounded m-2" src="{% static 'images/save_popup.png' %}"
+                                         alt="Image Not Found">
+                                </li>
+                                <li>Here you can choose to save and create a new backup or just save the
+                                    configuration<br>
+                                    <label class="text-warning font-weight-bold">NetManager always recommends creating a
+                                        new backup when saving</label>
+                                </li>
                             </ol>
                         </div>
                     </div>
@@ -218,15 +243,55 @@
                     </div>
                     <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
                         <div class="card-body">
+                            <h5 class="text-danger font-weight-bold">
+                                Warning! NetManager recommends this feature only be used by experienced<br>
+                                network professionals and NOT be used for large scale configuration changes</h5>
+                            <h5>1. Getting Started</h5>
                             <ol style="line-height: 150%">
                                 <li>Navigate to the device configuration page<br>
-                                    <label class="text-info">Unsure how to do this? See 'Device
-                                        Configuration'</label>
+                                    <label class="text-info">Unsure how to do this?</label>
+                                    <a class="text-primary"
+                                       data-toggle="collapse"
+                                       data-target="#collapseFour">
+                                        See 'Device Configuration'</a>
                                 </li>
                                 <li>In the device configuration page, navigate to the 'Device Details' widget</li>
-                                <li>Click the Send Configuration Manually button<br>
+                                <li>Click the "Send Configuration Manually" button<br>
                                     <img class="border rounded m-2" src="{% static 'images/manual.png' %}"
-                                         alt="Image Not Found" style="width: 325px; height: 400px"></li>
+                                         alt="Image Not Found" style="width: 325px; height: 400px">
+                                </li>
+                                <li>This will then redirect to the Manual Configuration page<br>
+                                    <img class="border rounded m-2" src="{% static 'images/man-config.png' %}"
+                                         alt="Image Not Found" style="width: 1000px">
+                                </li>
+                            </ol>
+                            <h5>2. Show Commands</h5>
+                            <ol>
+                                <li>In the manual configuration page, navigate to the 'Retrieve Information' widget<br>
+                                    <img class="border rounded m-2" src="{% static 'images/show.png' %}"
+                                         alt="Image Not Found"></li>
+                                <li>Enter the show command</li>
+                                <li>If the command is valid - The below output will appear<br>
+                                    <img class="border rounded m-2" src="{% static 'images/show-out.png' %}"
+                                         alt="Image Not Found" style="width: 1500px"><br>
+                                    <i>Example using 'show ip interface brief' command</i></li>
+                                <p class="text-warning">All outputs of show commands will return an unformatted
+                                    dictionary<br>
+                                    Due to the wide range of show commands it is not possible to provide formatting at
+                                    this time</p>
+                            </ol>
+                            <h5>3. Sending Configuration Commands</h5>
+                            <ol>
+                                <li>In the manual configuration page, navigate to the 'Send Configuration' widget</li>
+                                <li>Enter the configuration commands in the text box
+                                    <p class="text-warning">Each command will be executed in order and MUST be separated
+                                        by a new line<br>
+                                        There is no need to type "configure terminal" command</p>
+                                </li>
+                                <li>For example:<br>
+                                    <img class="border rounded m-2" src="{% static 'images/send.png' %}"
+                                         alt="Image Not Found" style="width: 800px">
+                                </li>
                             </ol>
                         </div>
                     </div>
@@ -243,40 +308,131 @@
                     </div>
                     <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion">
                         <div class="card-body">
+                            <h5>1. Getting Started</h5>
                             <ol>
                                 <li>Navigate to the device configuration page<br>
-                                    <label class="text-info">Unsure how to do this? See 'Device
-                                        Configuration'</label>
+                                    <label class="text-info">Unsure how to do this?</label>
+                                    <a class="text-primary"
+                                       data-toggle="collapse"
+                                       data-target="#collapseFour">
+                                        See 'Device Configuration'</a>
                                 </li>
                                 <li>In the device configuration page, navigate to the 'Device Security Features'
                                     widget
                                 </li>
                                 <li>Click 'Manage Access Lists'</li>
                             </ol>
-                            <h5>Creating Access Lists</h5>
+                            <h5>2. Creating Access Lists</h5>
                             <ol style="line-height: 150%">
                                 <li>Fill out the 'Edit and Create Access List' form (shown below)<br>
-                                    <label class="text-warning">Access lists can be created without specifying a command</label><br>
+                                    <label class="text-warning">Access lists can be created without specifying a
+                                        command</label><br>
                                     <img class="border rounded m-2" src="{% static 'images/acl-create.png' %}"
-                                         alt="Image Not Found" style="width: 700px; height: 600px"></li>
+                                         alt="Image Not Found" style="width: 700px; height: 600px">
+                                </li>
                                 <li>Click the 'Push Changes' button to create the new access list</li>
                             </ol>
-                            <h5>Editing Access Lists</h5>
+                            <h5>3. Editing Access Lists</h5>
+                            <h6>3.1 Appending a new line</h6>
+                            <label class="text-warning">This will append a new line to the existing access list</label>
                             <ol style="line-height: 150%">
-                                <li>Use the 'Edit and Create Access List' form using the <b>name of the access list</b> you want to edit<br>
-                                <label class="text-warning">This will append a new line to the existing access list</label></li>
+                                <li>Using the 'Edit and Create Access List' form</li>
+                                <li>Enter the name of the access list you wish to append a new line to</li>
+                                <li>Enter the desired command for the new line</li>
                                 <li>Click the 'Push Changes' button to add the new line</li>
                             </ol>
-                            <h5>Deleting Access Lists</h5>
+                            <h6>3.2 Deleting an existing line</h6>
+                            <label class="text-warning">This will delete a line from an existing access list</label>
                             <ol style="line-height: 150%">
-                                <li>Select the access list you wish to delete from the 'Delete Access List' form<br>
-                                <img class="border rounded m-2" src="{% static 'images/acl-delete.png' %}"
-                                         alt="Image Not Found" style="width: 700px; height: 600px"></li>
+                                <li>Using the 'Edit and Create Access List' form</li>
+                                <li>Enter the name of the access list you wish to delete from</li>
+                                <li>Enter the command of the line you wish to delete - These can be viewed under "Active
+                                    Access Lists"
+                                </li>
+                                <li>Click the 'Push Changes' button to add the new line</li>
+                            </ol>
+                            <h5>4. Deleting Access Lists</h5>
+                            <ol style="line-height: 150%">
+                                <li>Select the access list you wish to delete from the 'Delete Access List' form
+                                    dropdown<br>
+                                    <img class="border rounded m-2" src="{% static 'images/acl-delete.png' %}"
+                                         alt="Image Not Found" style="width: 700px; height: 600px">
+                                </li>
                                 <li>Click the 'Delete Access List' button</li>
                             </ol>
                         </div>
                     </div>
                 </div>
+
+                <div class="card card-accordion">
+                    <div class="card-header" id="headingNine">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold text-light" data-toggle="collapse"
+                                    data-target="#collapseNine"
+                                    aria-expanded="false" aria-controls="collapseNine">
+                                Applying Access Lists
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
+                        <div class="card-body">
+                            <h5>1. Getting Started</h5>
+                            <ol>
+                                <li>Navigate to the device configuration page<br>
+                                    <label class="text-info">Unsure how to do this?</label>
+                                    <a class="text-primary"
+                                       data-toggle="collapse"
+                                       data-target="#collapseFour">
+                                        See 'Device Configuration'</a>
+                                </li>
+                                <li>In the device configuration page, navigate to the 'Device Interfaces' widget</li>
+                                <li>Click 'More Details' button next to the desired interface</li>
+                                <li>This will then redirect to the 'Interface Configuration' page<br>
+                                    <img class="border rounded m-2" src="{% static 'images/int-config.png' %}"
+                                         alt="Image Not Found" style="width: 1000px">
+                                </li>
+                            </ol>
+                            <h5>2. Applying an Access List</h5>
+                            <ol>
+                                <li>In the interface configuration page, navigate to the 'Access Lists' widget</li>
+                                <li>Select the access list from the dropdown and the required direction</li>
+                                <li>Click 'Apply Access List' to continue<br>
+                                    <img class="border rounded m-2" src="{% static 'images/apply-acl.png' %}"
+                                         alt="Image Not Found" style="width: 800px">
+                                </li>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-accordion">
+                    <div class="card-header" id="headingTen">
+                        <h5 class="mb-0">
+                            <button class="btn collapsed font-weight-bold text-light" data-toggle="collapse"
+                                    data-target="#collapseTen"
+                                    aria-expanded="false" aria-controls="collapseTen">
+                                Configuration Backups
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordion">
+                        <div class="card-body">
+                            <h5>1. Getting Started</h5>
+                            <ol>
+                                <li>Navigate to the device configuration page<br>
+                                    <label class="text-info">Unsure how to do this?</label>
+                                    <a class="text-primary"
+                                       data-toggle="collapse"
+                                       data-target="#collapseFour">
+                                        See 'Device Configuration'</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+
                 <!-- NEW HELP TABS HERE!-->
             </div>
         </div>

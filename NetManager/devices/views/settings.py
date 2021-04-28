@@ -28,10 +28,10 @@ class DeviceSettings(View):
     # returns device settings page
     def get(self, request, **kwargs):
         device_id = self.kwargs['device_id']
-        d = Device.get_device(device_id)
-        device_form = DeviceForm(instance=d)
+        device = Device.get_device(device_id)
+        device_form = DeviceForm(instance=device)
         security_form = SecurityForm(instance=Security.get_device_security(device_id))
-        args = {'device': d, 'security_form': security_form, 'device_form': device_form}
+        args = {'device': device, 'security_form': security_form, 'device_form': device_form}
 
         try:
             return render(request, self.template, args)
@@ -44,14 +44,14 @@ class DeviceSettings(View):
     # returns device settings page (except 'delete')
     def post(self, request, **kwargs):
         device_id = self.kwargs['device_id']
-        d = Device.get_device(device_id)
+        device = Device.get_device(device_id)
 
         # edit device information
         if 'edit' in request.POST:
-            form = DeviceForm(request.POST or None, instance=d)
+            form = DeviceForm(request.POST or None, instance=device)
             if form.is_valid():
-                d.save()
-                alert = alert_factory.device_alert(request.user, d, 'UPDATE')
+                device.save()
+                alert = alert_factory.device_alert(request.user, device, 'UPDATE')
                 messages.success(request, alert)
 
         # edit device security information
@@ -65,13 +65,13 @@ class DeviceSettings(View):
 
         # delete device - returns device manager
         if 'delete' in request.POST:
-            d.delete()
-            alert = alert_factory.device_alert(request.user, d, 'DELETE')
+            device.delete()
+            alert = alert_factory.device_alert(request.user, device, 'DELETE')
             messages.success(request, alert)
             return redirect('devices:Device-Manager')
 
         try:
             return redirect(self.success_redirect, device_id)
         except Exception as e:
-            messages.error(request, 'Error - ' + str(e))
+            messages.error(request, 'Unexpected Error - ' + str(e))
             return redirect(self.exception_redirect)

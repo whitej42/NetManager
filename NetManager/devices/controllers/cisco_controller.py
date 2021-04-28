@@ -13,27 +13,27 @@ Purpose:
 """
 from netmiko import ConnectHandler
 from devices.models import Security
-from devices.factory import alert_factory
+from devices.factory import alert_factory, backup_factory
 
 
 # establish ssh connection to device
-def connect(d):
+def connect(device):
     device = {
         'device_type': 'cisco_ios',
-        'ip': d.host,
-        'username': Security.get_username(d),
-        'password': Security.get_password(d),
-        'secret': Security.get_secret(d),
+        'ip': device.host,
+        'username': Security.get_username(device),
+        'password': Security.get_password(device),
+        'secret': Security.get_secret(device),
         'port': 22,
     }
     return device
 
 
 # retrieve device configuration
-def retrieve(d, command):
+def retrieve(device, command):
     try:
-        c = ConnectHandler(**connect(d))
-        output = c.send_command(command,use_textfsm=True)
+        c = ConnectHandler(**connect(device))
+        output = c.send_command(command, use_textfsm=True)
         c.disconnect()
     except Exception as e:
         output = e
@@ -41,9 +41,9 @@ def retrieve(d, command):
 
 
 # send configuration command to device
-def configure(d, command):
+def configure(device, command):
     try:
-        c = ConnectHandler(**connect(d))
+        c = ConnectHandler(**connect(device))
         c.enable()
         c.send_config_set(command)
         c.disconnect()
@@ -67,51 +67,77 @@ def connect_test(user_devices):
 
 
 # get show ip interface brief output
-def get_interfaces(d):
-    output = retrieve(d, 'show ip interface brief')
+def get_interfaces(device):
+    output = retrieve(device, 'show ip interface brief')
     return output
 
 
 # get show version output
-def get_version(d):
-    output = retrieve(d, 'show version')
+def get_version(device):
+    output = retrieve(device, 'show version')
     return output
 
 
 # get show ip access-lists output
-def get_acl(d):
-    output = retrieve(d, 'show ip access-lists')
+def get_acl(device):
+    output = retrieve(device, 'show ip access-lists')
     return output
 
 
 # get show interface <interface> output
 # i: interface as string
-def get_interface_details(d, i):
-    output = retrieve(d, 'show interface ' + i)
+def get_interface_details(device, i):
+    output = retrieve(device, 'show interface ' + i)
     return output
 
 
 # get show ip interface <interface> output
 # i: interface as string
-def get_interface_ip(d, i):
-    output = retrieve(d, 'show ip interface ' + i)
+def get_interface_ip(device, i):
+    output = retrieve(device, 'show ip interface ' + i)
     return output
 
 
 # save config with Netmiko save_config() function
-def save_config(user, d):
+def save(user, device):
+    """
+    Another implementation for saving config using the Netmiko
+    save_config() function. Broke a few days before release
+
+        try:
+            c = ConnectHandler(**connect(d))
+            c.save_config()
+            c.disconnect()
+            return alert_factory.save_alert(user, d)
+        except Exception as e:
+            return str(e)
+    """
+
+    # Temporary fix
+    cmd = ['copy run start', '']
+    c = configure(device, cmd)
+    if c:
+        return alert_factory.save_alert(user, device)
+    else:
+        return str(c)
+
+
+# create new backup file
+def backup(user, device):
     try:
-        c = ConnectHandler(**connect(d))
-        c.save_config()
+        c = ConnectHandler(**connect(device))
+        output = c.send_command('show run')
         c.disconnect()
-        return alert_factory.save_alert(user, d)
+        backup_factory.create_backup(device, output)
+        return alert_factory.backup_alert(user, device)
     except Exception as e:
-        return str(e)
+        output = e
+    return output
 
 
 # Configure interface with ip address
 # form: InterfaceForm
-def config_interface(user, d, form):
+def config_interface(user, device, form):
     intface = form.cleaned_data.get('interface')
     ip = form.cleaned_data.get('ip_address')
     mask = form.cleaned_data.get('mask')
@@ -120,55 +146,55 @@ def config_interface(user, d, form):
         cmd = ['interface ' + intface, 'ip address ' + ip + ' ' + mask, 'no shutdown']
     else:
         cmd = ['interface ' + intface, 'ip address ' + ip + ' ' + mask, 'shutdown']
-    c = configure(d, cmd)
+    c = configure(device, cmd)
     if c:
-        return alert_factory.configuration_alert(user, d, intface, ip, 'CONFIG')
+        return alert_factory.configuration_alert(user, device, intface, ip, 'CONFIG')
     else:
         return str(c)
 
 
 # Reset specific interface to default
 # intface: interface as string
-def reset_interface(user, d, intface):
+def reset_interface(user, device, intface):
     cmd = ['interface ' + intface, 'no ip address', 'shutdown']
-    c = configure(d, cmd)
+    c = configure(device, cmd)
     if c:
-        return alert_factory.configuration_alert(user, d, intface, None, 'RESET')
+        return alert_factory.configuration_alert(user, device, intface, None, 'RESET')
     else:
         return str(c)
 
 
 # Reset all unused interfaces
-def disable_interfaces(user, d):
-    interfaces = retrieve(d, 'show ip int brief')
+def disable_interfaces(user, device):
+    interfaces = retrieve(device, 'show ip int brief')
     for i in interfaces:
         if i['ipaddr'] == 'unassigned' and i['status'] != 'administratively down':
             cmd = ['interface ' + i['intf'], 'shutdown']
-            configure(d, cmd)
+            configure(device, cmd)
     return True
 
 
 # Create new access lists & add to access lists
 # form = AccessListForm
-def create_acl(user, d, form):
+def create_acl(user, device, form):
     acl_type = form.cleaned_data.get('type')
     acl_name = form.cleaned_data.get('name')
     statement = form.cleaned_data.get('statement')
     cmd = ['ip access-list ' + acl_type + " " + acl_name, statement]
-    c = configure(d, cmd)
+    c = configure(device, cmd)
     if c:
-        return alert_factory.security_alert(user, d, acl_name, None, 'CREATE')
+        return alert_factory.security_alert(user, device, acl_name, None, 'CREATE')
     else:
         return str(c)
 
 
 # Delete access lists from devices
 # acl_name: list name as string
-def delete_acl(user, d, acl_name):
+def delete_acl(user, device, acl_name):
     cmd = ['no ip access-list ' + acl_name]
-    c = configure(d, cmd)
+    c = configure(device, cmd)
     if c:
-        return alert_factory.security_alert(user, d, acl_name, None, 'DELETE')
+        return alert_factory.security_alert(user, device, acl_name, None, 'DELETE')
     else:
         return str(c)
 
@@ -177,11 +203,11 @@ def delete_acl(user, d, acl_name):
 # intface: interface as string
 # acl_name: access list as string
 # direction: direction as string
-def apply_acl(user, d, intface, acl_name, direction):
+def apply_acl(user, device, intface, acl_name, direction):
     cmd = ['interface ' + intface, 'ip access-group ' + acl_name + ' ' + direction]
-    c = configure(d, cmd)
+    c = configure(device, cmd)
     if c:
-        return alert_factory.security_alert(user, d, acl_name, intface, 'APPLY')
+        return alert_factory.security_alert(user, device, acl_name, intface, 'APPLY')
     else:
         return str(c)
 
@@ -190,10 +216,10 @@ def apply_acl(user, d, intface, acl_name, direction):
 # intface: interface as string
 # acl_name: access list as string
 # direction: direction as string
-def remove_acl(user, d, intface, acl_name, direction):
+def remove_acl(user, device, intface, acl_name, direction):
     cmd = ['interface ' + intface, 'no ip access-group ' + acl_name + ' ' + direction]
-    c = configure(d, cmd)
+    c = configure(device, cmd)
     if c:
-        return alert_factory.security_alert(user, d, acl_name, intface, 'REMOVE')
+        return alert_factory.security_alert(user, device, acl_name, intface, 'REMOVE')
     else:
         return str(c)

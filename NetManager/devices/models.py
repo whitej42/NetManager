@@ -10,6 +10,7 @@ Purpose:
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from django.core.files.base import ContentFile, File
 
 
 # network device
@@ -24,6 +25,11 @@ class Device(models.Model):
     contact = models.CharField(max_length=250, default='Not Specified')
     status = models.BooleanField(default=False, editable=False)
 
+    def __str__(self):
+        # device pk + name
+        title = str(self.id) + ' - ' + self.name
+        return title
+
     def get_device(self):
         device = Device.objects.get(id=self)
         return device
@@ -37,7 +43,12 @@ class Security(models.Model):
     password = models.CharField(max_length=250, blank=True, null=True)
     secret = models.CharField(max_length=250, blank=True, null=True)
 
-    # create empty security object
+    def __str__(self):
+        # device pk + device name
+        title = str(self.device.id) + ' - ' + self.device.name
+        return title
+
+    # create empty security object - database placeholder
     def create_blank_security(self):
         s = Security.objects.create(device_id=self.id)
         s.save()
@@ -73,6 +84,36 @@ class Alert(models.Model):
     date = models.DateField(default=timezone.now().date())
     time = models.TimeField(default=timezone.now().time())
 
+    def __str__(self):
+        # alert pk + device name
+        title = 'Alert: ' + str(self.id) + ': ' + self.device
+        return title
+
     def create_alert(self, device, type, description):
         a = Alert.objects.create(user=self, device=device, type=type, description=description)
         a.save()
+
+
+class Backup(models.Model):
+    id = models.AutoField(primary_key=True)
+    device = models.ForeignKey(Device, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    file = models.FileField(null=True, blank=True)
+
+    def __str__(self):
+        # device pk + device name
+        title = str(self.device.id) + ' - ' + self.device.name
+        return title
+
+    # create empty backup object - database placeholder
+    def create_blank_backup(self, user):
+        s = Backup.objects.create(device_id=self.id, user=user)
+        s.save()
+
+    def set_backup(self, name, file):
+        self.file.save(name, ContentFile(file))
+
+    # get backup object
+    def get_device_backup(self):
+        backup = Backup.objects.get(device=self)
+        return backup

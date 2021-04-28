@@ -27,8 +27,8 @@ class DeviceConfig(View):
     # returns device config page
     def get(self, request, **kwargs):
         device_id = self.kwargs['device_id']
-        d = Device.get_device(device_id)
-        args = {'device': d}
+        device = Device.get_device(device_id)
+        args = {'device': device}
         return render(request, self.template, args)
 
     # post show and config commands

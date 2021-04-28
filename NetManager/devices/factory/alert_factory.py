@@ -4,7 +4,7 @@ File: devices/factory/alert_factory.py
 
 Purpose:
     This code generates alerts for the audit log based on
-    changes made by the device controller
+    changes made by the device controller and saves in the database
 
 """
 from devices.models import Alert
@@ -13,6 +13,13 @@ from devices.models import Alert
 # configuration saved alert
 def save_alert(user, device):
     alert_description = 'Device Configuration Saved'
+    Alert.create_alert(user, device.name, 'Configuration', alert_description)
+    return alert_description
+
+
+# new backup alert
+def backup_alert(user, device):
+    alert_description = 'New Backup Created'
     Alert.create_alert(user, device.name, 'Configuration', alert_description)
     return alert_description
 
