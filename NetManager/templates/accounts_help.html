@@ -22,29 +22,33 @@
                             <button class="btn collapsed font-weight-bold text-light" data-toggle="collapse"
                                     data-target="#collapseOne"
                                     aria-expanded="false" aria-controls="collapseOne">
-                                Configuring SSH on your Cisco device
+                                Configuring SSH on your Cisco Device
                             </button>
                         </h5>
                     </div>
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body">
-                            <ol style="line-height: 100%; max-width: 50%">
+                            <p class="font-weight-bold">This section explains how to configure SSH on a Cisco
+                                device<br>NetManager requires SSH to be configured on your device in order
+                                to establish a connection</p>
+                            <ol style="line-height: 150%">
                                 <li>Set hostname & domain-name<br>
-                                    <img src="{% static 'images/hostname.png' %}" alt="Image Not Found">
+                                    <img src="{% static 'images/ssh-hostname.png' %}" alt="Image Not Found">
                                 </li>
                                 <li>Generate RSA Keys<br>
-                                    <img src="{% static 'images/rsa.png' %}" alt="Image Not Found">
+                                    <img src="{% static 'images/ssh-rsa.png' %}" alt="Image Not Found">
                                 </li>
                                 <li>Line VTY Configuration<br>
-                                    <img src="{% static 'images/vty.png' %}" alt="Image Not Found">
+                                    <img src="{% static 'images/ssh-vty.png' %}" alt="Image Not Found">
                                 </li>
                                 <li>Create User Account<br>
-                                    <img src="{% static 'images/user.png' %}" alt="Image Not Found">
-                                    <label class="text-danger">Users with a privilege lower than 15 will not be able to
-                                        make configuration changes</label>
+                                    <img src="{% static 'images/ssh-user.png' %}" alt="Image Not Found"><br>
+                                    <label class="text-danger font-weight-bold">
+                                        Users with a privilege lower than 15 will not be able to make configuration
+                                        changes</label>
                                 </li>
                                 <li>Verify SSH<br>
-                                    <img src="{% static 'images/ssh.png' %}" alt="Image Not Found">
+                                    <img src="{% static 'images/ssh-confirm.png' %}" alt="Image Not Found">
                                 </li>
                             </ol>
                         </div>
@@ -62,22 +66,26 @@
                     </div>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                         <div class="card-body">
-                            <p class="font-weight-bold">All devices within your topology need to be added to the
-                                management database to allow connections and configurations</p>
+                            <p class="font-weight-bold">This section explains how to add devices to the NetManager
+                                database<br>
+                                All devices within your topology need to be added to the management database to allow
+                                connections and configurations</p>
                             <ol style="line-height: 150%">
                                 <li>Navigate to the Device Manager page</li>
                                 <li>Click the Add New Device button<br>
                                     <img class="border rounded m-2" src="{% static 'images/add.png' %}"
                                          alt="Image Not Found" style="width: 1500px;">
                                 </li>
-                                <li>Enter the device information in the dropdown</li>
+                                <li>Enter the device information in the popup<br>
+                                    <img class="border rounded m-2" src="{% static 'images/add-popup.png' %}"
+                                         alt="Image Not Found">
+                                </li>
                                 <li>Click Add Device button when finished<br>
                                     <label class="text-warning font-weight-bold">New devices are not configured with
-                                        login
-                                        credentials. Go to the device settings to update security settings</label><br>
+                                        login credentials. Go to the device settings to update security settings</label><br>
                                     <label class="text-info font-weight-bold">Unsure how to do this?</label>
                                     <a class="text-primary" data-toggle="collapse" data-target="#collapseThree">
-                                        See 'Editing Device Settings'</a>
+                                        See 'Managing Devices'</a>
                                 </li>
                             </ol>
                         </div>
@@ -89,24 +97,50 @@
                             <button class="btn collapsed font-weight-bold text-light" data-toggle="collapse"
                                     data-target="#collapseThree"
                                     aria-expanded="false" aria-controls="collapseThree">
-                                Editing Device Settings
+                                Managing Devices
                             </button>
                         </h5>
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                         <div class="card-body">
+                            <p class="font-weight-bold">This section explains how to manage the devices stored within
+                                the NetManager database</p>
                             <h5>1. Getting Started</h5>
                             <ol style="line-height: 150%">
-                                <li>Navigate to the Device Manager page</li>
-                                <li>Click the device settings button on a device<br>
-                                    <img class="border rounded m-2" src="{% static 'images/settings.png' %}"
+                                <li>Navigate to the 'Device Manager' page</li>
+                                <li>Click the 'Settings' button next to a device<br>
+                                    <img class="border rounded m-2" src="{% static 'images/btn-settings.png' %}"
                                          alt="Image Not Found" style="width: 1500px;">
                                 </li>
-                                <li>This will redirect to the device settings page</li>
+                                <li>This will redirect to the 'Device Settings' page<br>
+                                    <img class="border rounded m-2" src="{% static 'images/device-settings.png' %}"
+                                         alt="Image Not Found" style="width: 1500px"></li>
                             </ol>
-                            <h5>2. Editing Device Information</h5>
-                            <ol>
-                                <li>Click the 'Edit Device' button, complete the Device Information form and click submit</li>
+                            <h5>2. Editing or Deleting a Device</h5>
+                            <ol style="line-height: 150%">
+                                <li>Click the 'Edit Device' button and complete the form<br>
+                                    <img class="border rounded m-2" src="{% static 'images/device-edit.png' %}"
+                                         alt="Image Not Found">
+                                </li>
+                                <li>Click 'Submit Changes' when finished</li>
+                                <li class="text-danger font-weight-bold">Click 'Delete Device' to delete the device
+                                    permanently
+                                </li>
+                            </ol>
+                            <h5>3. Updating Device Security Settings</h5>
+                            <label class="text-warning font-weight-bold">The device security settings are the login
+                                credentials used to login into the device</label><br>
+                            <label class="text-danger font-weight-bold">User MUST have a privilege level of 15 to make
+                                configuration changes</label><br>
+                            <label class="text-info">Unsure how to do this?</label>
+                            <a class="text-primary" data-toggle="collapse" data-target="#collapseOne">
+                                See 'Configuring SSH on your Cisco Device'</a>
+                            <ol style="line-height: 150%">
+                                <li>Click the 'Update Security Settings' button and complete the form<br>
+                                    <img class="border rounded m-2" src="{% static 'images/device-security.png' %}"
+                                         alt="Image Not Found">
+                                </li>
+                                <li>Click 'Submit Changes' when finished</li>
                             </ol>
                         </div>
                     </div>
@@ -123,14 +157,18 @@
                     </div>
                     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                         <div class="card-body">
+                            <p class="font-weight-bold">This section explains how to enter device configuration mode</p>
                             <h5>1. Device Connected</h5>
                             <ol style="line-height: 150%">
-                                <li>Navigate to the device manager page</li>
-                                <li>Click the configuration button on a device<br>
-                                    <img class="border rounded m-2" src="{% static 'images/configure.png' %}"
+                                <li>Navigate to the 'Device Manager' page</li>
+                                <li>Click the 'Configuration' button next to a device<br>
+                                    <img class="border rounded m-2" src="{% static 'images/btn-configure.png' %}"
                                          alt="Image Not Found" style="width: 1500px;">
                                 </li>
-                                <li>You will be redirected to that devices configuration page</li>
+                                <li>This will then redirect to the 'Device Configuration' page<br>
+                                    <img class="border rounded m-2" src="{% static 'images/device-details.png' %}"
+                                         alt="Image Not Found">
+                                </li>
                             </ol>
                             <h5>2. Device Not Connected</h5>
                             <ol style="line-height: 150%">
@@ -138,12 +176,15 @@
                                     <p>
                                         If this is symbol is displayed, it means NetManager has been unable to establish
                                         a connection to this device<br>
-                                        <img class="border rounded m-2" src="{% static 'images/alert.png' %}"
+                                        <img class="border rounded m-2" src="{% static 'images/not-connected.png' %}"
                                              alt="Image Not Found"><br>
                                         <label class="text-warning mb-0">
                                             Remember! New devices are configured without login information.
                                             Try updating this devices security credentials in the device settings
                                         </label><br>
+                                        <label class="text-info font-weight-bold">Unsure how to do this?</label>
+                                        <a class="text-primary" data-toggle="collapse" data-target="#collapseThree">
+                                            See 'Managing Devices'</a><br>
                                         <label class="text-danger mb-0">
                                             If issue persists, check the SSH configuration or connection on your device
                                         </label>
@@ -165,30 +206,41 @@
                     </div>
                     <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
                         <div class="card-body">
-                            <h5>1. Configuring:</h5>
+                            <p class="font-weight-bold">This section explains how to configure interface IP Addresses
+                                and reset interfaces</p>
+                            <h5>1. Getting Started</h5>
                             <ol style="line-height: 150%">
-                                <li>Navigate to the device configuration page<br>
-                                    <label class="text-info font-weight-bold">Unsure how to do this?</label>
-                                    <a class="text-primary" data-toggle="collapse" data-target="#collapseFour">
+                                <li>Navigate to the 'Device Configuration' page<br>
+                                    <label class="text-info">Unsure how to do this?</label>
+                                    <a class="text-primary"
+                                       data-toggle="collapse"
+                                       data-target="#collapseFour">
                                         See 'Device Configuration'</a>
                                 </li>
+                            </ol>
+                            <h5>2. Configuring:</h5>
+                            <ol style="line-height: 150%">
                                 <li>From the 'Device Interfaces' widget, select the interface you wish to configure
-                                    <img class="border rounded m-2" src="{% static 'images/ip-config.png' %}"
+                                    <img class="border rounded m-2" src="{% static 'images/int-config.png' %}"
                                          alt="Image Not Found">
                                 </li>
                                 <li>In the pop-up, specify the interfaces IP address, subnet
-                                    mask and enable status
+                                    mask and enable status<br>
+                                    <img class="border rounded m-2" src="{% static 'images/int-popup.png' %}"
+                                         alt="Image Not Found">
                                 </li>
-                                <li>Click 'Yes' in the pop-up to confirm</li>
+                                <li>Click 'Confirm Changes' in the pop-up to confirm</li>
                             </ol>
-                            <h5>2. Resetting:</h5>
+                            <h5>3. Resetting:</h5>
                             <ol style="line-height: 150%">
-                                <li>Navigate to the device configuration page</li>
                                 <li>From the 'Device Interfaces' widget, select the interface you wish to reset
                                     <img class="border rounded m-2" src="{% static 'images/int-reset.png' %}"
                                          alt="Image Not Found">
                                 </li>
-                                <li>Click 'Yes' in the pop-up to confirm the reset</li>
+                                <li>Click 'Yes' in the pop-up to confirm the reset<br>
+                                    <img class="border rounded m-2" src="{% static 'images/reset-popup.png' %}"
+                                         alt="Image Not Found">
+                                </li>
                             </ol>
                         </div>
                     </div>
@@ -205,17 +257,18 @@
                     </div>
                     <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
                         <div class="card-body">
+                            <p class="font-weight-bold">This section explains how to save configuration</p>
                             <ol style="line-height: 150%">
-                                <li>Navigate to the device configuration page<br>
+                                <li>Navigate to the 'Device Configuration' page<br>
                                     <label class="text-info">Unsure how to do this?</label>
                                     <a class="text-primary"
                                        data-toggle="collapse"
                                        data-target="#collapseFour">
                                         See 'Device Configuration'</a>
                                 </li>
-                                <li>In the device configuration page, navigate to the 'Device Details' widget</li>
+                                <li>In the 'Device Configuration' page, navigate to the 'Device Details' widget</li>
                                 <li>Click the 'Save Device Configuration' button<br>
-                                    <img class="border rounded m-2" src="{% static 'images/save.png' %}"
+                                    <img class="border rounded m-2" src="{% static 'images/btn-save.png' %}"
                                          alt="Image Not Found">
                                 </li>
                                 <li>The following popup will appear<br>
@@ -243,45 +296,48 @@
                     </div>
                     <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
                         <div class="card-body">
+                            <p class="font-weight-bold">This section explains how to send configuration manually to a
+                                device</p>
                             <h5 class="text-danger font-weight-bold">
                                 Warning! NetManager recommends this feature only be used by experienced<br>
-                                network professionals and NOT be used for large scale configuration changes</h5>
+                                network professionals and NOT be used for large scale configuration changes</h5><br>
                             <h5>1. Getting Started</h5>
                             <ol style="line-height: 150%">
-                                <li>Navigate to the device configuration page<br>
+                                <li>Navigate to the 'Device Configuration' page<br>
                                     <label class="text-info">Unsure how to do this?</label>
                                     <a class="text-primary"
                                        data-toggle="collapse"
                                        data-target="#collapseFour">
                                         See 'Device Configuration'</a>
                                 </li>
-                                <li>In the device configuration page, navigate to the 'Device Details' widget</li>
+                                <li>In the 'Device Configuration' page, navigate to the 'Device Details' widget</li>
                                 <li>Click the "Send Configuration Manually" button<br>
-                                    <img class="border rounded m-2" src="{% static 'images/manual.png' %}"
-                                         alt="Image Not Found" style="width: 325px; height: 400px">
+                                    <img class="border rounded m-2" src="{% static 'images/btn-manual.png' %}"
+                                         alt="Image Not Found">
                                 </li>
                                 <li>This will then redirect to the Manual Configuration page<br>
-                                    <img class="border rounded m-2" src="{% static 'images/man-config.png' %}"
-                                         alt="Image Not Found" style="width: 1000px">
+                                    <img class="border rounded m-2" src="{% static 'images/device-config.png' %}"
+                                         alt="Image Not Found">
                                 </li>
                             </ol>
                             <h5>2. Show Commands</h5>
-                            <ol>
+                            <ol style="line-height: 150%">
                                 <li>In the manual configuration page, navigate to the 'Retrieve Information' widget<br>
-                                    <img class="border rounded m-2" src="{% static 'images/show.png' %}"
+                                    <img class="border rounded m-2" src="{% static 'images/config-show.png' %}"
                                          alt="Image Not Found"></li>
                                 <li>Enter the show command</li>
                                 <li>If the command is valid - The below output will appear<br>
-                                    <img class="border rounded m-2" src="{% static 'images/show-out.png' %}"
-                                         alt="Image Not Found" style="width: 1500px"><br>
-                                    <i>Example using 'show ip interface brief' command</i></li>
+                                    <i>Example using 'show ip interface brief' command</i><br>
+                                    <img class="border rounded m-2" src="{% static 'images/config-show-out.png' %}"
+                                         alt="Image Not Found" style="width: 1500px">
+                                </li>
                                 <p class="text-warning">All outputs of show commands will return an unformatted
                                     dictionary<br>
                                     Due to the wide range of show commands it is not possible to provide formatting at
                                     this time</p>
                             </ol>
                             <h5>3. Sending Configuration Commands</h5>
-                            <ol>
+                            <ol style="line-height: 150%">
                                 <li>In the manual configuration page, navigate to the 'Send Configuration' widget</li>
                                 <li>Enter the configuration commands in the text box
                                     <p class="text-warning">Each command will be executed in order and MUST be separated
@@ -289,8 +345,8 @@
                                         There is no need to type "configure terminal" command</p>
                                 </li>
                                 <li>For example:<br>
-                                    <img class="border rounded m-2" src="{% static 'images/send.png' %}"
-                                         alt="Image Not Found" style="width: 800px">
+                                    <img class="border rounded m-2" src="{% static 'images/config-send.png' %}"
+                                         alt="Image Not Found">
                                 </li>
                             </ol>
                         </div>
@@ -308,16 +364,18 @@
                     </div>
                     <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion">
                         <div class="card-body">
+                            <p class="font-weight-bold">This section explains how to create, edit and delete access
+                                lists</p>
                             <h5>1. Getting Started</h5>
-                            <ol>
-                                <li>Navigate to the device configuration page<br>
+                            <ol style="line-height: 150%">
+                                <li>Navigate to the 'Device Configuration' page<br>
                                     <label class="text-info">Unsure how to do this?</label>
                                     <a class="text-primary"
                                        data-toggle="collapse"
                                        data-target="#collapseFour">
                                         See 'Device Configuration'</a>
                                 </li>
-                                <li>In the device configuration page, navigate to the 'Device Security Features'
+                                <li>In the 'Device Configuration' page, navigate to the 'Device Security Features'
                                     widget
                                 </li>
                                 <li>Click 'Manage Access Lists'</li>
@@ -328,16 +386,16 @@
                                     <label class="text-warning">Access lists can be created without specifying a
                                         command</label><br>
                                     <img class="border rounded m-2" src="{% static 'images/acl-create.png' %}"
-                                         alt="Image Not Found" style="width: 700px; height: 600px">
+                                         alt="Image Not Found">
                                 </li>
                                 <li>Click the 'Push Changes' button to create the new access list</li>
                             </ol>
                             <h5>3. Editing Access Lists</h5>
                             <h6>3.1 Appending a new line</h6>
-                            <label class="text-warning">This will append a new line to the existing access list</label>
+                            <label class="text-warning">This will append a new line to an existing access list</label>
                             <ol style="line-height: 150%">
                                 <li>Using the 'Edit and Create Access List' form</li>
-                                <li>Enter the name of the access list you wish to append a new line to</li>
+                                <li>Enter the <b class="text-info">name of the access list</b> you wish to append a new line to</li>
                                 <li>Enter the desired command for the new line</li>
                                 <li>Click the 'Push Changes' button to add the new line</li>
                             </ol>
@@ -346,17 +404,17 @@
                             <ol style="line-height: 150%">
                                 <li>Using the 'Edit and Create Access List' form</li>
                                 <li>Enter the name of the access list you wish to delete from</li>
-                                <li>Enter the command of the line you wish to delete - These can be viewed under "Active
-                                    Access Lists"
+                                <li>In the command box - Enter <b class="text-info">'no'</b> followed by the command of the line you wish to delete<br>
+                                    <label class="text-info mb-0">ACL lines can be viewed under "Active Access Lists"</label>
                                 </li>
-                                <li>Click the 'Push Changes' button to add the new line</li>
+                                <li>Click the 'Push Changes' button to remove the line</li>
                             </ol>
                             <h5>4. Deleting Access Lists</h5>
                             <ol style="line-height: 150%">
                                 <li>Select the access list you wish to delete from the 'Delete Access List' form
                                     dropdown<br>
                                     <img class="border rounded m-2" src="{% static 'images/acl-delete.png' %}"
-                                         alt="Image Not Found" style="width: 700px; height: 600px">
+                                         alt="Image Not Found">
                                 </li>
                                 <li>Click the 'Delete Access List' button</li>
                             </ol>
@@ -370,42 +428,54 @@
                             <button class="btn collapsed font-weight-bold text-light" data-toggle="collapse"
                                     data-target="#collapseNine"
                                     aria-expanded="false" aria-controls="collapseNine">
-                                Applying Access Lists
+                                Applying & Removing Access Lists
                             </button>
                         </h5>
                     </div>
                     <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
                         <div class="card-body">
+                            <p class="font-weight-bold">This section explains how to apply and remove access lists from
+                                an interface</p>
                             <h5>1. Getting Started</h5>
-                            <ol>
-                                <li>Navigate to the device configuration page<br>
+                            <ol style="line-height: 150%">
+                                <li>Navigate to the 'Device Configuration' page<br>
                                     <label class="text-info">Unsure how to do this?</label>
                                     <a class="text-primary"
                                        data-toggle="collapse"
                                        data-target="#collapseFour">
                                         See 'Device Configuration'</a>
                                 </li>
-                                <li>In the device configuration page, navigate to the 'Device Interfaces' widget</li>
-                                <li>Click 'More Details' button next to the desired interface</li>
+                                <li>In the 'Device Configuration' page, navigate to the 'Device Interfaces' widget</li>
+                                <li>Click the 'More Details' button next to the desired interface<br>
+                                    <img class="border rounded m-2" src="{% static 'images/btn-interface.png' %}"
+                                         alt="Image Not Found">
+                                </li>
                                 <li>This will then redirect to the 'Interface Configuration' page<br>
-                                    <img class="border rounded m-2" src="{% static 'images/int-config.png' %}"
-                                         alt="Image Not Found" style="width: 1000px">
+                                    <img class="border rounded m-2" src="{% static 'images/device-int.png' %}"
+                                         alt="Image Not Found">
                                 </li>
                             </ol>
                             <h5>2. Applying an Access List</h5>
-                            <ol>
+                            <ol style="line-height: 150%">
                                 <li>In the interface configuration page, navigate to the 'Access Lists' widget</li>
                                 <li>Select the access list from the dropdown and the required direction</li>
-                                <li>Click 'Apply Access List' to continue<br>
+                                <li>Click the 'Apply Access List' button to continue<br>
                                     <img class="border rounded m-2" src="{% static 'images/apply-acl.png' %}"
-                                         alt="Image Not Found" style="width: 800px">
+                                         alt="Image Not Found">
                                 </li>
+                            </ol>
+                            <h5>3. Removing an Access List</h5>
+                            <ol style="line-height: 150%">
+                                <li>In the interface configuration page, navigate to the 'Access Lists' widget</li>
+                                <li>Select the access list you wish to remove from the interface</li>
+                                <li>Click the 'Remove' button to remove the access list from the interface<br>
+                                    <img class="border rounded m-2" src="{% static 'images/remove-acl.png' %}"
+                                         alt="Image Not Found">
                                 </li>
                             </ol>
                         </div>
                     </div>
                 </div>
-
                 <div class="card card-accordion">
                     <div class="card-header" id="headingTen">
                         <h5 class="mb-0">
@@ -418,22 +488,52 @@
                     </div>
                     <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordion">
                         <div class="card-body">
-                            <h5>1. Getting Started</h5>
-                            <ol>
-                                <li>Navigate to the device configuration page<br>
+                            <p class="font-weight-bold">This section explains how to create, view and manage
+                                configuration backups</p>
+                            <h5>1. Creating a New Backup File</h5>
+                            <ol style="line-height: 150%">
+                                <li>Navigate to the 'Device Configuration' page<br>
                                     <label class="text-info">Unsure how to do this?</label>
-                                    <a class="text-primary"
-                                       data-toggle="collapse"
-                                       data-target="#collapseFour">
+                                    <a class="text-primary" data-toggle="collapse" data-target="#collapseFour">
                                         See 'Device Configuration'</a>
+                                </li>
+                                <li>In the 'Device Configuration' page, navigate to the 'Device Interfaces' widget</li>
+                                <li>Click the 'Create New Backup' button<br>
+                                    <img class="border rounded m-2" src="{% static 'images/btn-backup.png' %}"
+                                         alt="Image Not Found">
+                                </li>
+                                <li>Click 'Yes' in the popup to create the new backup<br>
+                                    <img class="border rounded m-2" src="{% static 'images/backup-popup.png' %}"
+                                         alt="Image Not Found"><br>
+                                    <label class="text-warning font-weight-bold">New backups can be also be created when
+                                        saving device configuration</label>
+                                    <a class="text-primary" data-toggle="collapse" data-target="#collapseSix">
+                                        See 'Saving Device Configuration'</a>
+                                </li>
+
+                            </ol>
+                            <h5>2. Downloading a Backup File</h5>
+                            <ol style="line-height: 150%">
+                                <li>Navigate to the 'Reports' page</li>
+                                <li>In the 'Reports' page, navigate to the 'Device Backups' widget</li>
+                                <li>Click the 'Download' button<br>
+                                    <img class="border rounded m-2" src="{% static 'images/btn-download.png' %}"
+                                         alt="Image Not Found">
+                                </li>
+                                <li>Backup file should download</li>
+                            </ol>
+                            <h5>2. Deleting a Backup File</h5>
+                            <ol style="line-height: 150%">
+                                <li>Navigate to the 'Reports' page<br></li>
+                                <li>In the 'Reports' page, navigate to the 'Device Backups' widget</li>
+                                <li>Click the 'Delete' button<br>
+                                    <img class="border rounded m-2" src="{% static 'images/btn-delete.png' %}"
+                                         alt="Image Not Found">
                                 </li>
                             </ol>
                         </div>
                     </div>
                 </div>
-
-
-                <!-- NEW HELP TABS HERE!-->
             </div>
         </div>
     </div>

@@ -117,3 +117,6 @@ class Backup(models.Model):
     def get_device_backup(self):
         backup = Backup.objects.get(device=self)
         return backup
+
+    def delete_backup_file(self):
+        Backup.objects.filter(device=self).update(file='')

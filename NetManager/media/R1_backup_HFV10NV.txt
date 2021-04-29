@@ -1,0 +1,109 @@
+Building configuration...
+
+Current configuration : 1299 bytes
+!
+! Last configuration change at 17:12:14 UTC Thu Apr 29 2021 by admin
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$ah3n$pCjFm30ir8ySOrLeJ1tXT1
+!
+no aaa new-model
+no ip icmp rate-limit unreachable
+ip cef
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name smej.com
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username admin privilege 15 password 7 00071A150754
+!
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 192.168.0.100 255.255.255.0
+ duplex full
+!
+interface FastEthernet1/0
+ ip address 10.10.10.1 255.255.255.0
+ ip access-group myaccesslist in
+ duplex full
+!
+interface FastEthernet2/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface GigabitEthernet3/0
+ no ip address
+ shutdown
+ negotiation auto
+!
+router ospf 1
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+ip access-list extended myaccesslist
+ permit tcp any any
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+end

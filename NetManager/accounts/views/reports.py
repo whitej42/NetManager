@@ -37,6 +37,10 @@ class ReportsView(View):
             response['Content-Disposition'] = 'attachment; filename=%s' % backup.file
             return response
 
+        # delete backup file
+        if 'delete' in request.POST:
+            Backup.delete_backup_file(device)
+
         try:
             return redirect(self.success_redirect)
         except Exception as e:
