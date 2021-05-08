@@ -177,13 +177,13 @@ def disable_interfaces(user, device):
 # Create new access lists & add to access lists
 # form = AccessListForm
 def create_acl(user, device, form):
-    acl_type = form.cleaned_data.get('type')
-    acl_name = form.cleaned_data.get('name')
+    type = form.cleaned_data.get('type')
+    name = form.cleaned_data.get('name')
     statement = form.cleaned_data.get('statement')
-    cmd = ['ip access-list ' + acl_type + " " + acl_name, statement]
+    cmd = ['ip access-list ' + type + " " + name, statement]
     c = configure(device, cmd)
     if c:
-        return alert_factory.security_alert(user, device, acl_name, None, 'CREATE')
+        return alert_factory.security_alert(user, device, name, None, 'CREATE')
     else:
         return str(c)
 
