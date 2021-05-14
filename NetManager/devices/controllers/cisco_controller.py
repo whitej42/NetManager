@@ -102,7 +102,7 @@ def get_interface_ip(device, i):
 def save(user, device):
     """
     Another implementation for saving config using the Netmiko
-    save_config() function. Broke a few days before release
+    save_config() function. Broke a few weeks before release
 
         try:
             c = ConnectHandler(**connect(d))

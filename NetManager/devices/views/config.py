@@ -53,4 +53,5 @@ class DeviceConfig(View):
             controller.configure(d, cmd)
             messages.success(request, 'Configuration Sent')
             return redirect(self.success_redirect, device_id)
+
         return redirect(self.exception_redirect)

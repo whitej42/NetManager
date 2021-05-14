@@ -4,7 +4,7 @@
 from netmiko import ConnectHandler
 from datetime import datetime
 
-#router 1
+# router 1
 R1 = {
     'device_type': 'cisco_ios',
     'host': '192.168.146.130',
@@ -13,7 +13,7 @@ R1 = {
     'port': '22',
 }
 
-#router 2
+# router 2
 R2 = {
     'device_type': 'cisco_ios',
     'host': '192.168.147.130',

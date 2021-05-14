@@ -20,4 +20,5 @@ urlpatterns = [
     path('profile/change-password', change_password, name='Change-Password'),
     path('reports', login_required(ReportsView.as_view()), name='Reports'),
     path('help', HelpView.as_view(), name='Help'),
+
 ]

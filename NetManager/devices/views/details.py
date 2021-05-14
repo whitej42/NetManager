@@ -32,8 +32,10 @@ class DeviceDetails(View):
         device = Device.get_device(device_id)
         int_form = InterfaceForm
         acl_form = AclForm
-        args = {'device': device, 'int_form': int_form, 'acl_form': acl_form, 'interfaces': controller.get_interfaces(device),
-                'version': controller.get_version(device), 'acl': controller.get_acl(device)}
+        args = {'device': device, 'int_form': int_form, 'acl_form': acl_form,
+                'interfaces': controller.get_interfaces(device),
+                'version': controller.get_version(device),
+                'acl': controller.get_acl(device)}
         try:
             return render(request, self.template, args)
         except Exception as e:

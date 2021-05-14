@@ -5,14 +5,18 @@ ACCOUNTS FORMS UNIT TESTS
 """
 from django.test import TestCase
 from accounts.forms import *
-from test_scripts import test_objects
 
 
 class TestForms(TestCase):
 
     def setUp(self):
         # create test user
-        self.user = test_objects.create_test_user(self)
+        # Create test user
+        self.username = 'test'
+        self.password = 'test'
+        self.user = User(username=self.username, password=self.password)
+        self.user.set_password(self.password)
+        self.user.save()
 
     def test_login_form_valid(self):
         form = LoginForm(data={
