@@ -1,3 +1,9 @@
 /media
-/venv
-/requirements.txt
+/eb-virt
+# Elastic Beanstalk Files
+.ebextensions/*
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+db.sqlite3
+/static

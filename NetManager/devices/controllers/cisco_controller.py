@@ -126,7 +126,7 @@ def save(user, device):
 def backup(user, device):
     try:
         c = ConnectHandler(**connect(device))
-        output = c.send_command('show run')
+        output = c.send_command('show running-config')
         c.disconnect()
         backup_factory.create_backup(device, output)
         return alert_factory.backup_alert(user, device)

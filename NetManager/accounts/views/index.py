@@ -39,8 +39,6 @@ class IndexView(View):
             password = form.cleaned_data.get('password')
             user.set_password(password)
             user.save()
-            authenticate(username=user.username, password=password)
-            login(request, user)
-            if next:
-                return redirect(next)
-        return redirect('devices:Device-Manager')
+            return redirect('accounts: Login')
+        messages.errors(request, "Error Creating Account. Please Try Again")
+        return redirect('accounts: Index')
