@@ -87,7 +87,8 @@
                     <h4>Cloud Backups</h4>
                     <p>
                         Backup your device configuration with the quick and easy cloud backup system.
-                        NetManager can store configuration backups for all your network devices which can be easily downloaded using the GUI.
+                        NetManager can store configuration backups for all your network devices which can be easily
+                        downloaded using the GUI.
                     </p>
                 </div>
                 <div class="col ml-5" style="max-width: 350px">
@@ -107,26 +108,27 @@
         </div>
     </div>
 
-    <div class="jumbotron jumbotron-fluid mb-0 card" id="signup" style="background-color: #1c1f22">
-        <div class="container" style="min-width: 100%">
-            <h3>Create an account for free</h3>
-            <div class="row justify-content-center mt-4">
-                <div class="col" style="height: 100%; max-width: 750px">
-                    <div class="card signup">
-                        <form class="form-group text-left text-secondary" method="post">
-                            {% csrf_token %}
-                            {% load crispy_forms_tags %}
-                            {{ form|crispy }}
-                            <button type="submit"
-                                    class="btn btn-success btn-block"
-                                    title="Signup">Sign Up!
-                            </button>
-                        </form>
+    {% if user.is_authenticated %}
+    {% else %}
+        <div class="jumbotron jumbotron-fluid mb-0 card" id="signup" style="background-color: #1c1f22">
+            <div class="container" style="min-width: 100%">
+                <h3>Create an account for free</h3>
+                <div class="row justify-content-center mt-4">
+                    <div class="col" style="height: 100%; max-width: 750px">
+                        <div class="card signup">
+                            <form class="form-group text-left text-secondary" method="post">
+                                {% csrf_token %}
+                                {% load crispy_forms_tags %}
+                                {{ form|crispy }}
+                                <button type="submit" class="btn btn-success btn-block" title="Signup">Sign Up!</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
+
 </main>
 
 <script>

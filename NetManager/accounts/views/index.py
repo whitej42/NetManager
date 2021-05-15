@@ -1,4 +1,3 @@
-
 """
 
 File: accounts/views/index.py
@@ -32,13 +31,25 @@ class IndexView(View):
 
     # register new user
     def post(self, request):
-        next = request.GET.get('next')
-        form = RegisterForm(request.POST or None)
+        form = RegisterForm(request.POST)
+        args = {'form': form}
+
         if form.is_valid():
             user = form.save(commit=False)
             password = form.cleaned_data.get('password')
             user.set_password(password)
             user.save()
-            return redirect('accounts: Login')
-        messages.errors(request, "Error Creating Account. Please Try Again")
-        return redirect('accounts: Index')
+            authenticate(username=user.username, password=password)
+            login(request, user)
+
+            try:
+                messages.success(request,
+                                 'Welcome to NetManager! Add new devices to start managing your network. Visit our help page if you get stuck.')
+                return redirect('devices:Device-Manager')
+            except Exception as e:
+                messages.error(request, 'Error: ' + str(e) +
+                               ' Please Try Again. If issue persists, contact support')
+                return redirect('devices:Device-Manager')
+
+        messages.error(request, 'Error Registering New Account! Rectify Form Errors')
+        return render(request, self.template, args)

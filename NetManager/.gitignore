@@ -1,9 +1,9 @@
-/media
-/eb-virt
 # Elastic Beanstalk Files
 .ebextensions/*
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 db.sqlite3
-/static
+/media
+/static/admin
+/static/rest_framework
