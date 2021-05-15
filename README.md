@@ -3,7 +3,7 @@
 ### BSc (Hons) Computer & Information Security
 
 * Project Owner: James White 
-* Project Supervisor: Lingfen Sun
+* Project Supervisor: Dr Lingfen Sun
   
 ![Logo](https://github.com/jwhite96/COMP3000/blob/main/NetManager/static/images/logo.png)
 
