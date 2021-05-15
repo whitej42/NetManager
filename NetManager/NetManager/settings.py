@@ -26,6 +26,7 @@ SECRET_KEY = '9-oe2+-)ew0wxm6xhke7k_12@n(7^p3vgj$ripe-xtt^tvv%i8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Change for production
 ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
@@ -121,8 +122,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# uncomment for aws server
 # STATIC_ROOT = 'static'
 
+# uncomment for dev server
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 LOGIN_REDIRECT_URL = '/devices/'
@@ -140,6 +143,10 @@ MESSAGE_TAGS = {
 
 MEDIA_URL = '/media/'
 
+# uncomment for aws server
+# MEDIA_ROOT = 'media'
+
+# uncomment for dev server
 MEDIA_ROOT = [os.path.join(BASE_DIR, 'media')]
 
 FILE_UPLOAD_HANDLERS = (
