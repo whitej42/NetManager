@@ -60,8 +60,8 @@ def device_alert(user, device, action):
     if action == 'DELETE':
         alert_description = ('Device ' + device.name + ' deleted from device list')
     if action == 'UPDATE':
-        alert_description = ('Device ' + device.name + ' settings changed')
+        alert_description = ('Device ' + device.name + ' settings updated')
     if action == 'SECURITY':
-        alert_description = ('Device ' + device.name + ' security settings changed')
+        alert_description = ('Device ' + device.name + ' security settings updated')
     Alert.create_alert(user, device.name, 'Device', alert_description)
     return alert_description

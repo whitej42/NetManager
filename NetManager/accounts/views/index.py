@@ -43,7 +43,7 @@ class IndexView(View):
             login(request, user)
 
             try:
-                messages.success(request,
+                messages.warning(request,
                                  'Welcome to NetManager! Add new devices to start managing your network. Visit our help page if you get stuck.')
                 return redirect('devices:Device-Manager')
             except Exception as e:

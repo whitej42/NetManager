@@ -27,7 +27,7 @@ SECRET_KEY = '9-oe2+-)ew0wxm6xhke7k_12@n(7^p3vgj$ripe-xtt^tvv%i8'
 DEBUG = True
 
 # Change for production
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
