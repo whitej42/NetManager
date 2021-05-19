@@ -24,6 +24,10 @@ NetManager is a network configuration & management (NCM) tool for automated conf
 ## YouTube Demonstation Video
 https://www.youtube.com/watch?v=xxV7JNZJYpQ
 
+## Help Guide
+The application comes with a built in help page that explains how to carry out all of the functions within the NetManager application <br>
+http://ec2-18-169-21-1.eu-west-2.compute.amazonaws.com/help
+
 ## User & Installation Guide
 ### Manual Installation
 Since the application requires a live Cisco network to carry out most of the functionality, it is recommended to test the application using the online version. However, this section outlines the step required to run the application locally.
