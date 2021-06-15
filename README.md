@@ -50,7 +50,6 @@ https://www.python.org/downloads/release/python-380/
 
 ### Online Version
 There is a working version of this application online with a full working network and user accounts. The information on how to access the site is listed below.
-### If the server is down or for the test network is not responding, please send an email to james.white-12@students.plymouth.ac.uk and the issue will be rectified immediately.
 Please avoid clicking multiple times during long loading process (keep an eye on the browser refresh icon). GET & POST requests are chargeable to the lead developer so please bare this in mind. You are free to use the application how you please.
 
 #### URL:
