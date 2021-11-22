@@ -23,3 +23,25 @@ NetManager is a network configuration & management (NCM) tool for automated conf
 
 ### Status
 * No Longer in Development
+
+### Screeshots
+#### Home Page
+![Home Page](/Documentation/Screenshots/Home-Page.png)
+
+#### Device Manager
+![Device Manager](/Documentation/Screenshots/Device-Manager.png)
+
+#### Device Configuration
+![Device Configuration](/Documentation/Screenshots/Device-Config.png)
+
+#### Interface Configuration
+![Interface Configuration](/Documentation/Screenshots/Interface-Config.png)
+
+#### Device Settings
+![Device Settings](/Documentation/Screenshots/Device-Settings.png)
+
+#### Reports
+![Reports](/Documentation/Screenshots/Reports.png)
+
+#### Help Page
+![Help Page](/Documentation/Screenshots/Help-Page.png)
