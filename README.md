@@ -21,5 +21,5 @@ NetManager is a network configuration & management (NCM) tool for automated conf
 * Send commands manually *if required
 * Configuration audit logs
 
-## YouTube Demonstation Video
-https://www.youtube.com/watch?v=xxV7JNZJYpQ
+### Status
+* No Longer in Development
