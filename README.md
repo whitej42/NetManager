@@ -24,7 +24,7 @@ NetManager is a network configuration & management (NCM) tool for automated conf
 ### Status
 * No Longer in Development
 
-### Screeshots
+### Screenshots
 #### Home Page
 ![Home Page](/Documentation/Screenshots/Home-Page.png)
 
